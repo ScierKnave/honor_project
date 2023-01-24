@@ -1,9 +1,14 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amscd}
+
+
 \title{Neural network knowledge distillation in tensor networks}
 \author{Dereck Piché}
 
+
 \date{\today}
 
-\documentclass[12pt]{article}
 
 \begin{document}
 \maketitle
@@ -18,19 +23,31 @@ This is time for all good men to come to the aid of their party!
 \paragraph{Outline}
 
 
-\section{Représentation 
+\section{Layer-by-layer approach}
+It has been common to each layer of a neural network as a certain abstracted representation of the previous information and their for generalisibility. Thus, we propose to change the cost, we use a tensor mapping and train each mapping individualy.
+
+\begin{equation*}
+\begin{CD}
+    x @>>>H_1 @>>>H_2 @>>>(\dots)@>g>> \hat{y}
+\end{CD}
+\end{equation*}
+
+Each hidden layer is of the form;
+\begin{equation*}
+    a^l = \sigma^l \bigl( W^l a^{l-1} \bigr)
+\end{equation*}
+
+In tensor layer form, it will be defined as 
+\begin{equation*}
+    a^l = T^l \cdot \Phi \bigl( a^{l-1} \bigr)
+\end{equation*}
+
+Here, 
 
 
-\section{Previous work}\label{previous work}
-A much longer \LaTeXe{} example was written by Gil~\cite{Gil:02}.
 
-\section{Results}\label{results}
-In this section we describe the results.
 
-\section{Conclusions}\label{conclusions}
-We worked hard, and achieved very little.
 
-\bibliographystyle{abbrv}
 \bibliography{simple}
 
 \end{document}
