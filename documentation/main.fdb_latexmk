@@ -5,7 +5,7 @@
   (generated)
   "main.bbl"
   "main.blg"
-["pdflatex"] 1674573602 "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/documentation/main.tex" "main.pdf" "main" 1674573602
+["pdflatex"] 1674575898 "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/documentation/main.tex" "main.pdf" "main" 1674575898
   "C:/Program Files/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233951848 1004 54797486969f23fa377b128694d548df ""
   "C:/Program Files/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1233951848 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
   "C:/Program Files/MiKTeX/fonts/tfm/public/cm/cmbx10.tfm" 1136765053 1328 c834bbb027764024c09d3d2bf908b5f0 ""
@@ -27,12 +27,15 @@
   "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1247593066 32080 340ef9bf63678554ee606688e7b5339d ""
   "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1247593067 30251 6afa5cb1d0204815a708a080681d4674 ""
   "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1247593067 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
+  "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb" 1247593066 37166 8ab3487cbe3ab49ebce74c29ea2418db ""
   "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1247593066 35469 dcf3a5f2fc1862f5952e3ee5eb1d98c4 ""
   "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1247593067 35752 024fb6c41858982481f6968b5fc26508 ""
   "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1247593067 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1247593066 32362 bc3f3eec7ab7d65fe700963d4017d32c ""
+  "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1247593067 32734 69e00a6b65cedb993666e42eedb3d48f ""
   "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1247593067 32726 39f0f9e62e84beb801509898a605dbd5 ""
   "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1247593067 32569 5e5ddc8df908dea60932f3c484a54c0d ""
+  "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb" 1247593067 32587 65067f817f408bc71a7312f3d9828a9b ""
   "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1247593067 32626 5abc8bb2f28aa647d4c70f8ea38cc0d3 ""
   "C:/Program Files/MiKTeX/tex/latex/amsmath/amsbsy.sty" 1655054589 2222 78b930a5a6e3dc2ac69b78c2057b94d7 ""
   "C:/Program Files/MiKTeX/tex/latex/amsmath/amscd.sty" 1655054590 5321 64c64fcb4a2f83c448434a24d3785bab ""
@@ -45,10 +48,10 @@
   "C:/Program Files/MiKTeX/tex/latex/l3backend/l3backend-pdftex.def" 1664385028 30426 b4bd1ea7df6c51902df8edf551809fb7 ""
   "C:/Users/piche/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1669663100 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/piche/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1669665853 10778196 7b1a7ce3f9d4f88eb1edbbbda3e807c6 ""
-  "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/documentation/main.tex" 1674573600 1639 30dfe57933d2d3e2c2feae42899ac570 ""
-  "main.aux" 1674573602 34 3985256e7290058c681f74d7a3565a19 "pdflatex"
+  "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/documentation/main.tex" 1674575891 2418 17a70747a7b21145c4ac5f1bab963138 ""
+  "main.aux" 1674575898 34 3985256e7290058c681f74d7a3565a19 "pdflatex"
   "main.bbl" 0 -1 0 "bibtex main"
-  "main.tex" 1674573600 1639 30dfe57933d2d3e2c2feae42899ac570 ""
+  "main.tex" 1674575891 2418 17a70747a7b21145c4ac5f1bab963138 ""
   (generated)
   "main.aux"
   "main.log"

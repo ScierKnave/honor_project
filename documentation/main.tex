@@ -42,18 +42,23 @@ In tensor layer form, it will be defined as
     a^l = T^l \cdot \Phi \bigl( a^{l-1} \bigr)
 \end{equation*}
 
-The main difference is that in the tensor approach, the "heavy" part is done by the non-linear transformation while a little work is done with the linear mapping. The opposite is true with neural networks.
-
-Here, $\Phi(X)$ (X begin the input vector) is a tensor product of several identical non-linear mappings of each element $(x_i)$. Thus, we have 
+The main difference is that in the tensor approach, the "heavy" part is done by the non-linear transformation while a little work is done with the linear mapping. The opposite is true with neural networks. Here, $\Phi(X)$ (X begin the input vector) is a tensor product of several identical non-linear mappings of each element $x_i$. Thus, we have 
 
 \begin{equation*}
-    \Phi(X) = \phi(x_1)\phi(x_2)\dots\phi(x_d)
+    \Phi(X) = \phi(x_1)\phi(x_2)\dots\phi(x_n)
 \end{equation*}
 
-Were each $\phi : \mathbb{R} \rightarrow \mathbb{R}^d$
-and each 
+Were each $\phi : \mathbb{R} \rightarrow \mathbb{R}^d$, and each $d > 1$. Thus, our $\Phi(X) : \mathbb{R}^n \rightarrow \mathbb{R}^{ (d \times)^{n-1}d} $. In other words, our $\Phi$ returns a tensor of order $n$, where each indices run from $1$ to $d$.
 
-
+\section{Going further with local transformations}
+In previous works, the non-linear mappings were independant and equal for each $(x_i)$. It would be interesting if these linear mappings were codependant. Here is an example of transformation to desambiguate what we mean
+\begin{equation*}
+    \phi_i(x_{i}, x_{i+1}) = \begin{bmatrix}
+                                x_{i} \\
+                                x_{i} \cdot x_{i+1}
+                            \end{bmatrix}
+\end{equation*}
+It would be interesting to apply this transformation for a set of randomised pairs before the training.
 
 
 \bibliography{simple}
