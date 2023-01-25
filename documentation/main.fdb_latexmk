@@ -5,7 +5,7 @@
   (generated)
   "main.bbl"
   "main.blg"
-["pdflatex"] 1674575898 "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/documentation/main.tex" "main.pdf" "main" 1674575898
+["pdflatex"] 1674577172 "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/documentation/main.tex" "main.pdf" "main" 1674577172
   "C:/Program Files/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233951848 1004 54797486969f23fa377b128694d548df ""
   "C:/Program Files/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1233951848 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
   "C:/Program Files/MiKTeX/fonts/tfm/public/cm/cmbx10.tfm" 1136765053 1328 c834bbb027764024c09d3d2bf908b5f0 ""
@@ -48,10 +48,10 @@
   "C:/Program Files/MiKTeX/tex/latex/l3backend/l3backend-pdftex.def" 1664385028 30426 b4bd1ea7df6c51902df8edf551809fb7 ""
   "C:/Users/piche/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1669663100 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/piche/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1669665853 10778196 7b1a7ce3f9d4f88eb1edbbbda3e807c6 ""
-  "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/documentation/main.tex" 1674575891 2418 17a70747a7b21145c4ac5f1bab963138 ""
-  "main.aux" 1674575898 34 3985256e7290058c681f74d7a3565a19 "pdflatex"
+  "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/documentation/main.tex" 1674577169 2418 17a70747a7b21145c4ac5f1bab963138 ""
+  "main.aux" 1674577172 34 3985256e7290058c681f74d7a3565a19 "pdflatex"
   "main.bbl" 0 -1 0 "bibtex main"
-  "main.tex" 1674575891 2418 17a70747a7b21145c4ac5f1bab963138 ""
+  "main.tex" 1674577169 2418 17a70747a7b21145c4ac5f1bab963138 ""
   (generated)
   "main.aux"
   "main.log"
