@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.11.28)  24 JAN 2023 11:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.11.28)  25 JAN 2023 12:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/documentation/main.tex
-(c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/documentation/main.tex
+**c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/doc/nn_distill_tensors.tex
+(c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/doc/nn_distill_tensors.tex
 LaTeX2e <2022-06-01> patch level 5
 L3 programming layer <2022-09-28> (C:\Program Files\MiKTeX\tex/latex/base\article.cls
 Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
@@ -96,8 +96,8 @@ Package: amscd 2017/04/14 v2.1 AMS Commutative Diagrams
 File: l3backend-pdftex.def 2022-09-28 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count271
 \l__pdf_internal_box=\box53
-) (main.aux)
-\openout1 = `main.aux'.
+) (nn_distill_tensors.aux)
+\openout1 = `nn_distill_tensors.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
 LaTeX Font Info:    ... okay on input line 13.
@@ -116,7 +116,7 @@ LaTeX Font Info:    ... okay on input line 13.
  [1
 
 {C:/Users/piche/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
-c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/documentation/main.tex:51: Undefined control sequence.
+c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/doc/nn_distill_tensors.tex:51: Undefined control sequence.
 l.51 Were each $\phi : \mathbb
                               {R} \rightarrow \mathbb{R}^d$, and each $d > 1...
 The control sequence at the end of the top line
@@ -125,7 +125,7 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/documentation/main.tex:51: Undefined control sequence.
+c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/doc/nn_distill_tensors.tex:51: Undefined control sequence.
 l.51 ...ach $\phi : \mathbb{R} \rightarrow \mathbb
                                                   {R}^d$, and each $d > 1$. ...
 The control sequence at the end of the top line
@@ -134,7 +134,7 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/documentation/main.tex:51: Undefined control sequence.
+c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/doc/nn_distill_tensors.tex:51: Undefined control sequence.
 l.51 ...each $d > 1$. Thus, our $\Phi(X) : \mathbb
                                                   {R}^n \rightarrow \mathbb{...
 The control sequence at the end of the top line
@@ -143,7 +143,7 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/documentation/main.tex:51: Undefined control sequence.
+c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/doc/nn_distill_tensors.tex:51: Undefined control sequence.
 l.51 ...\Phi(X) : \mathbb{R}^n \rightarrow \mathbb
                                                   {R}^{ (d \times)^{n-1}d} $...
 The control sequence at the end of the top line
@@ -152,18 +152,18 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-No file main.bbl.
-[2] (main.aux) ) 
+No file nn_distill_tensors.bbl.
+[2] (nn_distill_tensors.aux) ) 
 Here is how much of TeX's memory you used:
  1238 strings out of 475385
- 19399 string characters out of 2786721
- 367666 words of memory out of 3000000
+ 19525 string characters out of 2786721
+ 367694 words of memory out of 3000000
  22665 multiletter control sequences out of 15000+600000
  475329 words of font info for 49 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 54i,17n,62p,464b,203s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 54i,17n,62p,468b,203s stack positions out of 10000i,1000n,20000p,200000b,80000s
 <C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on main.pdf (2 pages, 155668 bytes).
+Output written on nn_distill_tensors.pdf (2 pages, 155731 bytes).
 PDF statistics:
  79 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
