@@ -1,5 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{amscd}
 \title{Neural network knowledge distillation in tensor networks}
 \author{Dereck Piché}
@@ -7,11 +8,14 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-This is the paper's abstract \ldots
 \end{abstract}
 
 \section{Introduction}
-This is time for all good men to come to the aid of their party!
+In the last few decades, the use of artificial neural networks has gained a lot of popularity in several application areas. Because of their usefulness, we would like to be able to use them in systems that have fewer computational resources (nested systems, for example). Thus, we would like to find methods to reduce their temporal and spatial complexity while keeping their capabilities. This is where knowledge distillation comes in. Suppose we have a trained neural network that performs well on a certain task T. Then we can say that this neural network has knowledge about this task T. We would like to be able to transfer the knowledge of an already trained neural network into a system that takes less space. The technical term given to the knowledge transfer process is knowledge distillation. Despite the youth of this avenue of study, it remains broad in scope. The project will therefore focus more specifically on knowledge distillation of artificial neural networks in tensor networks. 
+
+We now need to briefly explain what a tensor network is. Tensor networks are mathematical objects originating from the modeling of quantum phenomena (see Richard Penrose & Feynman). Here we see tensors as a generalization of vectors and matrices where we have an arbitrary number of indices. It is important to mention that tensor networks are intimately linked to a graphical notation which allows us to manipulate them much more easily than if we were limited to a purely analytical notation. From this notation, researchers have created different types (or patterns or categories) of tensor networks that possess certain distinct properties. Some of these patterns (such as the MPS https://tensornetwork.org/mps/) possess properties that are crucial to our task. In particular, several factorization and optimization methods for temporal and spatial complexity are known and studied for MPS (Matrix Product State / Tensor Train). Thus, we could use these optimizations after distillation to reduce the computational costs of neural networks. The project will consist of analyses and experiments that will aim to clarify/advance this topic (in the form of a report). We have not determined how theoretical or practical the project will be.
+
+Translated with www.DeepL.com/Translator (free version)
 
 \section{Layer-by-layer approach}
 It has been common to each layer of a neural network as a certain abstracted representation of the previous information and their for generalisibility. Thus, we propose to change the cost, we use a tensor mapping and train each mapping individualy.
@@ -49,29 +53,29 @@ It would be interesting to apply this transformation for a set of randomised pai
 This is it!
 
 \begin{gather*}
-T_{1} \phi _{1}( x) +T_{2} \phi _{2}( x) +k_{1}\\
-\equiv \\
-T_{3} \phi _{1}( \ T_{5} \phi _{1}( x) +T_{6} \phi _{2}( x) +k_{3} \ ) +T_{4} \phi _{2}( \ T_{75} \phi _{1}( x) +T_{8} \phi _{2}( x) +k_{4} \ ) +k_{2}\\
-\equiv T_{3} \phi _{1}( \ \lambda _{1}( x) \ ) +T_{4} \phi _{2}( \ \lambda _{2}( x) \ ) +k_{2}\\
+    T_{1} \phi _{1}( x) +T_{2} \phi _{2}( x) +k_{1}\\
+    \equiv \\
+    T_{3} \phi _{1}( \ T_{5} \phi _{1}( x) +T_{6} \phi _{2}( x) +k_{3} \ ) +T_{4} \phi _{2}( \ T_{75} \phi _{1}( x) +T_{8} \phi _{2}( x) +k_{4} \ ) +k_{2}\\
+    \equiv T_{3} \phi _{1}( \ \lambda _{1}( x) \ ) +T_{4} \phi _{2}( \ \lambda _{2}( x) \ ) +k_{2}\\
 \end{gather*}
 Then we have with derivatives
 
 \begin{gather*}
-\frac{d}{dx}[ \ T_{1} \phi _{1}( x) +T_{2} \phi _{2}( x) +k_{1} \ ]\\
-\equiv \\
-\frac{d}{dx}[ \ T_{3} \phi _{1}( \ \lambda _{1}( x) \ ) +T_{4} \phi _{2}( \ \lambda _{2}( x) \ ) +k_{2} \ ]\\
+    \frac{d}{dx}[ \ T_{1} \phi _{1}( x) +T_{2} \phi _{2}( x) +k_{1} \ ]\\
+    \equiv \\
+    \frac{d}{dx}[ \ T_{3} \phi _{1}( \ \lambda _{1}( x) \ ) +T_{4} \phi _{2}( \ \lambda _{2}( x) \ ) +k_{2} \ ]\\
 \end{gather*}
 Which is saying that
 
 \begin{gather*}
-T_{1}\frac{d}{dx} \ \phi _{1}( x) +T_{2}\frac{d}{dx} \phi _{2}( x)\\
-\equiv \\
-\frac{d}{dx} T_{3} \phi _{1}( \ \lambda _{1}( x) \ ) +\frac{d}{dx} T_{4} \phi _{2}( \ \lambda _{2}( x) \ )\\
-\equiv T_{3}\frac{d\phi _{1}}{d\lambda _{1}}\frac{\lambda _{1}( x)}{dx} +\frac{d}{dx} T_{4}\frac{d\phi _{2}}{d\lambda _{2}}\frac{\lambda _{2}( x)}{dx}\\
-\equiv T_{3}\frac{d\phi _{1}}{d\lambda _{1}}\frac{\lambda _{1}}{dx} +T_{4}\frac{d\phi _{2}}{d\lambda _{2}}\frac{\lambda _{2}}{dx}\\
-\equiv T_{3}\frac{d\phi _{1}}{d\lambda _{1}}\left[ T_{5}\frac{d}{dx} \phi _{1}( x) +T_{6}\frac{d}{dx} \phi _{2}( x)\right] +T_{4}\frac{d\phi _{2}}{d\lambda _{2}}\left[ T_{7}\frac{d}{dx} \phi _{1}( x) +T_{8}\frac{d}{dx} \phi _{2}( x)\right]\\
-\equiv T_{3} T_{5} T_{4} T_{7}\frac{d\phi _{1}}{d\lambda _{1}}\frac{d\phi _{2}}{d\lambda _{2}}\frac{d}{dx} \phi _{1}( x) +T_{3} T_{6} T_{4} T_{8}\frac{d\phi _{1}}{d\lambda _{1}}\frac{d\phi _{2}}{d\lambda _{2}}\frac{d}{dx} \phi _{2}( x)\\
-\equiv \ T'_{1}\frac{d\phi _{1}}{d\lambda _{1}}\frac{d\phi _{2}}{d\lambda _{2}}\frac{d}{dx} \phi _{1}( x) +T'_{2}\frac{d\phi _{1}}{d\lambda _{1}}\frac{d\phi _{2}}{d\lambda _{2}}\frac{d}{dx} \phi _{2}( x)\\
+    T_{1}\frac{d}{dx} \ \phi _{1}( x) +T_{2}\frac{d}{dx} \phi _{2}( x)\\
+    \equiv \\
+    \frac{d}{dx} T_{3} \phi _{1}( \ \lambda _{1}( x) \ ) +\frac{d}{dx} T_{4} \phi _{2}( \ \lambda _{2}( x) \ )\\
+    \equiv T_{3}\frac{d\phi _{1}}{d\lambda _{1}}\frac{\lambda _{1}( x)}{dx} +\frac{d}{dx} T_{4}\frac{d\phi _{2}}{d\lambda _{2}}\frac{\lambda _{2}( x)}{dx}\\
+    \equiv T_{3}\frac{d\phi _{1}}{d\lambda _{1}}\frac{\lambda _{1}}{dx} +T_{4}\frac{d\phi _{2}}{d\lambda _{2}}\frac{\lambda _{2}}{dx}\\
+    \equiv T_{3}\frac{d\phi _{1}}{d\lambda _{1}}\left[ T_{5}\frac{d}{dx} \phi _{1}( x) +T_{6}\frac{d}{dx} \phi _{2}( x)\right] +T_{4}\frac{d\phi _{2}}{d\lambda _{2}}\left[ T_{7}\frac{d}{dx} \phi _{1}( x) +T_{8}\frac{d}{dx} \phi _{2}( x)\right]\\
+    \equiv T_{3} T_{5} T_{4} T_{7}\frac{d\phi _{1}}{d\lambda _{1}}\frac{d\phi _{2}}{d\lambda _{2}}\frac{d}{dx} \phi _{1}( x) +T_{3} T_{6} T_{4} T_{8}\frac{d\phi _{1}}{d\lambda _{1}}\frac{d\phi _{2}}{d\lambda _{2}}\frac{d}{dx} \phi _{2}( x)\\
+    \equiv \ T'_{1}\frac{d\phi _{1}}{d\lambda _{1}}\frac{d\phi _{2}}{d\lambda _{2}}\frac{d}{dx} \phi _{1}( x) +T'_{2}\frac{d\phi _{1}}{d\lambda _{1}}\frac{d\phi _{2}}{d\lambda _{2}}\frac{d}{dx} \phi _{2}( x)\\
 \end{gather*}
 Thus, we can see that it will only possible in this case if the set of do not form a constant!
 In other words, they must not be be cancellable!. We can generalise this to higher order transformations! Their derivatives must not be cancellable! It is a requirement!
