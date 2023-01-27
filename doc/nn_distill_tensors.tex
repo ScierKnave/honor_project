@@ -1,18 +1,11 @@
 \documentclass[11pt]{article}
 \usepackage{amsmath}
 \usepackage{amscd}
-
-
 \title{Neural network knowledge distillation in tensor networks}
 \author{Dereck Piché}
-
-
 \date{\today}
-
-
 \begin{document}
 \maketitle
-
 \begin{abstract}
 This is the paper's abstract \ldots
 \end{abstract}
@@ -20,35 +13,27 @@ This is the paper's abstract \ldots
 \section{Introduction}
 This is time for all good men to come to the aid of their party!
 
-\paragraph{Outline}
-
-
 \section{Layer-by-layer approach}
 It has been common to each layer of a neural network as a certain abstracted representation of the previous information and their for generalisibility. Thus, we propose to change the cost, we use a tensor mapping and train each mapping individualy.
-
 \begin{equation*}
 \begin{CD}
     x @>>>H_1 @>>>H_2 @>>>(\dots)@>g>> \hat{y}
 \end{CD}
 \end{equation*}
-
 Each hidden layer is of the form;
 \begin{equation*}
     a^l = \sigma^l \bigl( W^l a^{l-1} \bigr)
 \end{equation*}
-
 In tensor layer form, it will be defined as 
 \begin{equation*}
     a^l = T^l \cdot \Phi \bigl( a^{l-1} \bigr)
 \end{equation*}b
-
 The main difference is that in the tensor approach, the "heavy" part is done by the non-linear transformation while a little work is done with the linear mapping. The opposite is true with neural networks. Here, $\Phi(X)$ (X begin the input vector) is a tensor product of several identical non-linear mappings of each element $x_i$. Thus, we have 
-
 \begin{equation*}
     \Phi(X) = \phi(x_1)\phi(x_2)\dots\phi(x_n)
 \end{equation*}
-
 Were each $\phi : \mathbb{R} \rightarrow \mathbb{R}^d$, and each $d > 1$. Thus, our $\Phi(X) : \mathbb{R}^n \rightarrow \mathbb{R}^{ (d \times)^{n-1}d} $. In other words, our $\Phi$ returns a tensor of order $n$, where each indices run from $1$ to $d$.
+
 
 \section{Going further with local transformations}
 In previous works, the non-linear mappings were independant and equal for each $(x_i)$. It would be interesting if these linear mappings were codependant. Here is an example of transformation to desambiguate what we mean
@@ -59,6 +44,37 @@ In previous works, the non-linear mappings were independant and equal for each $
                             \end{bmatrix}
 \end{equation*}
 It would be interesting to apply this transformation for a set of randomised pairs before the training.
+
+\section{On transformations}
+This is it!
+
+\begin{gather*}
+T_{1} \phi _{1}( x) +T_{2} \phi _{2}( x) +k_{1}\\
+\equiv \\
+T_{3} \phi _{1}( \ T_{5} \phi _{1}( x) +T_{6} \phi _{2}( x) +k_{3} \ ) +T_{4} \phi _{2}( \ T_{75} \phi _{1}( x) +T_{8} \phi _{2}( x) +k_{4} \ ) +k_{2}\\
+\equiv T_{3} \phi _{1}( \ \lambda _{1}( x) \ ) +T_{4} \phi _{2}( \ \lambda _{2}( x) \ ) +k_{2}\\
+\end{gather*}
+Then we have with derivatives
+
+\begin{gather*}
+\frac{d}{dx}[ \ T_{1} \phi _{1}( x) +T_{2} \phi _{2}( x) +k_{1} \ ]\\
+\equiv \\
+\frac{d}{dx}[ \ T_{3} \phi _{1}( \ \lambda _{1}( x) \ ) +T_{4} \phi _{2}( \ \lambda _{2}( x) \ ) +k_{2} \ ]\\
+\end{gather*}
+Which is saying that
+
+\begin{gather*}
+T_{1}\frac{d}{dx} \ \phi _{1}( x) +T_{2}\frac{d}{dx} \phi _{2}( x)\\
+\equiv \\
+\frac{d}{dx} T_{3} \phi _{1}( \ \lambda _{1}( x) \ ) +\frac{d}{dx} T_{4} \phi _{2}( \ \lambda _{2}( x) \ )\\
+\equiv T_{3}\frac{d\phi _{1}}{d\lambda _{1}}\frac{\lambda _{1}( x)}{dx} +\frac{d}{dx} T_{4}\frac{d\phi _{2}}{d\lambda _{2}}\frac{\lambda _{2}( x)}{dx}\\
+\equiv T_{3}\frac{d\phi _{1}}{d\lambda _{1}}\frac{\lambda _{1}}{dx} +T_{4}\frac{d\phi _{2}}{d\lambda _{2}}\frac{\lambda _{2}}{dx}\\
+\equiv T_{3}\frac{d\phi _{1}}{d\lambda _{1}}\left[ T_{5}\frac{d}{dx} \phi _{1}( x) +T_{6}\frac{d}{dx} \phi _{2}( x)\right] +T_{4}\frac{d\phi _{2}}{d\lambda _{2}}\left[ T_{7}\frac{d}{dx} \phi _{1}( x) +T_{8}\frac{d}{dx} \phi _{2}( x)\right]\\
+\equiv T_{3} T_{5} T_{4} T_{7}\frac{d\phi _{1}}{d\lambda _{1}}\frac{d\phi _{2}}{d\lambda _{2}}\frac{d}{dx} \phi _{1}( x) +T_{3} T_{6} T_{4} T_{8}\frac{d\phi _{1}}{d\lambda _{1}}\frac{d\phi _{2}}{d\lambda _{2}}\frac{d}{dx} \phi _{2}( x)\\
+\equiv \ T'_{1}\frac{d\phi _{1}}{d\lambda _{1}}\frac{d\phi _{2}}{d\lambda _{2}}\frac{d}{dx} \phi _{1}( x) +T'_{2}\frac{d\phi _{1}}{d\lambda _{1}}\frac{d\phi _{2}}{d\lambda _{2}}\frac{d}{dx} \phi _{2}( x)\\
+\end{gather*}
+Thus, we can see that it will only possible in this case if the set of do not form a constant!
+In other words, they must not be be cancellable!. We can generalise this to higher order transformations! Their derivatives must not be cancellable! It is a requirement!
 
 
 \bibliography{simple}
