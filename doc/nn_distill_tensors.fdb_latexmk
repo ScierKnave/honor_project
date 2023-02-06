@@ -1,11 +1,11 @@
 # Fdb version 3
-["bibtex nn_distill_tensors"] 0 "nn_distill_tensors.aux" "nn_distill_tensors.bbl" "nn_distill_tensors" 0
-  "nn_distill_tensors.aux" 0 -1 0 "pdflatex"
+["bibtex nn_distill_tensors"] 1675711944 "nn_distill_tensors.aux" "nn_distill_tensors.bbl" "nn_distill_tensors" 1675711944
+  "nn_distill_tensors.aux" 1675709472 734 9f20963b01049ee2b41e9f5db6135c80 "pdflatex"
   "simple.bib" 0 -1 0 ""
   (generated)
   "nn_distill_tensors.bbl"
   "nn_distill_tensors.blg"
-["pdflatex"] 1674836026 "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/doc/nn_distill_tensors.tex" "nn_distill_tensors.pdf" "nn_distill_tensors" 1674836026
+["pdflatex"] 1675709471 "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/doc/nn_distill_tensors.tex" "nn_distill_tensors.pdf" "nn_distill_tensors" 1675711944
   "C:/Program Files/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233951848 1004 54797486969f23fa377b128694d548df ""
   "C:/Program Files/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1233951848 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
   "C:/Program Files/MiKTeX/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1233951854 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -42,6 +42,8 @@
   "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb" 1247593067 32587 65067f817f408bc71a7312f3d9828a9b ""
   "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1247593067 32626 5abc8bb2f28aa647d4c70f8ea38cc0d3 ""
   "C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1247593073 34694 870c211f62cb72718a00e353f14f254d ""
+  "C:/Program Files/MiKTeX/tex/context/base/mkii/supp-pdf.mkii" 1580390158 71627 94eb9990bed73c364d7f53f960cc8c5b ""
+  "C:/Program Files/MiKTeX/tex/latex/00miktex/epstopdf-sys.cfg" 1616063685 584 2a1075dd71571459f59146da9f7502ad ""
   "C:/Program Files/MiKTeX/tex/latex/amsfonts/amsfonts.sty" 1358197772 5949 3f3fd50a8cc94c3d4cbf4fc66cd3df1c ""
   "C:/Program Files/MiKTeX/tex/latex/amsfonts/amssymb.sty" 1358197772 13829 94730e64147574077f8ecfea9bb69af4 ""
   "C:/Program Files/MiKTeX/tex/latex/amsfonts/umsa.fd" 1358197772 961 6518c6525a34feb5e8250ffa91731cff ""
@@ -54,13 +56,21 @@
   "C:/Program Files/MiKTeX/tex/latex/amsmath/amstext.sty" 1655054593 2444 70065bddd85997dc1fd0bb7ae634e5fa ""
   "C:/Program Files/MiKTeX/tex/latex/base/article.cls" 1657037832 20144 7555b7429d80bef287ebb82117811acc ""
   "C:/Program Files/MiKTeX/tex/latex/base/size11.clo" 1657037832 8464 1f4991f9def04be6719b2af330c83aac ""
+  "C:/Program Files/MiKTeX/tex/latex/epstopdf-pkg/epstopdf-base.sty" 1622999586 13886 d1306dcf79a944f6988e688c1785f9ce ""
+  "C:/Program Files/MiKTeX/tex/latex/graphics-cfg/graphics.cfg" 1465890692 1224 978390e9c2234eab29404bc21b268d1e ""
+  "C:/Program Files/MiKTeX/tex/latex/graphics-def/pdftex.def" 1663915090 19448 1e988b341dda20961a6b931bcde55519 ""
+  "C:/Program Files/MiKTeX/tex/latex/graphics/graphics.sty" 1665063979 18387 8f900a490197ebaf93c02ae9476d4b09 ""
+  "C:/Program Files/MiKTeX/tex/latex/graphics/graphicx.sty" 1665063979 8010 a8d949cbdbc5c983593827c9eec252e1 ""
+  "C:/Program Files/MiKTeX/tex/latex/graphics/keyval.sty" 1665063979 2671 7e67d78d9b88c845599a85b2d41f2e39 ""
+  "C:/Program Files/MiKTeX/tex/latex/graphics/trig.sty" 1665063979 4023 293ea1c16429fc0c4cf605f4da1791a9 ""
   "C:/Program Files/MiKTeX/tex/latex/l3backend/l3backend-pdftex.def" 1664385028 30426 b4bd1ea7df6c51902df8edf551809fb7 ""
   "C:/Users/piche/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1669663100 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/piche/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1669665853 10778196 7b1a7ce3f9d4f88eb1edbbbda3e807c6 ""
-  "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/doc/nn_distill_tensors.tex" 1674836024 6739 670d558f19212d67ae7ba8c2d42c5b41 ""
-  "nn_distill_tensors.aux" 1674836026 34 3985256e7290058c681f74d7a3565a19 "pdflatex"
+  "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/doc/nn_distill_tensors.tex" 1675711943 5782 632e573c817d7ce6360f2bcd84ef8119 ""
+  "images//PEPS.png" 1675613653 79908 73c2fcb7f9a8ceb68e5bb1f1dd86242a ""
+  "nn_distill_tensors.aux" 1675709472 734 9f20963b01049ee2b41e9f5db6135c80 "pdflatex"
   "nn_distill_tensors.bbl" 0 -1 0 "bibtex nn_distill_tensors"
-  "nn_distill_tensors.tex" 1674836024 6739 670d558f19212d67ae7ba8c2d42c5b41 ""
+  "nn_distill_tensors.tex" 1675711943 5782 632e573c817d7ce6360f2bcd84ef8119 ""
   (generated)
   "nn_distill_tensors.aux"
   "nn_distill_tensors.log"

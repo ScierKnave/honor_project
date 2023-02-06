@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.11.28)  27 JAN 2023 11:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.11.28)  6 FEB 2023 13:51
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -101,6 +101,26 @@ Package: amscd 2017/04/14 v2.1 AMS Commutative Diagrams
 \minaw@=\dimen148
 \bigaw@=\dimen149
 \minCDarrowwidth=\dimen150
+) (C:\Program Files\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+ (C:\Program Files\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks22
+) (C:\Program Files\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2022/03/10 v1.4e Standard LaTeX Graphics (DPC,SPQR)
+ (C:\Program Files\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2021/08/11 v1.11 sin cos tan (DPC)
+) (C:\Program Files\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 107.
+ (C:\Program Files\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2022/09/22 v1.2b Graphics/color driver for pdftex
+\stockwidth=\dimen151
+\stockheight=\dimen152
+))
+\Gin@req@height=\dimen153
+\Gin@req@width=\dimen154
 ) (C:\Program Files\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2022-09-28 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count271
@@ -108,55 +128,74 @@ File: l3backend-pdftex.def 2022-09-28 L3 backend support: PDF output (pdfTeX)
 ) (nn_distill_tensors.aux)
 \openout1 = `nn_distill_tensors.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
-LaTeX Font Info:    ... okay on input line 8.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 9.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+ (C:\Program Files\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count272
+\scratchdimen=\dimen155
+\scratchbox=\box54
+\nofMPsegments=\count273
+\nofMParguments=\count274
+\everyMPshowfont=\toks23
+\MPscratchCnt=\count275
+\MPscratchDim=\dimen156
+\MPnumerator=\count276
+\makeMPintoPDFobject=\count277
+\everyMPtoPDFconversion=\toks24
+) (C:\Program Files\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+ (C:\Program Files\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+))
+LaTeX Font Info:    Trying to load font information for U+msa on input line 12.
  (C:\Program Files\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 9.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 12.
  (C:\Program Files\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/doc/nn_distill_tensors.tex:16: Misplaced alignment tab character &.
-l.16 ...f quantum phenomena (see Richard Penrose &
-                                                   Feynman). Here we see ten...
-I can't figure out why you would want to use a tab mark
-here. If you just want an ampersand, the remedy is
-simple: Just type `I\&' now. But if some right brace
-up above has ended a previous alignment prematurely,
-you're probably due for more error messages, and you
-might try typing `S' now just to see what is salvageable.
+<./images//PEPS.png, id=1, 505.89pt x 301.125pt>
+File: ./images//PEPS.png Graphic file (type png)
+<use ./images//PEPS.png>
+Package pdftex.def Info: ./images//PEPS.png  used on input line 18.
+(pdftex.def)             Requested size: 505.88875pt x 301.12425pt.
+
+Overfull \hbox (195.76198pt too wide) in paragraph at lines 17--20
+\OT1/cmr/m/n/10.95 net-works. []
+ []
 
 [1
 
-{C:/Users/piche/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] [2] [3]
+{C:/Users/piche/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] [2 <./images//PEPS.png>] [3]
 No file nn_distill_tensors.bbl.
 [4] (nn_distill_tensors.aux) ) 
 Here is how much of TeX's memory you used:
- 1768 strings out of 475385
- 25747 string characters out of 2786721
- 372150 words of memory out of 3000000
- 23178 multiletter control sequences out of 15000+600000
+ 2624 strings out of 475385
+ 38797 string characters out of 2786721
+ 379611 words of memory out of 3000000
+ 23997 multiletter control sequences out of 15000+600000
  476664 words of font info for 56 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 54i,17n,62p,1363b,217s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 55i,17n,62p,1346b,219s stack positions out of 10000i,1000n,20000p,200000b,80000s
 <C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on nn_distill_tensors.pdf (4 pages, 167919 bytes).
+Output written on nn_distill_tensors.pdf (4 pages, 211044 bytes).
 PDF statistics:
- 90 PDF objects out of 1000 (max. 8388607)
+ 93 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
