@@ -5,8 +5,8 @@ TODO:
 import torch
 import torch.nn as nn
 
-from utils import init_tensor, svd_flex
-from contractables import (
+from .utils import init_tensor, svd_flex
+from .contractables import (
     SingleMat,
     MatRegion,
     OutputCore,
