@@ -1,11 +1,11 @@
 # Fdb version 3
-["bibtex nn_distill_tensors"] 1676396640 "nn_distill_tensors.aux" "nn_distill_tensors.bbl" "nn_distill_tensors" 1676396640
+["bibtex nn_distill_tensors"] 1676473632 "nn_distill_tensors.aux" "nn_distill_tensors.bbl" "nn_distill_tensors" 1676473632
   "nn_distill_tensors.aux" 1675967910 734 9f20963b01049ee2b41e9f5db6135c80 "pdflatex"
   "simple.bib" 0 -1 0 ""
   (generated)
   "nn_distill_tensors.bbl"
   "nn_distill_tensors.blg"
-["pdflatex"] 1675967910 "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/doc/nn_distill_tensors.tex" "nn_distill_tensors.pdf" "nn_distill_tensors" 1676396640
+["pdflatex"] 1675967910 "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/doc/nn_distill_tensors.tex" "nn_distill_tensors.pdf" "nn_distill_tensors" 1676473632
   "C:/Program Files/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1233951848 1004 54797486969f23fa377b128694d548df ""
   "C:/Program Files/MiKTeX/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1233951848 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
   "C:/Program Files/MiKTeX/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1233951854 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -66,11 +66,11 @@
   "C:/Program Files/MiKTeX/tex/latex/l3backend/l3backend-pdftex.def" 1664385028 30426 b4bd1ea7df6c51902df8edf551809fb7 ""
   "C:/Users/piche/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1669663100 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/piche/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1669665853 10778196 7b1a7ce3f9d4f88eb1edbbbda3e807c6 ""
-  "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/doc/nn_distill_tensors.tex" 1675967909 5782 632e573c817d7ce6360f2bcd84ef8119 ""
+  "c:/Users/piche/Documents/dereck_codebase/udem_code/ift_4055/honor_project/doc/nn_distill_tensors.tex" 1676402710 5782 632e573c817d7ce6360f2bcd84ef8119 ""
   "images//PEPS.png" 1675613653 79908 73c2fcb7f9a8ceb68e5bb1f1dd86242a ""
   "nn_distill_tensors.aux" 1675967910 734 9f20963b01049ee2b41e9f5db6135c80 "pdflatex"
   "nn_distill_tensors.bbl" 0 -1 0 "bibtex nn_distill_tensors"
-  "nn_distill_tensors.tex" 1675967909 5782 632e573c817d7ce6360f2bcd84ef8119 ""
+  "nn_distill_tensors.tex" 1676402710 5782 632e573c817d7ce6360f2bcd84ef8119 ""
   (generated)
   "nn_distill_tensors.aux"
   "nn_distill_tensors.log"
