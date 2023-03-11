@@ -20,59 +20,165 @@
 void
 
 
-\section{Approches in knowledge distillation}
+\section{Knowledge Distillation}
+Knowledge Distillation is a machine learning practice which involves
+taking a trained model and using it's parameters to train another one.
+The already trained model is refered to as the "teacher", and 
+the model in which his "knowledge" is to be distilled is called the "student".
+
 \subsection{Response-Based Knowledge Distillation}
 The first approach is to look exclusively at the outputs
-of the student and teachers. Each 
+of the student and teachers. Now, we apply the logits
+of our functions element-wise to the outputs and the softmax.
+\begin{equation}
+    softmax(v_i) = \frac{e^{v_i}}{\sum_{j}{e^{v_i}}}
+\end{equation}
+The softmax function's objective is to transform the logits
+into probability distributions for the different classes.
+We will now apply a loss function $L$ to these two functions.
+Since we are trying to reduce the divergence between 
+two distributions, we will use the Kullback-Leibler divergence loss
+\begin{equation}
+    KL(P, Q) = \frac{1}{n} \sum_i^n Q \frac{log_e(Q)}{log_e(P)}
+\end{equation}
+Here, $Q$ is the distribution we are aiming for and $P$ is the one we have.
 
-\section{Layer-by-layer approach}
-It has been common to each layer of a neural network as a certain abstracted 
-representation of the previous information and their for generalisibility. 
-Thus, we propose to change the cost, we use a tensor for multilinear mapping 
-and train each mapping individualy according to the output of it's paired set of layers. 
-\begin{equation*}
-\begin{CD}
-    x @>>>H_1 @>>>H_2 @>>>(\dots)@>g>> \hat{y}
-\end{CD}
-\end{equation*}
-Each hidden layer is of the form;
-\begin{equation*}
-    a^l = \sigma^l \bigl( W^l a^{l-1} \bigr)
-\end{equation*}
-In tensor layer form, it will be defined as 
-\begin{equation*}
-    a^l = T^l \cdot \Phi \bigl( a^{l-1} \bigr)
-\end{equation*}b
-The main difference is that in the tensor approach, the "heavy" part is done by the non-linear transformation while a little work is done with the linear mapping. The opposite is true with neural networks. Here, $\Phi(X)$ (X begin the input vector) is a tensor product of several identical non-linear mappings of each element $x_i$. Thus, we have 
-\begin{equation*}
-    \Phi(X) = \phi(x_1)\phi(x_2)\dots\phi(x_n)
-\end{equation*}
-Were each $\phi : \mathbb{R} \rightarrow \mathbb{R}^d$, and each $d > 1$. Thus, our $\Phi(X) : \mathbb{R}^n \rightarrow \mathbb{R}^{ (d \times)^{n-1}d} $. In other words, our $\Phi$ returns a tensor of order $n$, where each indices run from $1$ to $d$.
-\section{Tensor networks}
+
+
+\section{Tensor Networks}
+Tensor Networks come from the study of quantum phenomena. They 
+started being used recently as machine learning models.
+
+Consider a input vector $x$.
+
+\subsection{Tensor Products and Transformations}
+
+Consider an input vector $x \in R^d$. Let $\phi(x) : R \mapsto R^{d_{\phi}}$.  
+Then, let us take the tensor product of apply $\phi(x)$ applied 
+to every element of the vector $x$.
+\begin{equation}
+    \Phi(x) = \phi(x_1) \otimes  \phi(x_2) 
+                \otimes (\dots) \phi(x_d)
+\end{equation}
+We obtain a tensor $\Phi(x)$, of which the sum of it's element 
+contain the basis of a space of products of the elements of the transformed
+elements of $\phi(x)$.
+
+In order to reduce the abstractness of this statement, we can take say
+that $\otimes$ refers to the Kronecker Product.
+
+A particular dimension is of interest here, the transformation
+
+\begin{equation}
+    \phi(x) = 
+    \begin{bmatrix}
+        1 \\
+        x
+    \end{bmatrix}
+\end{equation}
+With, this particular transformation, the Kronecker Product gives us a 
+$\Phi(x)$ which is a matrix where each element is a basis of the 
+space of multilinear functions on the elements of the vector $x$.
+
+\subsection{Linear Combinations}
+How do we use $\Phi(x)$, how does it become useful? Well, it becomes useful 
+when we take a linear map of it's elements. Let our $\Phi(x)$ be an 
+arbitrely shaped tensor of $d_{\Phi}$ dimensions. The final form of our 
+function $f(x)$ will be
+\begin{equation}
+    f(x) = \sum_{i}^{d_{\Phi}} \theta_i [\Phi(x)]_i
+\end{equation}
+Now, we have a function that can, under some choice of transformation
+$\phi$, become extremely expressive.
 
 \subsection{The \textit{Matrix Product State} Tensor Network}
+
 \subsection{Expressivity of MPS combinations with transformation $[1,x]^t$}
-Soit $f(x) R^d \mapsto R^{2^d}$ une fonction qui prend un 
-vecteur de variables et qui renvoit un tenseur de dimensions quelconques
-dont les éléments contiennent les bases de la fonction multilinéaire des
-variables du vecteur $x$. 
+Let $x \in R^d$.
+Let $f(x) R^d \mapsto R^{z^d}$ function that returns a vector $v$.
+Let $f(x)$ be defined such that $v$ contains every 
+$x_i$-variate monome of degree $<= z$ where the variables are the elements of $x$. 
 
-The vector given by $f(x)$ will return a tensor containing
-every combination of monomes of degree $z$, where $z$ is the smallest
-repeating variable in the input vector.
+Let 
+\begin{equation}
+    \Theta = \{ \theta_1, \theta_2, (\dots), \theta_{d_{theta}} \}
+\end{equation}
+\begin{equation}
+    M(f(x), \Theta)
+    = 
+    \begin{bmatrix}
+        m(f(x), \theta_1) \\
+        m(f(x), \theta_2) \\
+        (\dots) \\
+        m(f(x), \theta_{d_{theta}}) \\
+    \end{bmatrix}
+\end{equation}
 
-Soit $m(f, \theta): \ R^{2^d} \mapsto (R^d \mapsto R)$ une fonction qui effectue une 
-combinaison linéaire des éléments de $f$ and returns an \textit{instance} of
-a multilinear function. Let this \textit{instance} depend on $\theta$. 
+Where $m(f(x), \theta): \ R^{2^d} \mapsto (R^d \mapsto R)$ is of the form
+\begin{equation}
+    m(f(x), \theta_i)
+    = 
+    m(v, \theta_i)
+    =
+    \sum_j \theta_{i,j} \cdot v_j
+\end{equation}
 
-Let $S_v$ be a set of $n_v$ variables.
-Let $v*$ be a vector where each variable in the set $S_v$ is repeated $n_v$ times. 
+We can choose $\Theta$ such that 
+\begin{equation}
+    M(f(x), \Theta)
+    = 
+    \begin{bmatrix}
+        x_1 \\
+        x_1 \\
+        (\dots) \\
+        x_d \\
+    \end{bmatrix}
+    = \lambda
+\end{equation}
 
-Since the vector given by $f(x)$ will return a tensor containing
-every combination of monomes of degree $z$ and $z = n_v$, the elements
-of the ouput of $f(x)$ will return the basis for the space 
-of $n_v$-degree polynomial over the set of variables $S_v$. 
+We can rewrite $\lambda$ as
+\begin{equation}
+    \lambda 
+    = 
+    \begin{bmatrix}
+        \varepsilon_{1, 1} &
+        (\dots) &
+        \varepsilon_{1, z} &
+        \varepsilon_{2, 1} &
+        (\dots) &
+        \varepsilon_{2, z} &
+        (\dots) &
+        \varepsilon_{d, z} \\
+    \end{bmatrix}^T
+\end{equation}
 
+Every monome of $\zeta$  is of the form
+\begin{equation}
+    x_{1}^{k_1}x_{2}^{k_2}(\dots)x_{d}^{k_d}
+\end{equation}
+where $\sum_{i}k_i \leq z$. 
+However, for every $K = {k_1, k_2, k_d}$ meeting this condition,
+we can rewrite as 
+\begin{equation}
+    \left( \prod_{i_1=1}^{k_1}\varepsilon_{1, i_1} \right)
+    \left( \prod_{i_2=1}^{k_2}\varepsilon_{2, i_2} \right)
+    \left( \dots \right)
+    \left( \prod_{i_d=1}^{k_d}\varepsilon_{d, i_d} \right)
+\end{equation}
+However, we clearly see that this term is a multilinear 
+monome of the variables in $\lambda$.
 
 \end{document}
-This is never printed
+Person 1: (while waiving figoriously)
+    HELLO CAN YOU SEE ME!
+    HEYYY! 
+
+Person 2:
+    For the last time, they can't see you... 
+    YOU'RE OUTSIDE THE DOCUMENT DELIMITERS!
+
+Person 1: 
+    I feel so alone... 
+
+Person 2: 
+    Bro I'm here...
