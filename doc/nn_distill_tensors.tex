@@ -95,14 +95,14 @@ $\phi$, become extremely expressive.
 
 \subsection{Expressivity of MPS combinations with transformation $[1,x]^t$}
 Let $x \in R^d$.
-Let $f(x) R^d \mapsto R^{z^d}$ function that returns a vector $v$.
-Let $f(x)$ be defined such that $v$ contains every 
-$x_i$-variate monome of degree $<= z$ where the variables are the elements of $x$. 
+Let $f(x)$ be a function that returns a vector $v$, which contains every
+element required to form a basis of the space of $x_i$-variate multinear functions.
 
 Let 
 \begin{equation}
     \Theta = \{ \theta_1, \theta_2, (\dots), \theta_{d_{theta}} \}
 \end{equation}
+in
 \begin{equation}
     M(f(x), \Theta)
     = 
@@ -110,11 +110,11 @@ Let
         m(f(x), \theta_1) \\
         m(f(x), \theta_2) \\
         (\dots) \\
-        m(f(x), \theta_{d_{theta}}) \\
+        m(f(x), \theta_{d_{theta}}) 
     \end{bmatrix}
 \end{equation}
 
-Where $m(f(x), \theta): \ R^{2^d} \mapsto (R^d \mapsto R)$ is of the form
+Where $m(f(x), \theta_i): \ R^{2^d} \mapsto (R^d \mapsto R)$ is of the form
 \begin{equation}
     m(f(x), \theta_i)
     = 
@@ -123,50 +123,95 @@ Where $m(f(x), \theta): \ R^{2^d} \mapsto (R^d \mapsto R)$ is of the form
     \sum_j \theta_{i,j} \cdot v_j
 \end{equation}
 
-We can choose $\Theta$ such that 
+We can trivially choose $\Theta^* \in \Theta$ such that 
 \begin{equation}
-    M(f(x), \Theta)
+    M(f(x), \Theta^*)
     = 
     \begin{bmatrix}
-        x_1 \\
-        x_1 \\
+        \textit{repeated $z$ times} 
+        \begin{cases}
+            x_1 &  \\
+            (\dots) & \\
+            x_1 & 
+        \end{cases} \\
+        \textit{repeated $z$ times} 
+
+        \begin{cases}
+            x_2 &  \\
+            (\dots) & \\
+            x_2 & 
+        \end{cases} \\
         (\dots) \\
-        x_d \\
+        \textit{repeated $z$ times} 
+        \begin{cases}
+            x_n &  \\
+            (\dots) & \\
+            x_n & 
+        \end{cases} \\
     \end{bmatrix}
     = \lambda
 \end{equation}
 
 We can rewrite $\lambda$ as
-\begin{equation}
+\begin{equation} \label{star}
     \lambda 
     = 
     \begin{bmatrix}
-        \varepsilon_{1, 1} &
-        (\dots) &
-        \varepsilon_{1, z} &
-        \varepsilon_{2, 1} &
-        (\dots) &
-        \varepsilon_{2, z} &
-        (\dots) &
-        \varepsilon_{d, z} \\
-    \end{bmatrix}^T
+        \varepsilon_{1, 1} \\
+        (\dots) \\
+        \varepsilon_{1, z} \\
+        \varepsilon_{2, 1} \\
+        (\dots) \\
+        \varepsilon_{2, z} \\
+        (\dots) \\
+        \varepsilon_{d, z} 
+    \end{bmatrix}
+    = \lambda^*
 \end{equation}
 
-Every monome of $\zeta$  is of the form
+Let $Z$ be the space of $x_i$-variate polynomial functions 
+of degree $\leq z$. Then every monomial of any $x_i$-variate polynomial function
+$\zeta \in Z$ is of the form.
 \begin{equation}
     x_{1}^{k_1}x_{2}^{k_2}(\dots)x_{d}^{k_d}
 \end{equation}
-where $\sum_{i}k_i \leq z$. 
-However, for every $K = {k_1, k_2, k_d}$ meeting this condition,
-we can rewrite as 
+under the condition $\sum_{i}k_i \leq z$. 
+However, for every $K = \{k_1, k_2, (\dots), k_d\}$ meeting this condition,
+we can rewrite the monomial as
 \begin{equation}
     \left( \prod_{i_1=1}^{k_1}\varepsilon_{1, i_1} \right)
     \left( \prod_{i_2=1}^{k_2}\varepsilon_{2, i_2} \right)
     \left( \dots \right)
     \left( \prod_{i_d=1}^{k_d}\varepsilon_{d, i_d} \right)
 \end{equation}
+by using the elements of $\lambda^*$ from \eqref{star}.
 However, we clearly see that this term is a multilinear 
-monome of the variables in $\lambda$.
+monomial of the variables in $\lambda^*$. This implies that
+$f(\lambda*)$ returns a basis-vector of $x_i$-variate polynomial 
+function of degree $\leq z$.
+
+In other words, 
+\begin{equation}
+    \xi \left( x, \Theta \right) =
+        M
+        \left(
+            f
+            \left(
+                M
+                \left(
+                    f
+                    \left(
+                        x 
+                    \right),
+                    \Theta^*
+                \right)
+            \right),
+            \Theta
+        \right)
+\end{equation}
+can express any $x_i$-variate polynomial function of degree $\leq z$ under
+fixed $\Theta$.
+
 
 \end{document}
 Person 1: (while waiving figoriously)
