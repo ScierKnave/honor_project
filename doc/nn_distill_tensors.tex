@@ -2,14 +2,15 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amscd}
+\usepackage{biblatex}
+\addbibresource{bibliography.bib}
 \usepackage{graphicx}
 \usepackage{euler}
-\graphicspath{ {./images/} }
 
+\graphicspath{ {./images/} }
 \title{Neural network knowledge distillation in tensor networks}
 \author{Dereck Piché}
 \date{\today}
-
 
 \begin{document}
 \maketitle
@@ -17,18 +18,25 @@
 \end{abstract}
 
 \section{Introduction}
-void
+TODO
 
 
 \section{Knowledge Distillation}
 Knowledge Distillation is a machine learning practice which involves
 taking a trained model and using it's parameters to train another one.
-The already trained model is refered to as the "teacher", and 
-the model in which his "knowledge" is to be distilled is called the "student".
+The already trained model is referred to as the "teacher", and 
+the model in which his "knowledge" is to be distilled is referred to as
+the "student".
 
 \subsection{Response-Based Knowledge Distillation}
-The first approach is to look exclusively at the outputs
-of the student and teachers. Now, we apply the logits
+While this is a relatively novel technique, there are 
+already several distinct approaches introduced by researchers.
+We used two of these approaches. Our inspiration for the distillation 
+methodology was found in a a 2021 survey which resumed the emerging practice \textcite{Gou_2021}
+
+
+The first approach we used to look exclusively at the outputs
+of the student and teacher. Now, we apply the logits
 of our functions element-wise to the outputs and the softmax.
 \begin{equation}
     softmax(v_i) = \frac{e^{v_i}}{\sum_{j}{e^{v_i}}}
@@ -47,9 +55,52 @@ Here, $Q$ is the distribution we are aiming for and $P$ is the one we have.
 
 \section{Tensor Networks}
 Tensor Networks come from the study of quantum phenomena. They 
-started being used recently as machine learning models.
+started being used recently as machine learning models. Tensor Networks
+can be thought out as two things: a visual notation system and a 
+set of methods for tensor manipulation. 
 
-Consider a input vector $x$.
+\paragraph{Tensors}
+Before explaining these two, we shall 
+disambiguate the meaning of "tensor". In this report (and very often in the context
+of machine learning), we use the word "tensor" to refer to the mathematical arrays
+of arbitrary indices. Here, the number of indices is called the "order" of the 
+tensor, meaning that vectors are simply tensors of order $1$ and matrices tensors 
+of order $2$. 
+
+\paragraph{Contraction}
+At the heart of tensor networks is the {\it contraction} operation.
+Tensor Networks are used to compute a larger network by "contracting" several
+smaller tensors over chosen indices. A "contraction" is simply an operation 
+where we sum over indices. For example, the contraction of $A_{ijk}$ and 
+$B_{ijk}$ on index $j$ will produce the tensor $C_{ik} = \sum_{j} A_{ijk} B_{ijk}$.
+Evidently, the two indices present in a contraction must be of the same size.
+
+\paragraph{Notational system}
+The principal motivation behind the creation of Tensor Networks 
+to compute or approximate large tensors {\it contracting} several
+smaller tensors over chosen indices. This is all well and good until 
+our conventional summation notation begins overclocking our primal brains.
+So, in order to make the manipulation of these network of tensors, mathematicians
+created a notational system. Tensors are represented as nodes where each 
+vertex connected to the node represents one of the tensor's indices. 
+If a vertex connects two nodes, it means that the indices shall be contracted 
+in order to produce the post-contraction tensor. It should be evident that
+by the definitions above, no node (tensor) is completely isolated in a tensor network,
+as it would be completely purposeless. The shape of the post-contraction tensor 
+can be easily visually identified, since it is found in the unconnected vertices.
+A simple tensor network can be found in figure \ref{fig:tensor_net}.
+
+\paragraph{Tensor Network Methods}
+The term {\it Tensor Network Methods} is used to refer to, you guessed it, the methods.
+There are several architectures of Tensor Networks that are frequently used, such 
+as the {\it Matrix Product State (MPS)}, the {\it Tenso}
+
+\begin{figure}[h]
+\centering
+\caption{Simple tensor network illustrating the notation.}
+\includegraphics[width=0.5\textwidth]{images/2023-03-21-10-22-39.png}
+\label{fig:tensor_net}
+\end{figure}
 
 \subsection{Tensor Products and Transformations}
 
@@ -83,7 +134,7 @@ space of multilinear functions on the elements of the vector $x$.
 \subsection{Linear Combinations}
 How do we use $\Phi(x)$, how does it become useful? Well, it becomes useful 
 when we take a linear map of it's elements. Let our $\Phi(x)$ be an 
-arbitrely shaped tensor of $d_{\Phi}$ dimensions. The final form of our 
+arbitrarily shaped tensor of $d_{\Phi}$ dimensions. The final form of our 
 function $f(x)$ will be
 \begin{equation}
     f(x) = \sum_{i}^{d_{\Phi}} \theta_i [\Phi(x)]_i
@@ -96,7 +147,7 @@ $\phi$, become extremely expressive.
 \subsection{Expressivity of MPS combinations with transformation $[1,x]^t$}
 Let $x \in R^d$.
 Let $f(x)$ be a function that returns a vector $v$, which contains every
-element required to form a basis of the space of $x_i$-variate multinear functions.
+element required to form a basis of the space of $x_i$-variate multilinear functions.
 
 Let 
 \begin{equation}
@@ -212,9 +263,16 @@ In other words,
 can express any $x_i$-variate polynomial function of degree $\leq z$ under
 fixed $\Theta$.
 
+\section{Further Exploration}
+TODO talk about capturing locality in the mappings
+TODO talk about capturing locality in general with tensors
+
+
+\printbibliography
 
 \end{document}
-Person 1: (while waiving figoriously)
+
+Person 1: (while waiving vigorously)
     HELLO CAN YOU SEE ME!
     HEYYY! 
 
