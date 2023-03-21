@@ -2,18 +2,27 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amscd}
-\usepackage{biblatex}
-\addbibresource{bibliography.bib}
-\usepackage{graphicx}
 \usepackage{euler}
 
+\usepackage{biblatex}
+\addbibresource{bibliography.bib}
+
+\usepackage{graphicx}
 \graphicspath{ {./images/} }
+
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
 \title{Neural network knowledge distillation in tensor networks}
 \author{Dereck Piché}
 \date{\today}
+\theoremstyle{definition}
+
 
 \begin{document}
 \maketitle
+
 \begin{abstract}
 \end{abstract}
 
@@ -143,11 +152,39 @@ function $f(x)$ will be
 Now, we have a function that can, under some choice of transformation
 $\phi$, become extremely expressive. For our particular local feature map 
 $\phi^*$, it can represent any multililinear function  of the input vector $x$. 
+We shall represent linear combinations of $\Phi(x)$ by $T\Phi(x)$.
 
 \section{Using The Matrix Product State Tensor Network}
 In this project, we used the {\it Matrix Product State} (MPS) tensor network to 
-approximate the function $T  \Phi(x)$.
-\subsection{}
+approximate the function $T  \Phi(x)$. Here, this function is computed by contracting 
+a Tensor Network. Before the contraction, some of the elements of the tensors in the 
+tensor network are set by applying the mapping $\phi^*(x)$.
+
+\subsection{Single MPS}
+
+
+\subsection{Composition of MPS}
+
+\subsubsection{Proof of expressivity}
+Here, we shall prove an interesting statement regarding the expressivity 
+of a composition. 
+
+\begin{definition}[Multilinear polynomial]
+    A multilinear polynomial is a function $f: R^n \mapsto R$ of the form
+    \begin{equation}
+        f(x) = T \cdot \left( 
+            \begin{bmatrix} 1 \\ x_1 \end{bmatrix} \otimes 
+            \begin{bmatrix} 1 \\ x_2 \end{bmatrix} \otimes 
+            \dots \otimes 
+            \begin{bmatrix} 1 \\ x_d \end{bmatrix}
+        \right)
+    \end{equation}
+    Where $T \in R^{p \times R^n }$. 
+\end{definition}
+In other words, a multilinear polynomial is a polynomial that is linear if  $\forall x_i$
+then the polynomial is linear if we fix every variable except $x_i$.
+
+\subsection{Patching of MPS (experimental)}
 
 
 
