@@ -102,7 +102,7 @@ as the {\it Matrix Product State (MPS)}, the {\it Tenso}
 \label{fig:tensor_net}
 \end{figure}
 
-\subsection{Tensor Products and Transformations}
+\section{Kernel}
 
 Consider an input vector $x \in R^d$. Let $\phi(x) : R \mapsto R^{d_{\phi}}$.  
 Then, let us take the tensor product of apply $\phi(x)$ applied 
@@ -118,31 +118,38 @@ elements of $\phi(x)$.
 In order to reduce the abstractness of this statement, we can take say
 that $\otimes$ refers to the Kronecker Product.
 
-A particular dimension is of interest here, the transformation
-
+\subsection{Multilinear feature map}
+In this project, we attributed a particular importance to the local feature map
 \begin{equation}
-    \phi(x) = 
+    \phi^*(x) = 
     \begin{bmatrix}
         1 \\
         x
     \end{bmatrix}
 \end{equation}
-With, this particular transformation, the Kronecker Product gives us a 
-$\Phi(x)$ which is a matrix where each element is a basis of the 
-space of multilinear functions on the elements of the vector $x$.
+With, this particular transformation, the Kronecker Product gives us a global feature map
+$\Phi(x)$ which is a tensor where each element is a basis of the 
+space of multilinear functions on the elements of the vector $x$. Here, the 
+order or shape of the tensor is superfluous and gives no theoretical advantage.
 
 \subsection{Linear Combinations}
-How do we use $\Phi(x)$, how does it become useful? Well, it becomes useful 
-when we take a linear map of it's elements. Let our $\Phi(x)$ be an 
+Now, the question is how do we use $\Phi(x)$, how does it become useful? 
+Well, it becomes useful when we take a linear map of it's elements. Let our $\Phi(x)$ be an 
 arbitrarily shaped tensor of $d_{\Phi}$ dimensions. The final form of our 
 function $f(x)$ will be
 \begin{equation}
     f(x) = \sum_{i}^{d_{\Phi}} \theta_i [\Phi(x)]_i
 \end{equation}
 Now, we have a function that can, under some choice of transformation
-$\phi$, become extremely expressive.
+$\phi$, become extremely expressive. For our particular local feature map 
+$\phi^*$, it can represent any multililinear function  of the input vector $x$. 
 
-\subsection{The \textit{Matrix Product State} Tensor Network}
+\section{Using The Matrix Product State Tensor Network}
+In this project, we used the {\it Matrix Product State} (MPS) tensor network to 
+approximate the function $T  \Phi(x)$.
+\subsection{}
+
+
 
 \subsection{Expressivity of MPS combinations with transformation $[1,x]^t$}
 Let $x \in R^d$.
