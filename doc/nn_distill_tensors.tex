@@ -15,9 +15,6 @@
 \newtheorem{definition}{Definition}[section]
 
 
-TODO ctrl f R -> mathbb{R}
-TODO fix spelling
-
 \title{Neural network knowledge distillation in tensor networks}
 \author{Dereck Piché}
 \date{\today}
@@ -31,7 +28,8 @@ TODO fix spelling
 \end{abstract}
 
 \section{Introduction}
-TODO
+TODO ctrl f R -> mathbb{R}
+TODO fix spelling
 
 
 \section{Knowledge Distillation}
@@ -45,7 +43,8 @@ the "student".
 While this is a relatively novel technique, there are 
 already several distinct approaches introduced by researchers.
 We used two of these approaches. Our inspiration for the distillation 
-methodology was found in a a 2021 survey which resumed the emerging practice \textcite{Gou_2021}
+methodology was found in a a 2021 survey which resumed the emerging 
+practice \cite{Gou_2021}.
 
 
 The first approach we used to look exclusively at the outputs
@@ -313,8 +312,50 @@ fixed $\Theta$.
 
 
 \section{Methodology}
+The experiments done for the projet were programmed using Python. 
+Now, evidently, using Python alone was not possible. The big 
+deep learning library we used was Pytorch, as is common in machine learning today.
+However, it does not provide many tools to train and build Tensor Networks. 
+We thus used TorchMPS \cite{torchmps}, a library built using Pytorch for the creation 
+and training of learning Matrix Product State tensor networks.
+
+\paragraph{}
+As a matter of scientific integrity, we have chosen to show the 
+results even if they are heavily disappointing. Not doing so 
+can result in certain statistical biases which can be avoided.
+
 
 \section{Results and Analysis}
+\subsection{Training the single MPS}
+TODO:
+train batch loss MPS
+valid loss MPS
+
+TODO: 
+horizontal bar for teacher
+train batch loss MPS
+valid loss MPS
+
+TODO: 
+valid loss distill MPS
+valid loss base MPS
+
+\subsection{Training the hidden-layered MPS}
+TODO: 
+train batch loss 2-MPS
+valid loss 2-MPS
+
+TODO: 
+horizontal bar for teacher
+train batch loss 2-MPS
+valid loss 2-MPS
+
+TODO: 
+valid loss distill MPS
+valid loss base MPS
+
+\subsection{Training the patch-MPS}
+Explain if it failed, why did it do so.
 
 \section{Conclusion}
 \subsection{Further Exploration}
