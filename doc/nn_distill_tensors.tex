@@ -37,16 +37,13 @@ Knowledge Distillation is a machine learning practice which involves
 taking a trained model and using it's parameters to train another one.
 The already trained model is referred to as the "teacher", and 
 the model in which his "knowledge" is to be distilled is referred to as
-the "student".
-
-\subsection{Response-Based Knowledge Distillation}
-While this is a relatively novel technique, there are 
+the "student". While this is a relatively novel technique, there are 
 already several distinct approaches introduced by researchers.
 We used two of these approaches. Our inspiration for the distillation 
 methodology was found in a a 2021 survey which resumed the emerging 
 practice \cite{Gou_2021}.
 
-
+\subsection{Response-Based Knowledge Distillation}
 The first approach we used to look exclusively at the outputs
 of the student and teacher. Now, we apply the logits
 of our functions element-wise to the outputs and the softmax.
@@ -62,6 +59,12 @@ two distributions, we will use the Kullback-Leibler divergence loss
     KL(P, Q) = \frac{1}{n} \sum_i^n Q \frac{log_e(Q)}{log_e(P)}
 \end{equation}
 Here, $Q$ is the distribution we are aiming for and $P$ is the one we have.
+
+\subsection{Layer-based approach}
+The survey on Knowledge Distillation coined the term {\it Layer-based approach}.
+Deep learning models work in layers of feature maps. It is hypothesized that
+these different layers represent different layers of abstraction in the internal
+representation of their input. 
 
 
 
@@ -164,13 +167,32 @@ a Tensor Network. Before the contraction, some of the elements of the tensors in
 tensor network are set by applying the mapping $\phi^*(x)$.
 
 \subsection{Single MPS}
-
+TODO add info to this!
+How does the Matrix Product State decomposition work? What does it look like?.
+Suppose we have a Tensor of the form $T$.
 
 \subsection{Composition of MPS}
-
+When we use the $ \begin{bmatrix} 1 \\ x \end{bmatrix} $ local feature map, a single
+MPS can only express multilinear functions of $x$. It would be practical 
+for our model to be able to express multipolynomial functions up to a certain degree $z$.
+In order to do this, we will have to perform a combination of functions of the form:
+\begin{equation}
+    H 
+\end{equation}
 \subsubsection{Proof of expressivity}
 Here, we shall prove an interesting statement regarding the expressivity 
-of a composition. 
+of a composition. Here is a commutative diagram to help us visualise:
+
+\begin{equation}
+    \begin{CD}
+        @. X \in R^d 
+        @>f>> Y_1 \in R^{2^d}
+        @>g>> Y_2 \in R^{(z \cdot d)} 
+        @>f>> Y_3 \in R^{2^{z \cdot d}}
+        @>g'>> Y_4 \in R
+    \end{CD}
+\end{equation}
+
 
 \begin{definition}[Multilinear polynomial]
     A multilinear polynomial is a function $f: R^n \mapsto R$ of the form
@@ -319,13 +341,20 @@ However, it does not provide many tools to train and build Tensor Networks.
 We thus used TorchMPS \cite{torchmps}, a library built using Pytorch for the creation 
 and training of learning Matrix Product State tensor networks.
 
-\paragraph{}
+\paragraph{Learning rate} ${}$ \\
+We used the very standard learning rate of $0.01$. This is the learning rate
+used by {\it Keras}.
+
+\paragraph{Model size} ${}$ \\
+
+\paragraph{Approach to the results}
 As a matter of scientific integrity, we have chosen to show the 
 results even if they are heavily disappointing. Not doing so 
 can result in certain statistical biases which can be avoided.
 
 
-\section{Results and Analysis}
+
+\section{Results}
 \subsection{Training the single MPS}
 TODO:
 train batch loss MPS
@@ -355,9 +384,18 @@ valid loss distill MPS
 valid loss base MPS
 
 \subsection{Training the patch-MPS}
-Explain if it failed, why did it do so.
+TODO: Explain why the training failed.
+
+
+\section{Analysis}
+
+
+
 
 \section{Conclusion}
+
+
+
 \subsection{Further Exploration}
 TODO talk about capturing locality in the mappings
 TODO talk about capturing locality in general with tensors
