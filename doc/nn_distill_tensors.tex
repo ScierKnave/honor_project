@@ -13,6 +13,7 @@
 \usepackage{amsthm}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
 
 
 \title{Neural network knowledge distillation in tensor networks}
@@ -74,7 +75,7 @@ started being used recently as machine learning models. Tensor Networks
 can be thought out as two things: a visual notation system and a 
 set of methods for tensor manipulation. 
 
-\paragraph{Tensors}
+\subsection{Tensors}
 Before explaining these two, we shall 
 disambiguate the meaning of "tensor". In this report (and very often in the context
 of machine learning), we use the word "tensor" to refer to the mathematical arrays
@@ -82,7 +83,7 @@ of arbitrary indices. Here, the number of indices is called the "order" of the
 tensor, meaning that vectors are simply tensors of order $1$ and matrices tensors 
 of order $2$. 
 
-\paragraph{Contraction}
+\subsection{Contraction}
 At the heart of tensor networks is the {\it contraction} operation.
 Tensor Networks are used to compute a larger network by "contracting" several
 smaller tensors over chosen indices. A "contraction" is simply an operation 
@@ -90,7 +91,7 @@ where we sum over indices. For example, the contraction of $A_{ijk}$ and
 $B_{ijk}$ on index $j$ will produce the tensor $C_{ik} = \sum_{j} A_{ijk} B_{ijk}$.
 Evidently, the two indices present in a contraction must be of the same size.
 
-\paragraph{Notational system}
+\subsection{Tensor Networks as a graphical system of notation}
 The principal motivation behind the creation of Tensor Networks 
 to compute or approximate large tensors {\it contracting} several
 smaller tensors over chosen indices. This is all well and good until 
@@ -105,7 +106,7 @@ as it would be completely purposeless. The shape of the post-contraction tensor
 can be easily visually identified, since it is found in the unconnected vertices.
 A simple tensor network can be found in figure \ref{fig:tensor_net}.
 
-\paragraph{Tensor Network Methods}
+\subsection{Tensor Network Methods}
 The term {\it Tensor Network Methods} is used to refer to, you guessed it, the methods.
 There are several architectures of Tensor Networks that are frequently used, such 
 as the {\it Matrix Product State (MPS)}, the {\it Tenso}
@@ -170,25 +171,40 @@ tensor network are set by applying the mapping $\phi^*(x)$.
 TODO add info to this!
 How does the Matrix Product State decomposition work? What does it look like?.
 Suppose we have a Tensor of the form $T$.
+A single MPS network can reproduce functions of the form 
+\[  
+    f(x) = T \left( 
+            \phi(x_1) \otimes 
+            \phi(x_2) \otimes 
+            \dots \otimes 
+            \phi(x_N) = T \Phi(x)
+        \right)
+\]
+We can rewrite this function as
+\[  
+    g ( f ( x ) )
+\]
 
 \subsection{Composition of MPS}
 When we use the $ \begin{bmatrix} 1 \\ x \end{bmatrix} $ local feature map, a single
 MPS can only express multilinear functions of $x$. It would be practical 
 for our model to be able to express multipolynomial functions up to a certain degree $z$.
-In order to do this, we will have to perform a combination of functions of the form:
-\begin{equation}
-    H 
-\end{equation}
-\subsubsection{Proof of expressivity}
-Here, we shall prove an interesting statement regarding the expressivity 
-of a composition. Here is a commutative diagram to help us visualise:
+In order to do this, we will require a composition of two MPS. The 2-MPS, when contracted,
+shall approximate the function
+\[  
+    g' \circ f \circ g \circ f (x)
+\]
+We will show in a proof that this composed function can express any polynomial function of degree $z$.
 
-\begin{equation}
+\subsubsection{Proof of expressivity}
+
+
+\begin{equation} \label{composition_graph}
     \begin{CD}
         @. X \in R^d 
         @>f>> Y_1 \in R^{2^d}
-        @>g>> Y_2 \in R^{(z \cdot d)} 
-        @>f>> Y_3 \in R^{2^{z \cdot d}}
+        @>g>> Y_2 \in R^{zd} 
+        @>f>> Y_3 \in R^{2^{zd}}
         @>g'>> Y_4 \in R
     \end{CD}
 \end{equation}
@@ -204,47 +220,24 @@ of a composition. Here is a commutative diagram to help us visualise:
             \begin{bmatrix} 1 \\ x_d \end{bmatrix}
         \right)
     \end{equation}
-    Where $T \in R^{p \times R^n }$. 
+    Where $T \in R^{p \times R^n }$. In other words, a multilinear polynomial is a polynomial that is linear if  $\forall x_i$ then the polynomial is linear if we fix every variable except $x_i$.
 \end{definition}
-In other words, a multilinear polynomial is a polynomial that is linear if  $\forall x_i$
-then the polynomial is linear if we fix every variable except $x_i$.
-TODO use arrow to show the flow of functions
-\subsection{Patching of MPS (experimental)}
+
+\begin{definition}[$v_i$-variate]
+Function of the variables of the vector $v$. (Each element of $v$ is considered as a variable).
+\end{definition}
 
 
-\subsection{Expressivity of MPS combinations with transformation $[1,x]^t$}
-Let $x \in R^d$.
-Let $f(x)$ be a function that returns a vector $v$, which contains every
-element required to form a basis of the space of $x_i$-variate multilinear functions.
+\begin{theorem}
+    Any polynomial function $\Gamma: R^d \mapsto R$ of degree $z$ can be expressed by the composition
+    as the composition of functions illustrated in \ref{composition_graph}.
+\end{theorem}
 
-Let 
+\begin{proof}
+Let the function $g$ in \ref{composition_graph} be defined such that
+
 \begin{equation}
-    \Theta = \{ \theta_1, \theta_2, (\dots), \theta_{d_{theta}} \}
-\end{equation}
-in
-\begin{equation}
-    M(f(x), \Theta)
-    = 
-    \begin{bmatrix}
-        m(f(x), \theta_1) \\
-        m(f(x), \theta_2) \\
-        (\dots) \\
-        m(f(x), \theta_{d_{theta}}) 
-    \end{bmatrix}
-\end{equation}
-
-Where $m(f(x), \theta_i): \ R^{2^d} \mapsto (R^d \mapsto R)$ is of the form
-\begin{equation}
-    m(f(x), \theta_i)
-    = 
-    m(v, \theta_i)
-    =
-    \sum_j \theta_{i,j} \cdot v_j
-\end{equation}
-
-We can trivially choose $\Theta^* \in \Theta$ such that 
-\begin{equation}
-    M(f(x), \Theta^*)
+    g(f(x))
     = 
     \begin{bmatrix}
         \textit{repeated $z$ times} 
@@ -268,12 +261,11 @@ We can trivially choose $\Theta^* \in \Theta$ such that
             x_n & 
         \end{cases} \\
     \end{bmatrix}
-    = \lambda
 \end{equation}
+We can rewrite this vector as 
 
-We can rewrite $\lambda$ as
-\begin{equation} \label{star}
-    \lambda 
+\begin{equation} \label{lambda}
+    g(f(x))
     = 
     \begin{bmatrix}
         \varepsilon_{1, 1} \\
@@ -285,17 +277,16 @@ We can rewrite $\lambda$ as
         (\dots) \\
         \varepsilon_{d, z} 
     \end{bmatrix}
-    = \lambda^*
+    = \lambda
 \end{equation}
 
 Let $Z$ be the space of $x_i$-variate polynomial functions 
-of degree $\leq z$. Then every monomial of any $x_i$-variate polynomial function
-$\zeta \in Z$ is of the form.
+of degree $\leq z$. By definition, every monomial of $\zeta \in Z$ is of the form
 \begin{equation}
     x_{1}^{k_1}x_{2}^{k_2}(\dots)x_{d}^{k_d}
 \end{equation}
-under the condition $\sum_{i}k_i \leq z$. 
-However, for every $K = \{k_1, k_2, (\dots), k_d\}$ meeting this condition,
+, where $\sum k_i \leq z$. \\
+However, for every set $\{k_1, k_2, (\dots), k_d\}$ meeting this condition,
 we can rewrite the monomial as
 \begin{equation}
     \left( \prod_{i_1=1}^{k_1}\varepsilon_{1, i_1} \right)
@@ -303,9 +294,10 @@ we can rewrite the monomial as
     \left( \dots \right)
     \left( \prod_{i_d=1}^{k_d}\varepsilon_{d, i_d} \right)
 \end{equation}
-by using the elements of $\lambda^*$ from \eqref{star}.
-However, we clearly see that this term is a multilinear 
-monomial of the variables in $\lambda^*$. This implies that
+by using the elements of $\lambda$ from equation \eqref{lambda}.
+
+However, we can clearly see that this term is a multilinear 
+monomial of the variables in $\lambda$. This implies that
 $f(\lambda*)$ returns a basis-vector of $x_i$-variate polynomial 
 function of degree $\leq z$.
 
@@ -330,6 +322,13 @@ In other words,
 \end{equation}
 can express any $x_i$-variate polynomial function of degree $\leq z$ under
 fixed $\Theta$.
+
+\end{proof}
+
+\subsection{Patching of MPS (experimental)}
+
+
+
 
 
 
