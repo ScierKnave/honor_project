@@ -44,32 +44,30 @@ The already trained model is referred to as the "teacher", and
 the model in which his "knowledge" is to be distilled is referred to as
 the "student". While this is a relatively novel technique, there are 
 already several distinct approaches introduced by researchers.
-We used two of these approaches. Our inspiration for the distillation 
+In this project, we used two of these approaches. Our inspiration for the distillation 
 methodology was found in a a 2021 survey which resumed the emerging 
 practice \cite{Gou_2021}.
 
 \subsection{Response-Based Knowledge Distillation}
-The first approach we used to look exclusively at the outputs
-of the student and teacher. Now, we apply the logits
-of our functions element-wise to the outputs and the softmax.
-\begin{equation}
-    softmax(v_i) = \frac{e^{v_i}}{\sum_{j}{e^{v_i}}}
-\end{equation}
-The softmax function's objective is to transform the logits
-into probability distributions for the different classes.
-We will now apply a loss function $L$ to these two functions.
-Since we are trying to reduce the divergence between 
-two distributions, we will use the Kullback-Leibler divergence loss
+The first approach we used was \emph{Response-Based Knowledge Distillation}. The idea of this approach is to stimulate the teacher and the student with some input and to try to minimise a certain loss function with respect to the teacher and student outputs. For classification tasks, it is recommended to use the Kullback-Leibler divergence loss as our loss function. 
 \begin{equation}
     KL(P, Q) = \frac{1}{n} \sum_i^n Q \frac{log_e(Q)}{log_e(P)}
 \end{equation}
 Here, $Q$ is the distribution we are aiming for and $P$ is the one we have.
 
+The reason is quite simple. Since it's a classification task, it is expected that the teacher and student will, given an input, return a probability distribution for each class. As is currently common, we used the softmax function on the logits of the student and the teacher in order to obtain probability distributions corresponding to the classes. 
+
+\begin{equation}
+    softmax(v_i) = \frac{e^{v_i}}{\sum_{j}{e^{v_j}}}
+\end{equation}
+
+Now, it would be logical to use a function aimed at measuring the difference between two probability distributions as our loss function. This is exactly what the Kullback-Leibler divergence is for.
+
 \subsection{Layer-based approach}
 The survey on Knowledge Distillation coined the term {\it Layer-based approach}.
 Deep learning models work in layers of feature maps. It is hypothesized that
 these different layers represent different layers of abstraction in the internal
-representation of their input. 
+representation of their input. If we simply use the Response-Based approach, it could prove difficult for gradient descent otpimization to find these usefull representation without a bit of help. This layer-based approach, as you might have guessed, aims to do precisely that. If our student model has some form of composition, we can train the parts separately. Thus, if an intermediate layer of the teacher $l$ were particularly useful, we could train a certain part of the student on the layer $l$ before proceding with the Response-Based approach.
 
 
 
