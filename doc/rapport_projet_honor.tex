@@ -399,13 +399,24 @@ Nb of gaussian epochs: 5
 
 
 \section{Results}
-\begin{tabular}{ | c | c | c | c | c | c | }
+\begin{tabular}{ | c | c | c | c |  }
 \hline 
-Bond Dimensions & MPS & FC to MPS & CNN to MPS & 2-MPS & NN to 2-MPS \\ 
+Bond Dimensions & MPS & FC to MPS & CNN to MPS \\ 
 \hline
-10 & $0.897 \pm 1.34 \times 10^{-4}$  & None & None & None & None \\
-20 & None & None & None & None & None\\
-40 & None & None & None & None & None\\
+10 & $0.897 \pm 1.34 \times 10^{-4}$  & $0.541 \pm 9.50 \times 10^{-5}$ & $0.906 \pm 8.49 \times 10^{-5}$ \\
+20 & $0.911 \pm 12.90 \times 10^{-4}$ & $0.550 \pm 9.32 \times 10^{-5}$ & $0.924 \pm 6.77 \times 10^{-5}$ \\ 
+40 & $0.914 \pm 8.15 \times 10^{-5}$ & $0.556 \pm 5.99 \times 10^{-5}$ & $0.941 \pm 4.38 \times 10^{-5}$ \\
+\hline
+\end{tabular}
+
+\section{Results}
+\begin{tabular}{| c | c | c | }
+\hline 
+Bond Dimensions & 2-MPS & NN to 2-MPS \\ 
+\hline
+10 & $0.897 \pm 1.34 \times 10^{-4}$ & $0.897 \pm 1.34 \times 10^{-4}$ \\
+20 & $0.897 \pm 1.34 \times 10^{-4}$ & $0.897 \pm 1.34 \times 10^{-4}$ \\
+40 & $0.897 \pm 1.34 \times 10^{-4}$ & $0.897 \pm 1.34 \times 10^{-4}$ \\
 \hline
 \end{tabular}
 
