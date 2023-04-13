@@ -126,22 +126,60 @@ We found it clearer to explain the $\Upsilon$ function we are approximating befo
 Now, enough talking (or rather, writing?), let's create the $\Upsilon$ function!
 
 \subsection{Feature tensor $\Phi(x)$}
-TODO talk about multiplicative links
-Consider an input vector $x \in R^d$. Let $\phi(x) : R \mapsto R^{d_{\phi}}$.  
-Then, let us take the tensor product of $\phi(x)$ applied to every element of the vector $x$.
+Consider an input vector $x \in R^d$. Let $\phi : R \mapsto R^{d_{\phi}}$ be a function which creates a feature map vector $\phi(\lambda)$ from its input $\lambda$.  We shall form the vector $\Phi(x)$ by taking the Kronecker product of the feature map $\phi(x_i)$ of every element of the input vector $x$.
 \begin{equation}
     \Phi(x) = \phi(x_1) \otimes  \phi(x_2) 
                 \otimes (\dots) \phi(x_d)
 \end{equation}
-We obtain a tensor $\Phi(x)$, which \emph{captures the multiplicative interaction of the $\phi(x_i)^s$}.
+Here, the symbol $\otimes$ represents the Kronecker Product. The Kronecker Product is an extremely generalisable operation that can be applied to a pair of tensors of arbitrary order. In this project, we use the Kronecker Product exclusively on vectors. Here is a simple example that illustrates what the kronecker product does for simple vectors of integers.
+\[
+\begin{bmatrix}
+    9 \\ 4
+\end{bmatrix}
+\otimes
+\begin{bmatrix}
+    6 \\ 8
+\end{bmatrix}
+\otimes
+\begin{bmatrix}
+    7 \\ 3
+\end{bmatrix}
+=
+\begin{bmatrix}
+    54 \\ 72 \\ 24 \\ 32
+\end{bmatrix}
+\otimes
+\begin{bmatrix}
+    7 \\ 3
+\end{bmatrix}
+=
+\begin{bmatrix}
+    378 \\ 162\\ 504 \\216\\ 168\\ 72\\ 224\\ 96
+\end{bmatrix}
+\]
+The element $i$ of the first operand vector becomes itself multiplied by the second operand vector. Here's a slightly more abstract example:
+\[
+    \begin{bmatrix}
+        v_1 \\ v_2
+    \end{bmatrix}
+    \otimes
+    \begin{bmatrix}
+        u_1 \\ u_2
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        u_1 v_1 \\ u_2 v_1 \\ u_1v_2 \\ u_2v_2
+    \end{bmatrix}
+\]
+Thus, if we perform a Kronecker Product on $n$ vectors, it will produce a vector such that every of it's element is a multiplication of $n$ elements, each one from a different vector. We can thus interpret $\Phi(x)$ as being a feature space vector which \emph{captures the multiplicative interaction of the elements of the $\phi(x_i)$ feature maps}.
 
-In order to reduce the abstractness of this statement, we can take say that $\otimes$ refers to the Kronecker Product.
+
 
 \subsection{The multilinear feature map}
 Now, which feature map $\phi$ shall we pick in order to construct $\Phi$?
 Well, normally, this would be up to you, but in this project we deal with the particular feature map
 \begin{equation}
-    \phi(\lambda) = 
+    \phi_{ml}(\lambda) = 
     \begin{bmatrix}
         1 \\
         \lambda
