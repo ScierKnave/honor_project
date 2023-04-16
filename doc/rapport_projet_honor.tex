@@ -255,13 +255,13 @@ When we introduced $\Upsilon_{T}$, we said it was a parameterizable function. Ho
     \begin{bmatrix}
         1 \\ x_1
     \end{bmatrix}_{i_1}
-    \otimes
+    \cdot
     \begin{bmatrix}
         1 \\ x_2
     \end{bmatrix}_{i_2}
-    \otimes
+    \cdot
     (\dots)
-    \otimes
+    \cdot
     \begin{bmatrix}
         1 \\ x_d
     \end{bmatrix}_{i_e}
@@ -274,13 +274,13 @@ Now, since $\Upsilon_T(X): R^d \to R^h$, and we will not constraint ourselves to
     \begin{bmatrix}
         1 \\ x_1
     \end{bmatrix}_{i_1}
-    \otimes
+    \cdot
     \begin{bmatrix}
         1 \\ x_2
     \end{bmatrix}_{i_2}
-    \otimes
+    \cdot
     (\dots)
-    \otimes
+    \cdot
     \begin{bmatrix}
         1 \\ x_d
     \end{bmatrix}_{i_d}
@@ -290,7 +290,7 @@ Now, have function that is theoretically trainable on data. We simply have to mo
 
 
 \section{The \emph{Matrix Product State} (MPS) Tensor Network}
-The problem is that as of now, the size of the tensor $T$ will grow exponentially with the size of the input vector $X$. Indeed, since our feature map $\phi_{ml}$ produces feature vectors of $2$ dimensions, the parameter tensor $T$ would have $h2^p$ parameters. This is where the Tensor Network Methods come into play. We are going to approximate the tensor $T$ by using the \emph{Matrix Product State} Tensor Network in a creative way that was proposed in the paper \cite{stoudenmire2017supervised}.
+The problem is that as of now, the size of the tensor $T$ will grow exponentially with the number of dimensions of the input vector $X$. Indeed, since our feature map $\phi_{ml}$ produces feature vectors of $2$ dimensions, the parameter tensor $T$ would have $h2^p$ parameters. This is where the Tensor Network Methods come into play. We are going to approximate the tensor $T$ by using the \emph{Matrix Product State} Tensor Network in a creative way that was proposed in the paper \cite{stoudenmire2017supervised}.
 \subsection{Building the model using a single MPS}
 The MPS tensor network was created to approximate big tensors. It performs this by contracting multiple smaller tensors together.
 \begin{equation} \label{eq:mps_approx}
@@ -303,7 +303,7 @@ In our case, the tensor we want to approximate has an extra index $h$. This inde
 \[
     \sum_{b_1,b_2,(\dots), b_d} t^{i_1}_{b_1} t^{i_2}_{b_1, b_2} t^{i_3, h}_{b_2 b_3} \dots  t^{i_d}_{ b_{d-1} } 
 \]
-As you can see, the original tensor $T$ is approximated by contracting the smaller tensors over their $b$ indices. The dimension of these indices is an hyperparameter of great importance. It is called the \emph{bond dimension} of the MPS. The higher the bond dimension, the closer we are of $T$. In other words, the bigger the bond dimension, the bigger the expressivity of our model. To put it all together, we can approximate $\Upsilon_T(X)$ as such :
+As you can see, the original tensor $T$ is approximated by contracting the smaller tensors over their $b$ indices. The dimension of these indices is an hyperparameter of great importance. It is called the \emph{bond dimension} of the MPS. The higher the bond dimension, the closer we are to $T$. To put it all together, we can approximate $\Upsilon_T(X)$ as such :
 \[
     \Upsilon_T(X) \approx
 \]
@@ -316,13 +316,13 @@ As you can see, the original tensor $T$ is approximated by contracting the small
     \begin{bmatrix}
         1 \\ x_1
     \end{bmatrix}_{i_1}
-    \otimes
+    \cdot
     \begin{bmatrix}
         1 \\ x_2
     \end{bmatrix}_{i_2}
-    \otimes
+    \cdot
     (\dots)
-    \otimes
+    \cdot
     \begin{bmatrix}
         1 \\ x_d
     \end{bmatrix}_{i_d}
@@ -333,38 +333,13 @@ TODO Add graphic
 
 \subsection{Composition of MPS}
 As mentionned before, taking a linear map of  tensor product of the local feature map 
-$ \begin{bmatrix} 1 \\ X \end{bmatrix} $ amounts to producing a multilinear function of $X$.
+$ x \mapsto \begin{bmatrix} 1 \\ x \end{bmatrix} $ amounts to producing a multilinear function of $X$.
 
 Since our MPS model can only approximate this function, it means that its expressivity
-will be somewhat limited. For example, it could never express the function $f(X) = x_1x_2^2$.
-
-A pretty obvious solution for this problem is to add another layer by feeding to ouputs of 
-our MPS model into a second one.
-
-Instead of looking at the expressivity of this composition directly, we will analyse 
-the expressivity of the functions that the MPS models are trying to approximate. This 
-will give us a good idea of how expressive this composition can be. Also, from now on,
-this composition will be refered to as \emph{2-MPS}.
-
-The 2-MPS model approximates a function of the form.
-\[  
-    g' \circ f \circ g \circ f (X)
-\]
-
-In the following subsection, we will prove that this composed function can express
+will be somewhat limited. For example, it could never express the function $f(X) = x_1x_2^2$, since it is not multilinear. It is however entirely possible that being able to express functions of this type are of great importance when it comes to modeling real world phenomena. There is a simple way to fix this problem which ties nicely with our of goals: distillating knowledge into a student MPS network. Once again, to make things clearer, we will talk about achieving this with the $\Upsilon_{T}$ function first, and talk about the MPS after. Ihe following subsection, we will prove that this composed function can express
 any multivariate polynomial function of degree $z$.
 
 \subsubsection{Proof of expressivity}
-
-\begin{definition}[A $\psi$ function]
-    A multilinear polynomial is a function $f: R^n \mapsto R$ of the form
-    A $\psi$ function is a function of the form
-    \[  g' \circ f \circ g \circ f (X) \],
-    where $f$ is a function that returns a basis of a multililinear function and 
-    $g'$ and $g$ are arbitrary linear maps.
-\end{definition}
-
-
 \begin{definition}[Multilinear polynomial]
     A multilinear polynomial is a function $f: R^n \mapsto R$ of the form
     \begin{equation}
@@ -384,44 +359,46 @@ Function of the variables of the vector $v$. (Each element of $v$ is considered 
 
 
 \begin{theorem}
-    Any polynomial function $\Gamma: R^d \mapsto R$ of degree $z$ can be expressed as
-    a $psi$ function by choosing particular $g'$ and $g$ maps.
+    For every polynomial function $\Gamma$ of degree $z$, there exists tensors $T_1$ and $T_2$ such that
+    \[ \Gamma(X) = \left(\Upsilon_{T_2} \circ \Upsilon_{T_1}\right) (X), \forall X \in R^d\]
 \end{theorem}
 
 \begin{proof}
-Let the function $g$ in a $\psi$ function be defined such that
-
+Let the tensor $T_1$ be defined such that
 \begin{equation}
-    g(f(X))
+    \Upsilon_{T_1}(X)
     = 
     \begin{bmatrix}
-        \textit{repeated $z$ times} 
-        \begin{cases}
-            x_1 &  \\
-            (\dots) & \\
-            x_1 & 
-        \end{cases} \\
-        \textit{repeated $z$ times} 
-
-        \begin{cases}
-            x_2 &  \\
-            (\dots) & \\
-            x_2 & 
-        \end{cases} \\
-        (\dots) \\
-        \textit{repeated $z$ times} 
-        \begin{cases}
-            x_n &  \\
-            (\dots) & \\
-            x_n & 
-        \end{cases} \\
+            x_1   \\
+            (\dots)  \\
+            x_1 \\
+            x_2 \\
+            (\dots) \\
+            x_2 \\
+            (\dots) \\
+            x_n   \\
+            (\dots)  \\
+            x_n 
     \end{bmatrix}
 \end{equation}
-We can rewrite this vector as 
+where each of the variables are repeated $z$ times in the vector.
+
+Now, now can perform the vector equivalent of a change of variable by rewriting the vector $\Upsilon_{T_1}(X)$ as a new vector $\lambda$ :
 
 \begin{equation} \label{lambda}
-    g(f(X))
-    = 
+    \begin{bmatrix}
+        x_1   \\
+        (\dots)  \\
+        x_1 \\
+        x_2 \\
+        (\dots) \\
+        x_2 \\
+        (\dots) \\
+        x_n   \\
+        (\dots)  \\
+        x_n 
+\end{bmatrix}
+    =
     \begin{bmatrix}
         \varepsilon_{1, 1} \\
         (\dots) \\
@@ -440,7 +417,7 @@ of degree $\leq z$. By definition, every monomial of $\zeta \in Z$ is of the for
 \begin{equation}
     x_{1}^{k_1}x_{2}^{k_2}(\dots)x_{d}^{k_d}
 \end{equation}
-, where $\sum k_i \leq z$. \\
+where the condition $\sum k_i \leq z$ is met. \\
 However, for every set $\{k_1, k_2, (\dots), k_d\}$ meeting this condition,
 we can rewrite the monomial as
 \begin{equation}
@@ -449,32 +426,14 @@ we can rewrite the monomial as
     \left( \dots \right)
     \left( \prod_{i_d=1}^{k_d}\varepsilon_{d, i_d} \right)
 \end{equation}
-by using the elements of $\lambda$ from equation \eqref{lambda}.
+by using the elements of the vector $\lambda$ from equation \eqref{lambda}.
 
 However, we can clearly see that this term is a multilinear 
 monomial of the variables in $\lambda$. This implies that
 $f(\lambda*)$ returns a basis-vector of $x_i$-variate polynomial 
 function of degree $\leq z$.
 
-In other words, 
-\begin{equation}
-    \xi \left( X, \Theta \right) =
-        M
-        \left(
-            f
-            \left(
-                M
-                \left(
-                    f
-                    \left(
-                        X 
-                    \right),
-                    \Theta^*
-                \right)
-            \right),
-            \Theta
-        \right)
-\end{equation}
+
 can express any $x_i$-variate polynomial function of degree $\leq z$ under
 fixed $\Theta$.
 
@@ -490,6 +449,20 @@ This process can be visualised as
 \end{equation}
 
 \end{proof}
+A pretty obvious solution for this problem is to add another layer by feeding to ouputs of 
+our MPS model into a second one.
+
+Instead of looking at the expressivity of this composition directly, we will analyse 
+the expressivity of the functions that the MPS models are trying to approximate. This 
+will give us a good idea of how expressive this composition can be. Also, from now on,
+this composition will be refered to as \emph{2-MPS}.
+
+The 2-MPS model approximates a function of the form.
+\[  
+    g' \circ f \circ g \circ f (X)
+\]
+TODO mention the 2-MPS name.
+TODO mention that we won't need to let the MPS reach full expressivity. It can decide what to sacrifice to get squared terms.
 
 \subsection{Patching of MPS (experimental)}
 
