@@ -103,8 +103,7 @@ Some are faster to compute, some are clearer, some are easier to train in a mach
 One of these recurring architectures, the Matrix Product State, is at the core of the research done by the author.
 Not only is there multiple valid ways of setting up the network for contractions, there are also different ways of performing the contraction.
 In Tensor Networks, the order of contraction affects the computationnal complexity of the whole process!
-All of these kinds of concepts are referred to by the expression \emph{Tensor Network Methods}.
-
+All of these kinds of concepts are referred to by the expression \emph{Tensor Network Methods}. 
 
 \begin{figure}[h]
 \centering
@@ -113,16 +112,16 @@ All of these kinds of concepts are referred to by the expression \emph{Tensor Ne
 \label{fig:tensor_net}
 \end{figure}
 
-\section{Creating the $\Upsilon$ function}
+\section{Creating the $\Upsilon_{T}$ function}
 In this report, we used the MPS tensor network to approximate a particular parameterizable function.
-{\bf Troughout this report, the parameterizable function we are approximating with the MPS will be denoted by $\Upsilon$. }
-We found it clearer to explain the $\Upsilon$ function we are approximating before introducing the MPS tensor network, as we can explain it trough its use.
-Now, enough talking (or rather, writing?), let's create the $\Upsilon$ function!
+{\bf Troughout this report, the parameterizable function we are approximating with the MPS will be denoted by $\Upsilon_{T}$. }
+We found it clearer to explain the $\Upsilon_{T}$ function we are approximating before introducing the MPS tensor network, as we can explain it trough its use.
+Now, enough talking (or rather, writing?), let's create the $\Upsilon_{T}$ function!
 
-\subsection{Feature tensor $\Phi(x)$}
-Consider an input vector $x \in R^d$. Let $\phi : R \mapsto R^{d_{\phi}}$ be a function which creates a feature map vector $\phi(\lambda)$ from its input $\lambda$.  We shall form the vector $\Phi(x)$ by taking the Kronecker product of the feature map $\phi(x_i)$ of every element of the input vector $x$.
+\subsection{Generating $\Phi(X)$ from the Kronecker Product}
+Consider an input vector $X \in R^d$. Let $\phi : R \mapsto R^{d_{\phi}}$ be a function which creates a feature map vector $\phi(\lambda)$ from its input $\lambda$.  We shall form the vector $\Phi(X)$ by taking the Kronecker product of the feature map $\phi(x_i)$ of every element of the input vector $X$.
 \begin{equation}
-    \Phi(x) = \phi(x_1) \otimes  \phi(x_2) 
+    \Phi(X) = \phi(x_1) \otimes  \phi(x_2) 
                 \otimes (\dots) \phi(x_d)
 \end{equation}
 Here, the symbol $\otimes$ represents the Kronecker Product. The Kronecker Product is an extremely generalisable operation that can be applied to a pair of tensors of arbitrary order. In this project, we use the Kronecker Product exclusively on vectors. Here is a simple example that illustrates what the kronecker product does for simple vectors of integers.
@@ -165,7 +164,32 @@ The element $i$ of the first operand vector becomes itself multiplied by the sec
         u_1 v_1 \\ u_2 v_1 \\ u_1v_2 \\ u_2v_2
     \end{bmatrix}
 \]
-Thus, if we perform a Kronecker Product on $n$ vectors, it will produce a vector such that every of it's element is a multiplication of $n$ elements, each one from a different vector. We can thus interpret $\Phi(x)$ as being a feature space vector which \emph{captures the multiplicative interaction of the elements of the $\phi(x_i)$ feature maps}.
+Thus, if we perform a Kronecker Product on $n$ vectors, it will produce a vector such that every of it's element is a multiplication of $n$ elements, each one from a different vector. We can thus interpret $\Phi(X)$ as being a feature space vector which \emph{captures the multiplicative interaction of the elements of the $\phi(x_i)$ feature maps}. Here's a visual and intuitive way to think about the Kronecker Product applied to a set of vectors. Suppose we have the set of vectors and that we draw a square an element of each one
+
+\[
+    \begin{bmatrix}
+        \boxed{9} \\ 4
+    \end{bmatrix},
+    \begin{bmatrix}
+        6 \\ \boxed{8} \\ 5
+    \end{bmatrix},
+    \begin{bmatrix}
+        \boxed{7} \\ 3
+    \end{bmatrix}
+\]
+Then the product of these elements,  $9\times8\times7=504$, will find iteself in the vector $v=
+    \begin{bmatrix}
+        9 \\ 4
+    \end{bmatrix}
+    \otimes
+    \begin{bmatrix}
+        6 \\ 8 \\ 5
+    \end{bmatrix}
+    \otimes
+    \begin{bmatrix}
+        7 \\ 3
+    \end{bmatrix}
+$. This is true for every combination of the numbers chosen from each vector. This is was what was meant when we said that the resulting vector captures the \emph{multiplicative interaction of the elements}.
 
 
 
@@ -173,73 +197,142 @@ Thus, if we perform a Kronecker Product on $n$ vectors, it will produce a vector
 Now, which feature map $\phi$ shall we pick in order to construct $\Phi$?
 Well, normally, this would be up to you, but in this project we deal with the particular feature map
 \begin{equation}
-    \phi_{ml}(\lambda) = 
+    \phi_{ml}(x) = 
     \begin{bmatrix}
         1 \\
-        \lambda
+        x
     \end{bmatrix}
 \end{equation}
-As the name of the subsection suggests, we call this particular feature map the \emph{multilinear feature map}.
-But why do we call it that?
-We call it that because, amazingly, when we use this feature map, the elements of $\Phi$ form a basis space of the multilinear functions on the elements of the vector $x$.
+We call this particular feature map the \emph{multilinear feature map}.
+Why do we call it that? Because, amazingly, when we use this feature map, the elements of $\Phi(X)$ form a basis space of the multilinear functions on the elements of the vector $X$.
 Understanding this statement without a bit of context and help is a tall order. Let's deconstruct it.
-First, what is a multilinear function?
+First, what is a multilinear function? A multilinear function is a multivariate function that is linear for every variable if all the other variables are considered as constants. For example, $f(x_1, x_2) = x_1 x_2$ is a multilinear function because $x_1 c_2$ and $c_1 x_2$ are both linear functions. However, $f(x_1, x_2) = x_1 x_2^2$ is not a multilinear function, because the function $f(x_1, x_2) = c_1 x_2^2$ is not linear.
 
-
+Let us show you a simple example to illustrate this.
+\[
+    \Phi(\begin{bmatrix}x_1 \\ x_2 \\ x_3 \end{bmatrix})
+    =
+    \phi_{ml}(x_1) \otimes \phi_{ml}(x_2) \otimes \phi_{ml}(x_3)
+    =
+\]
+\[
+\begin{bmatrix}
+    1 \\ x_1
+\end{bmatrix}
+\otimes
+\begin{bmatrix}
+    1 \\ x_2
+\end{bmatrix}
+\otimes
+\begin{bmatrix}
+    1 \\ x_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+    1 \\ x_1
+\end{bmatrix}
+\otimes
+\begin{bmatrix}
+    1 \\ x_3 \\ x_2 \\ x_2 x_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+    1 \\ x_3 \\ x_2 \\ x_2 x_3 \\ x_1 \\ x_1 x_3 \\ x_1 x_2 \\ x_1 x_2 x_3
+\end{bmatrix}
+\]
+Now, it should be clear that if we take linear combinations of the elements of the vector $\Phi(\begin{bmatrix}x_1 \\ x_2 \\ x_3 \end{bmatrix})$, we can express any multilinear function of the variables $x_1$, $x_2$ and $x_3$.
 \subsection{Linear Combinations}
-When we introduced $\Upsilon$, we said it was a parameterizable function.
-However, as of yet, everything described about the function as been deterministic and fully specified.
-Tbus, it is time to introduce the parameters. 
-Now, the question is how do we use $\Phi(x)$, how does it become useful? 
-Well, it becomes useful when we take a linear map of its elements. Let our $\Phi(x)$ be an 
-arbitrarily shaped tensor of $d_{\Phi}$ dimensions. The final form of our 
-function $f(x)$ will be
-\begin{equation} \label{eq:model}
-    f(x) = \sum_{i}^{d_{\Phi}} \theta_i [\Phi(x)]_i
-\end{equation}
-Now, we have a function that can, under some choice of transformation
-$\phi$, become extremely expressive. For our particular local feature map 
-$\phi^*$, it can represent any multililinear function  of the input vector $x$. 
-We shall represent linear combinations of $\Phi(x)$ by $T\Phi(x)$.
 
-\section{Using The Matrix Product State Tensor Network}
+When we introduced $\Upsilon_{T}$, we said it was a parameterizable function. However, as of yet, everything described about the function as been deterministic and fully specified. Thus, it is time to introduce the parameters. The parameters will be the coefficients of a linear map applied to the vector $\Phi(X)$. You might be asking yourself why go trough all this? It has to do with expressivity. If we take the linear combinations of $X$ directly, we will be limited to linear functions. However, in practice, many functions are fundamentally non-linear. They can't even be approximated well by linear functions. Thus, we project the initial vector $X$ in a new non-linear space before applying the linear map. This is why we chose the $\phi_{ml}$. Multilinear functions are extremely expressive. Their limitations (as well as a way to bypass them) shall be discussed in later in this report. \\ We have all the requirements to finally define the $\Upsilon_{T}$ function. 
 
-In this project, we used the {\it Matrix Product State} (MPS) tensor network to 
-approximate the function $T  \Phi(x)$. Here, this function is computed by contracting 
-a Tensor Network. Before the contraction, some of the elements of the tensors in the 
-tensor network are set by applying the mapping $\phi^*(x)$.
+\[
+    \Upsilon_T(X) = \sum_{i_1, i_2, \dots, i_d} T_{i_1, i_2, \dots, i_d}
+    \left[\phi_{ml}(x_1)\right]_{i_1}\otimes \left[\phi_{ml}(x_2)\right]_{i_2} \otimes \dots \otimes \left[\phi_{ml}(x_d)\right]_{i_d}
+\]
+\[
+    \sum_{i_1, i_2, \dots, i_d} T_{i_1, i_2, \dots, i_d}
+    \left(
+    \begin{bmatrix}
+        1 \\ x_1
+    \end{bmatrix}_{i_1}
+    \otimes
+    \begin{bmatrix}
+        1 \\ x_2
+    \end{bmatrix}_{i_2}
+    \otimes
+    (\dots)
+    \otimes
+    \begin{bmatrix}
+        1 \\ x_d
+    \end{bmatrix}_{i_e}
+    \right)
+\]
+Now, since $\Upsilon_T(X): R^d \to R^h$, and we will not constraint ourselves to $p=1$, we will need to add an index $h$ to $T$ such that it becomes $T^{h}_{i_1, i_2, \dots, i_d}$. At long last, we have all the requirements to finally define the $\Upsilon_t$ function. 
+\[
+    \Upsilon_T(X) =     \sum_{i_1, i_2, \dots, i_d} T^{h}_{i_1, i_2, \dots, i_d}
+    \left(
+    \begin{bmatrix}
+        1 \\ x_1
+    \end{bmatrix}_{i_1}
+    \otimes
+    \begin{bmatrix}
+        1 \\ x_2
+    \end{bmatrix}_{i_2}
+    \otimes
+    (\dots)
+    \otimes
+    \begin{bmatrix}
+        1 \\ x_d
+    \end{bmatrix}_{i_d}
+    \right)
+\]
+Now, have function that is theoretically trainable on data. We simply have to modify the tensor $T$, which represents the parameters of the model.
 
+
+\section{The \emph{Matrix Product State} (MPS) Tensor Network}
+The problem is that as of now, the size of the tensor $T$ will grow exponentially with the size of the input vector $X$. Indeed, since our feature map $\phi_{ml}$ produces feature vectors of $2$ dimensions, the parameter tensor $T$ would have $h2^p$ parameters. This is where the Tensor Network Methods come into play. We are going to approximate the tensor $T$ by using the \emph{Matrix Product State} Tensor Network in a creative way that was proposed in the paper \cite{stoudenmire2017supervised}.
 \subsection{Building the model using a single MPS}
-As proposed in the paper \cite{stoudenmire2017supervised}, we are going to use 
-a particular Tensor Network Method in order to reproduce a model of the form \ref{eq:model}.
-Before going over the use of MPS, let's think of a way to use tensors and contraction to 
-learn a model of a function $f: R_d \mapsto R_q$. First, we create a tensor of the form $T^{o_1 o_2 (\dots) o_d i}$, 
-where, each $o$ is of dimension $2$ and $i$ is of dimension $q$ (the dimension of the output of $f$). Then, if we apply a contraction 
-between every $o_i$ and its corresponding vector $\begin{bmatrix}1 \\x_i\end{bmatrix}$, we obtain
-a function $m: R_d \mapsto R_q$. Our model $m$ can learn $f$ by adjusting the parameters of the tensor 
-$T$ by supervised learning.
-
-\paragraph{} ${}$ \\
-The problem is that as of now, the tensor $T$ has $2^{d}$ elements. In order to 
-reduce the size of $T$, we can approximate it by using a decomposition called 
-the \emph{Matrix Product State}.
+The MPS tensor network was created to approximate big tensors. It performs this by contracting multiple smaller tensors together.
 \begin{equation} \label{eq:mps_approx}
-T^{o_1 o_2 (\dots) o_d} \approx T_{MPS} = 
-\sum_{ \{ b_1,b_2,(\dots), b_d \}} t^{o_1}_{b_1} t^{o_2}_{b_1, b_2} t^{o_3}_{b_2 b_3} \dots  t^{o_d}_{ b_{d-1} } 
+T_{i_1, i_2, \dots, i_d} 
+= 
+\sum_{b_1,b_2,(\dots), b_d} t^{i_1}_{b_1} t^{i_2}_{b_1, b_2} t^{i_3}_{b_2 b_3} \dots  t^{i_d}_{ b_{d-1} } 
+= \text{MPS approximation of $T$}
 \end{equation}
-
-Here, the complexity of the MPS is determined by the \emph{bond dimension} of its tensors.
-The \emph{bond dimension} of $T_{MPS}$ is the dimension of the contracted indices of the network.
-In equation \ref{eq:mps_approx}, it would be the dimension of the $b$ indices.
-
-Now, our goal is rather to use the MPS to perform a certain computation, not compress tensors. 
-
-In order to do this, we will contract every index of the tensor $B$.
-TODO: add number of parameters of MPS and how it grows with respect to size
+In our case, the tensor we want to approximate has an extra index $h$. This index can be added to any tensor of the MPS. For example, we can put it in the third tensor of the chain :
+\[
+    \sum_{b_1,b_2,(\dots), b_d} t^{i_1}_{b_1} t^{i_2}_{b_1, b_2} t^{i_3, h}_{b_2 b_3} \dots  t^{i_d}_{ b_{d-1} } 
+\]
+As you can see, the original tensor $T$ is approximated by contracting the smaller tensors over their $b$ indices. The dimension of these indices is an hyperparameter of great importance. It is called the \emph{bond dimension} of the MPS. The higher the bond dimension, the closer we are of $T$. In other words, the bigger the bond dimension, the bigger the expressivity of our model. To put it all together, we can approximate $\Upsilon_T(X)$ as such :
+\[
+    \Upsilon_T(X) \approx
+\]
+\[
+    \sum_{i_1, i_2, \dots, i_d}
+    \left(
+    \sum_{b_1,b_2,(\dots), b_d} t^{i_1}_{b_1} t^{i_2}_{b_1, b_2} t^{i_3, h}_{b_2 b_3} \dots  t^{i_d}_{ b_{d-1} } 
+    \right)
+    \left(
+    \begin{bmatrix}
+        1 \\ x_1
+    \end{bmatrix}_{i_1}
+    \otimes
+    \begin{bmatrix}
+        1 \\ x_2
+    \end{bmatrix}_{i_2}
+    \otimes
+    (\dots)
+    \otimes
+    \begin{bmatrix}
+        1 \\ x_d
+    \end{bmatrix}_{i_d}
+    \right)
+\]
+In a context of machine learning, it is also important to mention that the bigger the bond dimension, the bigger the expressivity of our model.
 
 \subsection{Composition of MPS}
 As mentionned before, taking a linear map of  tensor product of the local feature map 
-$ \begin{bmatrix} 1 \\ x \end{bmatrix} $ amounts to producing a multilinear function of $x$.
+$ \begin{bmatrix} 1 \\ X \end{bmatrix} $ amounts to producing a multilinear function of $X$.
 
 Since our MPS model can only approximate this function, it means that its expressivity
 will be somewhat limited. For example, it could never express the function $f(X) = x_1x_2^2$.
@@ -254,7 +347,7 @@ this composition will be refered to as \emph{2-MPS}.
 
 The 2-MPS model approximates a function of the form.
 \[  
-    g' \circ f \circ g \circ f (x)
+    g' \circ f \circ g \circ f (X)
 \]
 
 In the following subsection, we will prove that this composed function can express
@@ -265,7 +358,7 @@ any multivariate polynomial function of degree $z$.
 \begin{definition}[A $\psi$ function]
     A multilinear polynomial is a function $f: R^n \mapsto R$ of the form
     A $\psi$ function is a function of the form
-    \[  g' \circ f \circ g \circ f (x) \],
+    \[  g' \circ f \circ g \circ f (X) \],
     where $f$ is a function that returns a basis of a multililinear function and 
     $g'$ and $g$ are arbitrary linear maps.
 \end{definition}
@@ -274,7 +367,7 @@ any multivariate polynomial function of degree $z$.
 \begin{definition}[Multilinear polynomial]
     A multilinear polynomial is a function $f: R^n \mapsto R$ of the form
     \begin{equation}
-        f(x) = T \cdot \left( 
+        f(X) = T \cdot \left( 
             \begin{bmatrix} 1 \\ x_1 \end{bmatrix} \otimes 
             \begin{bmatrix} 1 \\ x_2 \end{bmatrix} \otimes 
             \dots \otimes 
@@ -298,7 +391,7 @@ Function of the variables of the vector $v$. (Each element of $v$ is considered 
 Let the function $g$ in a $\psi$ function be defined such that
 
 \begin{equation}
-    g(f(x))
+    g(f(X))
     = 
     \begin{bmatrix}
         \textit{repeated $z$ times} 
@@ -326,7 +419,7 @@ Let the function $g$ in a $\psi$ function be defined such that
 We can rewrite this vector as 
 
 \begin{equation} \label{lambda}
-    g(f(x))
+    g(f(X))
     = 
     \begin{bmatrix}
         \varepsilon_{1, 1} \\
@@ -364,7 +457,7 @@ function of degree $\leq z$.
 
 In other words, 
 \begin{equation}
-    \xi \left( x, \Theta \right) =
+    \xi \left( X, \Theta \right) =
         M
         \left(
             f
@@ -373,7 +466,7 @@ In other words,
                 \left(
                     f
                     \left(
-                        x 
+                        X 
                     \right),
                     \Theta^*
                 \right)
@@ -429,18 +522,18 @@ Nb of gaussian epochs: 5
 
 
 \section{Results}
-\begin{tabular}{ | c | c | c | c |  }
+\begin{tabular}{ | c | c | c | c | }
 \hline 
 Bond Dimensions & MPS & FC to MPS & CNN to MPS \\ 
 \hline
 10 & $0.897 \pm 1.34 \times 10^{-4}$  & $0.541 \pm 9.50 \times 10^{-5}$ & $0.906 \pm 8.49 \times 10^{-5}$ \\
 20 & $0.911 \pm 12.90 \times 10^{-4}$ & $0.550 \pm 9.32 \times 10^{-5}$ & $0.924 \pm 6.77 \times 10^{-5}$ \\ 
 40 & $0.914 \pm 8.15 \times 10^{-5}$ & $0.556 \pm 5.99 \times 10^{-5}$ & $0.941 \pm 4.38 \times 10^{-5}$ \\
+80 & $0.916 \pm 3.13 \times 10^{-4}$ & $$ & $0.944 \pm 7.35 \times 10^{-5}$ \\
 \hline
 \end{tabular}
 
-\section{Results}
-\begin{tabular}{| c | c | c | }
+\begin{tabular}{| c | c | c |}
 \hline 
 Bond Dimensions & 2-MPS & NN to 2-MPS \\ 
 \hline
