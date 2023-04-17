@@ -24,8 +24,6 @@
 \begin{document}
 \maketitle
 
-\begin{abstract}
-\end{abstract}
 
 \section{Introduction}
 
@@ -207,6 +205,7 @@ We call this particular feature map the \emph{multilinear feature map}.
 Why do we call it that? Because, amazingly, when we use this feature map, the elements of $\Phi(X)$ form a basis space of the multilinear functions on the elements of the vector $X$.
 Understanding this statement without a bit of context and help is a tall order. Let's deconstruct it.
 First, what is a multilinear function? A multilinear function is a multivariate function that is linear for every variable if all the other variables are considered as constants. For example, $f(x_1, x_2) = x_1 x_2$ is a multilinear function because $x_1 c_2$ and $c_1 x_2$ are both linear functions. However, $f(x_1, x_2) = x_1 x_2^2$ is not a multilinear function, because the function $f(x_1, x_2) = c_1 x_2^2$ is not linear.
+TODO explain vector space
 
 Let us show you a simple example to illustrate this.
 \[
@@ -271,7 +270,7 @@ Now, here is the interesting part. Instead doing this explicitely, we can reform
     \end{bmatrix}_{i_e}
     \right)
 \]
-This creates a fonction $f: R^d \to R$. If instead we want a function that maps to $R_h$, we can add an index $h$ on the tensor $T$ such that it becomes $T^{h}_{i_1, i_2, \dots, i_d}$. At long last, we have all the ingredients to finally define the $\Upsilon_t$ function :
+This creates a fonction $f: R^d \to R$. If instead we want a function that maps to $R_h$, we can add an index $h$ on the tensor $T$ such that it becomes $T^{h}_{i_1, i_2, \dots, i_d}$. At long last, we have all the ingredients to finally define the $\Upsilon_t :  R^d \to R?h$ function :
 \[
     \Upsilon_T(X) =     \sum_{i_1, i_2, \dots, i_d} T^{h}_{i_1, i_2, \dots, i_d}
     \cdot
