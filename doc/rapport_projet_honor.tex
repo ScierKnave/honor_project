@@ -243,12 +243,16 @@ Let us show you a simple example to illustrate this.
 Now, it should be clear that if we take linear combinations of the elements of the vector $\Phi(\begin{bmatrix}x_1 \\ x_2 \\ x_3 \end{bmatrix})$, we can express any multilinear function of the variables $x_1$, $x_2$ and $x_3$.
 \subsection{Linear Combinations}
 
-When we introduced $\Upsilon_{T}$, we said it was a parameterizable function. However, as of yet, everything described about the function as been deterministic and fully specified. Thus, it is time to introduce the parameters. The parameters will be the coefficients of a linear map applied to the vector $\Phi(X)$. You might be asking yourself why go trough all this? It has to do with expressivity. If we take the linear combinations of $X$ directly, we will be limited to linear functions. However, in practice, many functions are fundamentally non-linear. They can't even be approximated well by linear functions. Thus, we project the initial vector $X$ in a new non-linear space before applying the linear map. This is why we chose the $\phi_{ml}$. Multilinear functions are extremely expressive. Their limitations (as well as a way to bypass them) shall be discussed in later in this report. \\ We have all the requirements to finally define the $\Upsilon_{T}$ function. 
+When we introduced $\Upsilon_{T}$, we said it was a parameterizable function. However, as of yet, everything described about the function as been deterministic and fully specified. Thus, it is time to introduce the parameters. The parameters will be the coefficients of a linear map applied to the vector $\Phi(X)$. You might be asking yourself why go trough all this? It has to do with expressivity. If we take the linear combinations of $X$ directly, we will be limited to linear functions. However, in practice, many functions are fundamentally non-linear. They can't even be approximated well by linear functions. Thus, we project the initial vector $X$ in a new non-linear space before applying the linear map. This is why we chose the $\phi_{ml}$. Multilinear functions are extremely expressive. Their limitations (as well as a way to bypass them) shall be discussed in later in this report. \\ 
 
+
+If we apply a dot product, we obtain an extremely expressive function.
 \[
-    \Upsilon_T(X) = \sum_{i_1, i_2, \dots, i_d} T_{i_1, i_2, \dots, i_d}
-    \left[\phi_{ml}(x_1)\right]_{i_1}\otimes \left[\phi_{ml}(x_2)\right]_{i_2} \otimes \dots \otimes \left[\phi_{ml}(x_d)\right]_{i_d}
+    V 
+    \left(\phi_{ml}(x_1) \otimes \phi_{ml}(x_2)\otimes \dots \otimes \phi_{ml}(x_d) \right)
 \]
+where $V \in R^{2_d}$.
+Now, here is the interesting part. Instead doing this explicitely, we can reformulate the exact same model by using a contraction between a tensor $T$ and the feature map vectors : 
 \[
     \sum_{i_1, i_2, \dots, i_d} T_{i_1, i_2, \dots, i_d}
     \left(
@@ -267,10 +271,10 @@ When we introduced $\Upsilon_{T}$, we said it was a parameterizable function. Ho
     \end{bmatrix}_{i_e}
     \right)
 \]
-Now, since $\Upsilon_T(X): R^d \to R^h$, and we will not constraint ourselves to $p=1$, we will need to add an index $h$ to $T$ such that it becomes $T^{h}_{i_1, i_2, \dots, i_d}$. At long last, we have all the requirements to finally define the $\Upsilon_t$ function. 
+This creates a fonction $f: R^d \to R$. If instead we want a function that maps to $R_h$, we can add an index $h$ on the tensor $T$ such that it becomes $T^{h}_{i_1, i_2, \dots, i_d}$. At long last, we have all the ingredients to finally define the $\Upsilon_t$ function :
 \[
     \Upsilon_T(X) =     \sum_{i_1, i_2, \dots, i_d} T^{h}_{i_1, i_2, \dots, i_d}
-    \left(
+    \cdot
     \begin{bmatrix}
         1 \\ x_1
     \end{bmatrix}_{i_1}
@@ -284,10 +288,8 @@ Now, since $\Upsilon_T(X): R^d \to R^h$, and we will not constraint ourselves to
     \begin{bmatrix}
         1 \\ x_d
     \end{bmatrix}_{i_d}
-    \right)
 \]
-Now, have function that is theoretically trainable on data. We simply have to modify the tensor $T$, which represents the parameters of the model.
-
+You might be wondering why we didn't introduce the $Y_T$ function in this fashion right away. We simply tought that thinking about linear combinations of the elements given by the Kronecker Product gives a better intuition then the summation notation needed to describe the Tensor Network for the readers who are unacostumed to it. Now, have function that is theoretically trainable on data. We simply have to modify the tensor $T$, which represents the 
 
 \section{The \emph{Matrix Product State} (MPS) Tensor Network}
 The problem is that as of now, the size of the tensor $T$ will grow exponentially with the number of dimensions of the input vector $X$. Indeed, since our feature map $\phi_{ml}$ produces feature vectors of $2$ dimensions, the parameter tensor $T$ would have $h2^p$ parameters. This is where the Tensor Network Methods come into play. We are going to approximate the tensor $T$ by using the \emph{Matrix Product State} Tensor Network in a creative way that was proposed in the paper \cite{stoudenmire2017supervised}.
@@ -303,7 +305,7 @@ In our case, the tensor we want to approximate has an extra index $h$. This inde
 \[
     \sum_{b_1,b_2,(\dots), b_d} t^{i_1}_{b_1} t^{i_2}_{b_1, b_2} t^{i_3, h}_{b_2 b_3} \dots  t^{i_d}_{ b_{d-1} } 
 \]
-As you can see, the original tensor $T$ is approximated by contracting the smaller tensors over their $b$ indices. The dimension of these indices is an hyperparameter of great importance. It is called the \emph{bond dimension} of the MPS. The higher the bond dimension, the closer we are to $T$. To put it all together, we can approximate $\Upsilon_T(X)$ as such :
+As you can see, the original tensor $T$ is approximated by contracting the smaller tensors over the $b_i$ indices. The dimension of these indices is an hyperparameter of great importance. It is called the \emph{bond dimension} of the MPS. The higher the bond dimension, the closer we are to $T$. To put it all together, we can approximate $\Upsilon_T(X)$ as such :
 \[
     \Upsilon_T(X) \approx
 \]
@@ -312,7 +314,7 @@ As you can see, the original tensor $T$ is approximated by contracting the small
     \left(
     \sum_{b_1,b_2,(\dots), b_d} t^{i_1}_{b_1} t^{i_2}_{b_1, b_2} t^{i_3, h}_{b_2 b_3} \dots  t^{i_d}_{ b_{d-1} } 
     \right)
-    \left(
+    \cdot
     \begin{bmatrix}
         1 \\ x_1
     \end{bmatrix}_{i_1}
@@ -326,7 +328,6 @@ As you can see, the original tensor $T$ is approximated by contracting the small
     \begin{bmatrix}
         1 \\ x_d
     \end{bmatrix}_{i_d}
-    \right)
 \]
 In a context of machine learning, it is also important to mention that the bigger the bond dimension, the bigger the expressivity of our model.
 TODO Add graphic
