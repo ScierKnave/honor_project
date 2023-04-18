@@ -41,7 +41,7 @@ methodology was found in a a 2021 survey which resumed the emerging
 practice \cite{Gou_2021}.
 
 \subsection{Response-Based Knowledge Distillation}
-The first approach we used was \emph{Response-Based Knowledge Distillation}. The idea of this approach is to stimulate the teacher and the student with some input and to try to minimise a certain loss function with respect to the teacher and student outputs. For classification tasks, it is recommended to use the Kullback-Leibler divergence loss as our loss function. 
+The first approach we used was \emph{Response-Based Knowledge Distillation}. The idea of this approach is to stimulate the teacher and the student with some input and to try to minimise a certain loss function with respect to the teacher and student outputs. For classification tasks, it is recommended to use the Kullback-Leibler divergence as our loss function. 
 \begin{equation}
     KL(P, Q) = \frac{1}{n} \sum_i^n Q \frac{log_e(Q)}{log_e(P)}
 \end{equation}
@@ -59,7 +59,7 @@ Now, it would be logical to use a function aimed at measuring the difference bet
 The survey on Knowledge Distillation coined the term {\it Layer-based approach}.
 Deep learning models work in layers of feature maps. It is hypothesized that
 these different layers represent different layers of abstraction in the internal
-representation of their input. If we simply use the Response-Based approach, it could prove difficult for gradient descent otpimization to find these usefull representation without a bit of help. This layer-based approach, as you might have guessed, aims to do precisely that. If our student model has some form of composition, we can train the parts separately. Thus, if an intermediate layer of the teacher $l$ were particularly useful, we could train a certain part of the student on the layer $l$ before proceding with the Response-Based approach.
+representation of their input. If we simply use the Response-Based approach, it could prove difficult for gradient descent otpimization to find these useful representation without a bit of help. This layer-based approach, as you might have guessed, aims to do precisely that. If our student model has some form of composition, we can train the parts separately. Thus, if an intermediate layer of the teacher $l$ were particularly useful, we could train a certain part of the student on the layer $l$ before proceding with the Response-Based approach.
 
 
 
@@ -83,7 +83,7 @@ $B_{ijk}$ on index $j$ will produce the tensor $C_{ik} = \sum_{j} A_{ijk} B_{ijk
 Evidently, the two indices present in a contraction must be of the same size.
 
 \subsection{Tensor Networks as a graphical system of notation}
-The principal motivation behind the creation of Tensor Networks to compute or approximate large tensors {\it contracting} several smaller tensors over chosen indices. 
+The main motivation behind the creation of Tensor Networks is to compute or approximate large tensors by {\it contracting} several smaller tensors over chosen indices. 
 This is all well and good until our conventional summation notation begins overclocking our primal brains.
 So, in order to make the manipulation of these network of tensors, mathematicians created a notational system. 
 Tensors are represented as nodes where each vertex connected to the node represents one of the tensor's indices. 
@@ -98,7 +98,7 @@ There are several architectures of Tensor Networks that are frequently used, suc
 There are many ways of transforming a Tensor into a contraction of smallers tensors. 
 With time, some particular ways became popular for their properties. 
 Some are faster to compute, some are clearer, some are easier to train in a machine learning context. 
-One of these recurring architectures, the Matrix Product State, is at the core of the research done by the author.
+One of these recurring architectures, the Matrix Product State, is at the core of this report.
 Not only is there multiple valid ways of setting up the network for contractions, there are also different ways of performing the contraction.
 In Tensor Networks, the order of contraction affects the computationnal complexity of the whole process!
 All of these kinds of concepts are referred to by the expression \emph{Tensor Network Methods}. 
@@ -113,7 +113,7 @@ All of these kinds of concepts are referred to by the expression \emph{Tensor Ne
 \section{Creating the $\Upsilon_{T}$ function}
 In this report, we used the MPS tensor network to approximate a particular parameterizable function.
 {\bf Troughout this report, the parameterizable function we are approximating with the MPS will be denoted by $\Upsilon_{T}$. }
-We found it clearer to explain the $\Upsilon_{T}$ function we are approximating before introducing the MPS tensor network, as we can explain it trough its use.
+We found it clearer to explain the $\Upsilon_{T}$ function we are approximating before introducing the MPS tensor network, as we can explain it through its use.
 Now, enough talking (or rather, writing?), let's create the $\Upsilon_{T}$ function!
 
 \subsection{Generating $\Phi(X)$ from the Kronecker Product}
@@ -162,7 +162,7 @@ The element $i$ of the first operand vector becomes itself multiplied by the sec
         u_1 v_1 \\ u_2 v_1 \\ u_1v_2 \\ u_2v_2
     \end{bmatrix}
 \]
-Thus, if we perform a Kronecker Product on $n$ vectors, it will produce a vector such that every of it's element is a multiplication of $n$ elements, each one from a different vector. We can thus interpret $\Phi(X)$ as being a feature space vector which \emph{captures the multiplicative interaction of the elements of the $\phi(x_i)$ feature maps}. Here's a visual and intuitive way to think about the Kronecker Product applied to a set of vectors. Suppose we have the set of vectors and that we draw a square an element of each one
+Thus, if we perform a Kronecker Product on $n$ vectors, it will produce a vector such that every of its element is a multiplication of $n$ elements, each one from a different vector. We can thus interpret $\Phi(X)$ as being a feature space vector which \emph{captures the multiplicative interaction of the elements of the $\phi(x_i)$ feature maps}. Here's a visual and intuitive way to think about the Kronecker Product applied to a set of vectors. Suppose we have the set of vectors and that we draw a square an element of each one
 
 \[
     \begin{bmatrix}
@@ -175,7 +175,7 @@ Thus, if we perform a Kronecker Product on $n$ vectors, it will produce a vector
         \boxed{7} \\ 3
     \end{bmatrix}
 \]
-Then the product of these elements,  $9\times8\times7=504$, will find iteself in the vector $v=
+Then the product of these elements,  $9\times8\times7=504$, will find itself in the vector $v=
     \begin{bmatrix}
         9 \\ 4
     \end{bmatrix}
@@ -187,13 +187,13 @@ Then the product of these elements,  $9\times8\times7=504$, will find iteself in
     \begin{bmatrix}
         7 \\ 3
     \end{bmatrix}
-$. This is true for every combination of the numbers chosen from each vector. This is was what was meant when we said that the resulting vector captures the \emph{multiplicative interaction of the elements}.
+$. This statement would have been true had we chosen any other combination of the elements of each vector to surround with a square. This is was what was meant when we said that the resulting vector captures the \emph{multiplicative interaction of the elements}.
 
 
 
 \subsection{The multilinear feature map}
 Now, which feature map $\phi$ shall we pick in order to construct $\Phi$?
-Well, normally, this would be up to you, but in this project we deal with the particular feature map
+Well, normally, this would be up to you, but in this project we deal with the particular feature map:
 \begin{equation}
     \phi_{ml}(x) = 
     \begin{bmatrix}
@@ -204,8 +204,11 @@ Well, normally, this would be up to you, but in this project we deal with the pa
 We call this particular feature map the \emph{multilinear feature map}.
 Why do we call it that? Because, amazingly, when we use this feature map, the elements of $\Phi(X)$ form a basis space of the multilinear functions on the elements of the vector $X$.
 Understanding this statement without a bit of context and help is a tall order. Let's deconstruct it.
-First, what is a multilinear function? A multilinear function is a multivariate function that is linear for every variable if all the other variables are considered as constants. For example, $f(x_1, x_2) = x_1 x_2$ is a multilinear function because $x_1 c_2$ and $c_1 x_2$ are both linear functions. However, $f(x_1, x_2) = x_1 x_2^2$ is not a multilinear function, because the function $f(x_1, x_2) = c_1 x_2^2$ is not linear.
-TODO explain vector space
+First, what is a multilinear function? A multilinear function is a multivariate function that is linear for every variable if all the other variables are considered as constants. For example, $f(x_1, x_2) = x_1 x_2$ is a multilinear function because $x_1 c_2$ and $c_1 x_2$ are both linear functions. However, $f(x_1, x_2) = x_1 x_2^2$ is not a multilinear function, because the function $f(x_1, x_2) = c_1 x_2^2$ is not linear. A full explanation of vector spaces is out of the scope of this report. You can think of the space of multilinear function as a vector space. Not very rigourously, we can say that this is the case because it is possible to describe any particular multilinear function by choosing the coefficients $c_i$ in this expression :
+\[
+    c_1 1 + c_2 x_1 + c_3 x_2 + c_4 x_3  + c_5 x_1 x_3 + c_6 x_1 x_2 + c_7 x_2 x_3 + c_8 x_1 x_2 x_3
+\]
+For example, if we want the function $f(x) = 3 + 4 x_2 x_3$, we simply need $c_1 = 3$, $c_7 = 4$ and the rest to be equal to $0$.
 
 Let us show you a simple example to illustrate this.
 \[
@@ -239,10 +242,15 @@ Let us show you a simple example to illustrate this.
     1 \\ x_3 \\ x_2 \\ x_2 x_3 \\ x_1 \\ x_1 x_3 \\ x_1 x_2 \\ x_1 x_2 x_3
 \end{bmatrix}
 \]
-Now, it should be clear that if we take linear combinations of the elements of the vector $\Phi(\begin{bmatrix}x_1 \\ x_2 \\ x_3 \end{bmatrix})$, we can express any multilinear function of the variables $x_1$, $x_2$ and $x_3$.
+Now, it should be clear that if we take the cross product of a vector $V$ and 
+\[
+    V \times \Phi(\begin{bmatrix}x_1 \\ x_2 \\ x_3 \end{bmatrix})
+\]
+, which is equivalent to taking a linear combination of the elements of the vector, 
+$\Phi(\begin{bmatrix}x_1 \\ x_2 \\ x_3 \end{bmatrix})$, we can express any multilinear function of the variables $x_1$, $x_2$ and $x_3$ by choosing the appropriate vector $V$.
 \subsection{Linear Combinations}
 
-When we introduced $\Upsilon_{T}$, we said it was a parameterizable function. However, as of yet, everything described about the function as been deterministic and fully specified. Thus, it is time to introduce the parameters. The parameters will be the coefficients of a linear map applied to the vector $\Phi(X)$. You might be asking yourself why go trough all this? It has to do with expressivity. If we take the linear combinations of $X$ directly, we will be limited to linear functions. However, in practice, many functions are fundamentally non-linear. They can't even be approximated well by linear functions. Thus, we project the initial vector $X$ in a new non-linear space before applying the linear map. This is why we chose the $\phi_{ml}$. Multilinear functions are extremely expressive. Their limitations (as well as a way to bypass them) shall be discussed in later in this report. \\ 
+When we introduced $\Upsilon_{T}$, we said it was a parameterizable function. However, as of yet, everything described about the function as been deterministic and fully specified. Thus, it is time to introduce the parameters. The parameters will be the coefficients of a linear map applied to the vector $\Phi(X)$. You might be asking yourself why go through all this? It has to do with expressivity. If we take the linear combinations of $X$ directly, we will be limited to linear functions. However, in practice, many functions are fundamentally non-linear. They can't even be approximated well by linear functions. Thus, we project the initial vector $X$ in a new non-linear space before applying the linear map. This is why we chose the $\phi_{ml}$. Multilinear functions are extremely expressive. Their limitations (as well as a way to bypass them) shall be discussed later in this report. \\ 
 
 
 If we apply a dot product, we obtain an extremely expressive function.
@@ -251,7 +259,7 @@ If we apply a dot product, we obtain an extremely expressive function.
     \left(\phi_{ml}(x_1) \otimes \phi_{ml}(x_2)\otimes \dots \otimes \phi_{ml}(x_d) \right)
 \]
 where $V \in R^{2_d}$.
-Now, here is the interesting part. Instead doing this explicitely, we can reformulate the exact same model by using a contraction between a tensor $T$ and the feature map vectors : 
+Now, here is the interesting part. Instead of doing this explicitely, we can reformulate the exact same model by using a contraction between a tensor $T$ and the feature map vectors : 
 \[
     \sum_{i_1, i_2, \dots, i_d} T_{i_1, i_2, \dots, i_d}
     \left(
@@ -270,7 +278,7 @@ Now, here is the interesting part. Instead doing this explicitely, we can reform
     \end{bmatrix}_{i_e}
     \right)
 \]
-This creates a fonction $f: R^d \to R$. If instead we want a function that maps to $R_h$, we can add an index $h$ on the tensor $T$ such that it becomes $T^{h}_{i_1, i_2, \dots, i_d}$. At long last, we have all the ingredients to finally define the $\Upsilon_t :  R^d \to R?h$ function :
+This creates a fonction $f: R^d \to R$. If instead we want a function that maps to $R_h$, we can add an index $h$ on the tensor $T$ such that it becomes $T^{h}_{i_1, i_2, \dots, i_d}$. At long last, we have all the ingredients to finally define the $\Upsilon_t :  R^d \to R^h$ function :
 \[
     \Upsilon_T(X) =     \sum_{i_1, i_2, \dots, i_d} T^{h}_{i_1, i_2, \dots, i_d}
     \cdot
@@ -288,10 +296,10 @@ This creates a fonction $f: R^d \to R$. If instead we want a function that maps 
         1 \\ x_d
     \end{bmatrix}_{i_d}
 \]
-You might be wondering why we didn't introduce the $Y_T$ function in this fashion right away. We simply tought that thinking about linear combinations of the elements given by the Kronecker Product gives a better intuition then the summation notation needed to describe the Tensor Network for the readers who are unacostumed to it. Now, have function that is theoretically trainable on data. We simply have to modify the tensor $T$, which represents the 
+You might be wondering why we didn't introduce the $Y_T$ function in this fashion right away. We simply thought that thinking about linear combinations of the elements given by the Kronecker Product gives a better intuition then the summation notation needed to describe the Tensor Network for the readers who are unacostumed to it. Now, have function that is theoretically trainable on data. We simply have to modify the tensor $T$, which represents the parameters of the model.
 
 \section{The \emph{Matrix Product State} (MPS) Tensor Network}
-The problem is that as of now, the size of the tensor $T$ will grow exponentially with the number of dimensions of the input vector $X$. Indeed, since our feature map $\phi_{ml}$ produces feature vectors of $2$ dimensions, the parameter tensor $T$ would have $h2^p$ parameters. This is where the Tensor Network Methods come into play. We are going to approximate the tensor $T$ by using the \emph{Matrix Product State} Tensor Network in a creative way that was proposed in the paper \cite{stoudenmire2017supervised}.
+The problem is that as of now, the size of the tensor $T$ will grow exponentially with the number of dimensions of the input vector $X$. Indeed, since our feature map $\phi_{ml}$ produces feature vectors of $2$ dimensions, the parameter tensor $T$ would have $h2^p$ parameters. For big inputs, it's more than we can handle. This is where the Tensor Network Methods come into play. We are going to approximate the tensor $T$ by using the \emph{Matrix Product State} Tensor Network in a creative way that was proposed in the paper \cite{stoudenmire2017supervised}.
 \subsection{Building the model using a single MPS}
 The MPS tensor network was created to approximate big tensors. It performs this by contracting multiple smaller tensors together.
 \begin{equation} \label{eq:mps_approx}
@@ -340,26 +348,21 @@ will be somewhat limited. For example, it could never express the function $f(X)
 any multivariate polynomial function of degree $z$.
 
 \subsubsection{Proof of expressivity}
-\begin{definition}[Multilinear polynomial]
-    A multilinear polynomial is a function $f: R^n \mapsto R$ of the form
-    \begin{equation}
-        f(X) = T \cdot \left( 
-            \begin{bmatrix} 1 \\ x_1 \end{bmatrix} \otimes 
-            \begin{bmatrix} 1 \\ x_2 \end{bmatrix} \otimes 
-            \dots \otimes 
-            \begin{bmatrix} 1 \\ x_d \end{bmatrix}
-        \right)
-    \end{equation}
-    Where $T \in R^{p \times R^n }$. In other words, a multilinear polynomial is a polynomial that is linear if  $\forall x_i$ then the polynomial is linear if we fix every variable except $x_i$.
-\end{definition}
+\begin{definition}[Polynomial function of degree $z$]
 
-\begin{definition}[$v_i$-variate]
-Function of the variables of the vector $v$. (Each element of $v$ is considered as a variable).
+    Is a polynomial function $P: R^d \to R$ where every monomial is of the form:
+    \[
+        cx_1^{k_1} x_2^{k_2}(\dots)x_d^{k_d}
+    \]
+    where $c$ and the $k$ variables are constants satisfying the condition:
+    \[
+        \sum_{i=1}^{d}k_i \leq z
+    \]
 \end{definition}
 
 
 \begin{theorem}
-    For every polynomial function $\Gamma$ of degree $z$, there exists tensors $T_1$ and $T_2$ such that
+    For every polynomial function $P$ of degree $z$, there exists tensors $T_1$ and $T_2$ such that
     \[ \Gamma(X) = \left(\Upsilon_{T_2} \circ \Upsilon_{T_1}\right) (X), \forall X \in R^d\]
 \end{theorem}
 
@@ -383,7 +386,7 @@ Let the tensor $T_1$ be defined such that
 \end{equation}
 where each of the variables are repeated $z$ times in the vector.
 
-Now, now can perform the vector equivalent of a change of variable by rewriting the vector $\Upsilon_{T_1}(X)$ as a new vector $\lambda$ :
+Now, we can perform the vector equivalent of a change of variable by rewriting the vector $\Upsilon_{T_1}(X)$ as a new vector $\lambda$ :
 
 \begin{equation} \label{lambda}
     \begin{bmatrix}
@@ -412,13 +415,13 @@ Now, now can perform the vector equivalent of a change of variable by rewriting 
     = \lambda
 \end{equation}
 
-Let $Z$ be the space of $x_i$-variate polynomial functions 
-of degree $\leq z$. By definition, every monomial of $\zeta \in Z$ is of the form
+Let $\mathbb{P}$ be the space of polynomial functions 
+of degree $\leq z$, where the variables are the elements of the vector $X$. By definition, every monomial of any particular polynomial function $P \in \mathbb{P}$ is of the form
 \begin{equation}
     x_{1}^{k_1}x_{2}^{k_2}(\dots)x_{d}^{k_d}
 \end{equation}
 where the condition $\sum k_i \leq z$ is met. \\
-However, for every set $\{k_1, k_2, (\dots), k_d\}$ meeting this condition,
+For every set $\{k_1, k_2, (\dots), k_d\}$ meeting this condition,
 we can rewrite the monomial as
 \begin{equation}
     \left( \prod_{i_1=1}^{k_1}\varepsilon_{1, i_1} \right)
@@ -430,39 +433,26 @@ by using the elements of the vector $\lambda$ from equation \eqref{lambda}.
 
 However, we can clearly see that this term is a multilinear 
 monomial of the variables in $\lambda$. This implies that
-$f(\lambda*)$ returns a basis-vector of $x_i$-variate polynomial 
-function of degree $\leq z$.
+$Y_{T_2}(\lambda)$ can express any polynomial function of degree $z$ by setting $T_2$ properly.
 
 
-can express any $x_i$-variate polynomial function of degree $\leq z$ under
-fixed $\Theta$.
 
-This process can be visualised as 
-\begin{equation} \label{composition_graph}
-    \begin{CD}
-        @. X \in R^d 
-        @>f>> Y_1 \in R^{2^d}
-        @>g>> Y_2 \in R^{zd} 
-        @>f>> Y_3 \in R^{2^{zd}}
-        @>g'>> Y_4 \in R
-    \end{CD}
-\end{equation}
+
 
 \end{proof}
-A pretty obvious solution for this problem is to add another layer by feeding to ouputs of 
-our MPS model into a second one.
-
-Instead of looking at the expressivity of this composition directly, we will analyse 
-the expressivity of the functions that the MPS models are trying to approximate. This 
-will give us a good idea of how expressive this composition can be. Also, from now on,
-this composition will be refered to as \emph{2-MPS}.
-
-The 2-MPS model approximates a function of the form.
-\[  
-    g' \circ f \circ g \circ f (X)
+It seems we have just solved our problem. Since
+\[
+    \lim_{B\to\infty}
+    \left(\Upsilon_{MPS_2} \circ \Upsilon_{MPS_1}\right) (X)
+    =
+    \left(\Upsilon_{T_2} \circ \Upsilon_{T_1}\right) (X)
 \]
+where $B$ is the bond dimension of the two $MPS$.
+We only proved that this is only true if the output dimension of $MPS_1$ is of dimension $\geq dz$, where $d$ is the dimension of the input vector $X$ and $z$ is the degree of the Polynomial. This is fine, because this is not exponential in $d$. However, the model might not require this amount of expressivity. If the output dimension is less then $zd$, it can learn to \emph{choose} which variables of the input vectors deserve more complexity. This is interesting.
+
+
 TODO mention the 2-MPS name.
-TODO mention that we won't need to let the MPS reach full expressivity. It can decide what to sacrifice to get squared terms.
+
 
 \subsection{Patching of MPS (experimental)}
 
