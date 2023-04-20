@@ -350,7 +350,7 @@ to
 \begin{figure}[hbt!]
     \centering
     \caption{The $Y_{MPS}$ function visualised.}
-    \includegraphics[width=0.7\textwidth]{images/2023-03-21-10-22-39.png.png}
+    \includegraphics[width=0.7\textwidth]{images/2023-04-20-12-41-57.png}
     \label{fig:mps_tensor_model}
 \end{figure}
 
@@ -476,28 +476,33 @@ bon dimension parfaite a
 \section{Methodology}
 The experiments done for the projet were programmed using Python and the wonderful deep learning library Pytorch, created by Meta.
 Unfortunately, Pytorch does not provide any tools to train and build Tensor Networks. 
-Luckily for us, Jacob Miller, created a library \cite{torchmps} built on top of Pytorch that provides the tools to build and train MPS Tensor Networks. 
+Luckily for us, Jacob Miller, created a library \cite{torchmps} built on top of Pytorch that provides the tools to build and train MPS Tensor Networks. The library is extremely easy while providing a lot of options.
+
+\subsection{The Task}
+All of our models were trained to perform a classification task on the popular MNIST Dataset. This dataset contains several handwritten digits and the classes are the integers from $0$ to $9$. In order to be able to make more experiments, we only took a subset of $2000$ training examples and $500$ test examples. These remained invariant through the training of each model. In other words, we kept the same subsets during the training of the different models in our experiments.
+
+\subsection{Bad Teacher, Good Teacher}
+In our experiments, we use two teachers to train the student (MPS): one who performed poorly and one who performed goodly.
+The bad teacher is a simple Multi Layer Perceptron of $4$ hidden layers of $40$ hidden neurons each with the $ReLU$ activation function.  The good teacher was a ConvNet (CNN) with a very basic architecture. 
+
+\subsection{Distillation Procedure}
+For the distillation, we only used the outputs of the teacher to train the student. In other words, the student never had direct access to the labels during the training. The Distillation occured in two steps. First, the student was trained on the outputs of the teacher with inputs being examples from the training set with adde Gaussian noise for TODO epochs. The added Gaussian noise add a mean of $0$ and a variance of TODO. \\ The second step the student was trained on the outputs of the teacher with inputs being direct examples from the training for TODO epochs.
+
+\subsection{Hyperparameters of the MPS}
+
+
+\subsection{Double MPS}
 
 TODO: mention custom feature map in forked code
 
-\paragraph{Learning rate} ${}$ \\
-We used the very standard learning rate of $1e-4$. This is the proposed learning 
-rate in the code of \cite{torchmps}.
-
-\paragraph{Model size} ${}$ \\
-
-\paragraph{Approach to the results}
-As a matter of scientific integrity, we have chosen to show the 
-results even if they are heavily disappointing. Not doing so 
-can result in certain statistical biases which can be avoided.
-
-Learning rate for neural network: 0.01
-Learning rate for MPS: 1e-3 = 0.001
-Nb of normal epochs: 25
-Nb of gaussian epochs: 5
-
 
 \section{Results}
+\paragraph{Accuracy of the bad teacher}
+The good teacher, which is a ConvNet, had a classification accuracy of $0.54$ on the $500$ examples of the test set.
+
+\paragraph{Accuracy of the good teacher}
+The good teacher, which is a ConvNet, had a classification accuracy of $0.97$ on the $500$ examples of the test set.
+
 \begin{tabular}{ | c | c | c | c | }
 \hline 
 Bond Dimensions & MPS & FC to MPS & CNN to MPS \\ 
@@ -519,11 +524,23 @@ Bond Dimensions & 2-MPS & NN to 2-MPS \\
 \hline
 \end{tabular}
 
+\begin{figure}[hbt!]
+    \centering
+    \caption{A Very Simple Tensor Network Illustrating the notation.}
+    \includegraphics[width=0.8\textwidth]{images/2023-04-20-12-40-45.png}
+    \label{t}
+\end{figure}
 
+\begin{figure}[hbt!]
+    \centering
+    \caption{A Very Simple Tensor Network Illustrating the notation.}
+    \includegraphics[width=0.8\textwidth]{images/2023-04-20-12-42-21.png}
+    \label{fig:tensor_net}
+\end{figure}
 
 \section{Analysis}
 
-
+TODO talk about space of functions for better than teach
 
 \section{Conclusion}
 
