@@ -483,12 +483,14 @@ All of our models were trained to perform a classification task on the popular M
 
 \subsection{Bad Teacher, Good Teacher}
 In our experiments, we use two teachers to train the student (MPS): one who performed poorly and one who performed goodly.
-The bad teacher is a simple Multi Layer Perceptron of $4$ hidden layers of $40$ hidden neurons each with the $ReLU$ activation function.  The good teacher was a ConvNet (CNN) with a very basic architecture. 
+The bad teacher is a simple Multi Layer Perceptron of $4$ hidden layers of $70$ hidden neurons each with the $ReLU$ activation function.  The good teacher was a ConvNet (CNN) with a very basic architecture. 
 
 \subsection{Distillation Procedure}
-For the distillation, we only used the outputs of the teacher to train the student. In other words, the student never had direct access to the labels during the training. The Distillation occured in two steps. First, the student was trained on the outputs of the teacher with inputs being examples from the training set with adde Gaussian noise for TODO epochs. The added Gaussian noise add a mean of $0$ and a variance of TODO. \\ The second step the student was trained on the outputs of the teacher with inputs being direct examples from the training for TODO epochs.
+For the distillation, we only used the outputs of the teacher to train the student. In other words, the student never had direct access to the labels during the training. The Distillation occured in two steps. \\ On the first step, the student was trained on the outputs of the teacher with inputs being examples from the training set with adde Gaussian noise for $25$ epochs. The added Gaussian noise had a mean $\mu=0$ and a variance $\sigma^2=0.2$. \\ On the second step, the student was trained on the outputs of the teacher with inputs being direct examples from the training for $25$ epochs.
 
 \subsection{Hyperparameters of the MPS}
+
+\subsection{Various experiments}
 
 
 \subsection{Double MPS}
@@ -501,7 +503,7 @@ TODO: mention custom feature map in forked code
 The good teacher, which is a ConvNet, had a classification accuracy of $0.54$ on the $500$ examples of the test set.
 
 \paragraph{Accuracy of the good teacher}
-The good teacher, which is a ConvNet, had a classification accuracy of $0.97$ on the $500$ examples of the test set.
+The good teacher, which is a ConvNet, had a classification accuracy of $0.97$ on the $500$ examples of the test set. \\
 
 \begin{tabular}{ | c | c | c | c | }
 \hline 
