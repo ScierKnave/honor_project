@@ -29,6 +29,7 @@
 
 
 \section{Introduction}
+In this project, we used Knowledge distillation in order to train MPS models
 
 
 
@@ -581,8 +582,8 @@ The Double MPS was able to get an accuracy of $0.524$ with the bad teacher.
 The first interesting result is that the MPS trained by the bad teacher generalises better than it to unseen data. One explanation for this is that their is less of a bias of the MPS towards the function we were trying to learn than for the MLP. This is suprising, considering that MLP's are known to have a really low bias. The Figure \ref{function_space} might help us visualise this. Here, the distance from the goal function $f$ is caused by the variance and the bias. In our experiments, there was no variance in the examples. The only variance was in the initialisation of the models. This leads us to believe that the real cause of the disparity has more to do with the bias. To confirm this, it would be a good idea to repeat the experiment multiple times and retrain the bad model each time to see if the MPS keeps getting better scores after distillation.
 
 \subsection{Good Teacher : CNN to MPS}
-As you can see, the distilled MPS manages to perform better than the MPS on it's own. Amazingly, this is true for every bond dimension in our experiments (10, 20, 40 and 80). This means that on the same limited subset, we can make a MPS generalise better on a goal function with the help of a CNN model. This finding is, as of now, purely of theoretical use. This is due to the fact that the simple CNN we trained, which performs better than the MPS at every bond dimension, as way less parameters and takes less times to compute. As mentionned in the methodology,
-TODO: mention distillation with gauss order importance
+As you can see, the distilled MPS manages to perform better than the MPS on it's own. Amazingly, this is true for every bond dimension in our experiments (10, 20, 40 and 80). This means that on the same limited subset, we can make a MPS generalise better on a goal function with the help of a CNN model. This finding is, as of now, purely of theoretical use. This is due to the fact that the simple CNN we trained, which performs better than the MPS at every bond dimension, as way less parameters and takes less times to compute. As mentionned in the methodology, we used Gaussian noise on the first 25 epochs of the training. In Figure \ref{fig:CNN_to_MPS}, you can see the spike of accuracy when we stop adding Gaussian noise from epoch 26 onward. This might make you wonder if it would be better to not have Gaussian noise at all. Without showing you additionnal data, we can tell you that it is not the case. The Gaussian noise does help. Additionnaly, the order was really important. When applying the Gaussian noise after the initial training, the score tended to drop instead of getting back up.
+
 
 
 
