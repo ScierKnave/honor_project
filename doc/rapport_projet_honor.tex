@@ -27,11 +27,8 @@
 \begin{document}
 \maketitle
 
-
 \section{Introduction}
-
-In this project, we used Knowledge distillation in order to train MPS models
-
+In the last few decades, the use of artificial neural networks has gained a lot of popularity in several application areas. Because of their usefulness and generalisability, we would like to use them to train other models with radically different architectures. This is where knowledge distillation comes in. Suppose we have an already trained neural network that performs well on a certain task T. Then we can say that this neural network has knowledge about this task T. We would like to be able to transfer this knowledge from an already trained neural network into another system. This procedure is called Knowledge Distillation. The particular system we distilled the knowledge into was a MPS Tensor Network. This report is, foremost, the explanation of two particular MPS architecture. It also includes the results of several experiments as well as their analysis.
 
 
 \section{Knowledge Distillation}
@@ -123,7 +120,7 @@ We found it clearer to explain the $\Upsilon_{T}$ function we are approximating 
 Now, enough talking (or rather, writing?), let's create the $\Upsilon_{T}$ function!
 
 \subsection{Generating a feature space by using the Kronecker Product}
-Consider an input vector $\mathbf{x} \in R^d$. Let $\phi : R \to R^{d_{\phi}}$ be a function which creates a feature map vector $\phi(x)$ from its input $x$.  We shall form the vector $\Phi(\mathbf{x})$ by taking the Kronecker product of the feature map $\phi(x_i)$ of every element of the input vector $\mathbf{x}$.
+Consider an input vector $\mathbf{x} \in \mathbb{R}^d$. Let $\phi : \mathbb{R} \to \mathbb{R}^{d_{\phi}}$ be a function which creates a feature map vector $\phi(x)$ from its input $x$.  We shall form the vector $\Phi(\mathbf{x})$ by taking the Kronecker product of the feature map $\phi(x_i)$ of every element of the input vector $\mathbf{x}$.
 \begin{equation}
     \Phi(\mathbf{x}) = \phi(x_1) \otimes  \phi(x_2) 
                 \otimes (\dots) \phi(x_d)
@@ -210,13 +207,13 @@ Well, normally, this would be up to you, but in this project we deal with the pa
 We call this particular feature map the \emph{multilinear feature map}.
 Why do we call it that? Because, amazingly, when we use this feature map, the elements of $\Phi(\mathbf{x})$ form a basis space of the multilinear functions on the elements of the vector $\mathbf{x}$.
 Understanding this statement without a bit of context and help is a tall order. Let's deconstruct it.
-First, what is a multilinear function? A multilinear function is a multivariate function that is linear for every variable if all the other variables are considered as constants. For example, $f(x_1, x_2) = x_1 x_2$ is a multilinear function because $x_1 c_2$ and $c_1 x_2$ are both linear functions. However, $f(x_1, x_2) = x_1 x_2^2$ is not a multilinear function, because the function $f(x_1, x_2) = c_1 x_2^2$ is not linear. A full explanation of vector spaces is out of the scope of this report. You can think of the space of multilinear function as a vector space. Not very rigourously, we can say that this is the case because it is possible to describe any particular multilinear function by choosing the coefficients $c_i$ in this expression :
-\[
+First, what is a multilinear function? A multilinear function is a multivariate function that is linear for every variable if all the other variables are considered as constants. For example, $f(x_1, x_2) = x_1 x_2 + 3$ is a multilinear function because the maps $x_1 \mapsto f(x_1, c) = x_1c  + 3$ and $x_2 \mapsto f(x_2, c) = x_2c  + 3$ are linear for any $c \in \mathbb{\mathbb{R}}$. However, $f(x_1, x_2) = x_1 x_2^2$ is not a multilinear function, because the map $x_2 \mapsto f(c, x_2) = c x_2^2$ is not linear for any $c \in \mathbb{R}$. A full explanation of vector spaces is out of the scope of this report. You can think of the space of multilinear function as a vector space. Without much rigour, we can say that this is the case because it is possible to describe any particular multilinear function by choosing the coefficients $c_i$ in this expression :
+\begin{equation}\label{eq:basis}
     c_1 1 + c_2 x_1 + c_3 x_2 + c_4 x_3  + c_5 x_1 x_3 + c_6 x_1 x_2 + c_7 x_2 x_3 + c_8 x_1 x_2 x_3
-\]
-For example, if we want the function $f(x) = 3 + 4 x_2 x_3$, we simply need $c_1 = 3$, $c_7 = 4$ and the rest to be equal to $0$.
+\end{equation}
+ example, if we want the function $f(x) = 3 + 4 x_2 x_3$, we simply need $c_1 = 3$, $c_7 = 4$ and the rest to be equal to $0$.
 
-Let us show you a simple example to illustrate this.
+Let us show you explicitely what the Kronecker Product of the feature map $\phi_{ml}$ for the set of variables $\{x_1, x_2, x_3\}$
 \[
     \Phi(\begin{bmatrix}x_1 \\ x_2 \\ x_3 \end{bmatrix})
     =
@@ -248,6 +245,7 @@ Let us show you a simple example to illustrate this.
     1 \\ x_3 \\ x_2 \\ x_2 x_3 \\ x_1 \\ x_1 x_3 \\ x_1 x_2 \\ x_1 x_2 x_3
 \end{bmatrix}
 \]
+As, you can see, you can find every monomial found in expression \ref{eq:basis}.
 Now, it should be clear that if we take the inner product of a vector $V$ and 
 \[
     \langle V,  \Phi \left(\begin{bmatrix}x_1 \\ x_2 \\ x_3 \end{bmatrix}\right) \rangle
@@ -256,7 +254,7 @@ which is equivalent to taking a linear combination of the elements of the vector
 $\Phi(\begin{bmatrix}x_1 \\ x_2 \\ x_3 \end{bmatrix})$, we can express any multilinear function of the variables $x_1$, $x_2$ and $x_3$ by choosing the appropriate vector $V$.
 \subsection{Linear Combinations}
 
-When we introduced $\Upsilon_{T}$, we said it was a parameterizable function. However, as of yet, everything described about the function as been deterministic and fully specified. Thus, it is time to introduce the parameters. The parameters will be the coefficients of a linear map applied to the vector $\Phi(\mathbf{x})$. You might be asking yourself why go through all this? It has to do with expressivity. If we take the linear combinations of $\mathbf{x}$ directly, we will be limited to linear functions. However, in practice, many functions are fundamentally non-linear. They can't even be approximated well by linear functions. Thus, we project the initial vector $\mathbf{x}$ in a new non-linear space before applying the linear map. This is why we chose the $\phi_{ml}$. Multilinear functions are extremely expressive. Their limitations (as well as a way to bypass them) shall be discussed later in this report. \\ 
+At this point, you might be asking yourself, why go through all this? It has to do with expressivity. If we take the linear combinations of $\mathbf{x}$ directly, we will be limited to linear functions. However, in practice, many functions are fundamentally non-linear. They can't even be approximated well by linear functions. Thus, we project the initial vector $\mathbf{x}$ in a new non-linear space before applying the linear map. This is why we chose the $\phi_{ml}$. Multilinear functions are extremely expressive. Their limitations (as well as a way to bypass them) shall be discussed later in this report. \\ When we introduced $\Upsilon_{T}$, we said it was a parameterizable function. Thus, it is time to introduce the parameters. The parameters will be the coefficients of a linear map applied to the vector $\Phi(\mathbf{x})$.\\ 
 
 
 If we apply a dot product, we obtain an extremely expressive function.
@@ -264,7 +262,7 @@ If we apply a dot product, we obtain an extremely expressive function.
     V 
     \left(\phi_{ml}(x_1) \otimes \phi_{ml}(x_2)\otimes \dots \otimes \phi_{ml}(x_d) \right)
 \]
-where $V \in R^{2_d}$.
+where $V \in \mathbb{R}^{2_d}$.
 Now, here is the interesting part. Instead of doing this explicitely, we can reformulate the exact same model by using a contraction between a tensor $T$ and the feature map vectors : 
 \[
     \sum_{i_1, i_2, \dots, i_d} T_{i_1, i_2, \dots, i_d}
@@ -284,7 +282,7 @@ Now, here is the interesting part. Instead of doing this explicitely, we can ref
     \end{bmatrix}_{i_e}
     \right)
 \]
-This creates a fonction $f: R^d \to R$. If instead we want a function that maps to $R_h$, we can add an index $h$ on the tensor $T$ such that it becomes $T^{h}_{i_1, i_2, \dots, i_d}$. At long last, we have all the ingredients to finally define the $\Upsilon_t :  R^d \to R^h$ function~:
+This creates a fonction $f: \mathbb{R}^d \to \mathbb{R}$. If instead we want a function that maps to $\mathbb{R}_h$, we can add an index $h$ on the tensor $T$ such that it becomes $T^{h}_{i_1, i_2, \dots, i_d}$. At long last, we have all the ingredients to finally define the $\Upsilon_t :  \mathbb{R}^d \to \mathbb{R}^h$ function~:
 \[
     \Upsilon_T(\mathbf{x}) =     \sum_{i_1, i_2, \dots, i_d} T^{h}_{i_1, i_2, \dots, i_d}
     \cdot
@@ -369,7 +367,7 @@ any multivariate polynomial function of degree $z$.
 \subsubsection{Proof of expressivity}
 \begin{definition}[Polynomial function of degree $z$]
 
-    Is a polynomial function $P: R^d \to R$ where every monomial is of the form:
+    Is a polynomial function $P: \mathbb{R}^d \to \mathbb{R}$ where every monomial is of the form:
     \[
         cx_1^{k_1} x_2^{k_2}(\dots)x_d^{k_d}
     \]
@@ -382,7 +380,7 @@ any multivariate polynomial function of degree $z$.
 
 \begin{theorem}
     For every polynomial function $P$ of degree $z$, there exists tensors $T_1$ and $T_2$ such that
-    \[ \Gamma(\mathbf{x}) = \left(\Upsilon_{T_2} \circ \Upsilon_{T_1}\right) (\mathbf{x}), \forall \mathbf{x} \in R^d\]
+    \[ \Gamma(\mathbf{x}) = \left(\Upsilon_{T_2} \circ \Upsilon_{T_1}\right) (\mathbf{x}), \forall \mathbf{x} \in \mathbb{R}^d\]
 \end{theorem}
 
 \begin{proof}
@@ -487,7 +485,7 @@ All of our models were trained to perform a classification task on the popular M
 
 \subsection{Bad Teacher, Good Teacher}
 In our experiments, we use two teachers to train the student (MPS): one who performed poorly and one who performed goodly.
-The bad teacher is a simple Multi Layer Perceptron of $4$ hidden layers of $70$ hidden neurons each with the $ReLU$ activation function.  The good teacher was a ConvNet (CNN) with a very basic architecture.
+The bad teacher is a simple Multi Layer Perceptron of $4$ hidden layers of $70$ hidden neurons each with the $\mathbb{R}eLU$ activation function.  The good teacher was a ConvNet (CNN) with a very basic architecture.
 
 
 \subsection{Distillation Procedure}
@@ -508,6 +506,10 @@ Our first experiment was to train the MPS with different bond dimensions (10, 20
 The next series was similar to the last one, but instead of training the MPS on the $labels$, we trained it on distribution given by the bad teacher using the Kullback-Leibner divergence loss.
 
 The last series of experiment is the same as the last one, but with the good teacher.
+
+\subsection{A Useful Little Trick}
+When using the \enquote{TorchMPS} library \cite{torchmps}, we encountered a problem. Training the MPS was extremely slow. In consequence, our experiments were slow and errors costly. At the time, we were using a built in function to implement our custom feature map. We lost a ton of time trying to use other libraries in order to speed up our experiments, to no avail. At a later point, we tried to run code examples from the files of the library and the training speed was much better than for our custom feature map. We thus decided to change the default feature map directly in the source code. We noticed that it used Pytorch built in functions, which probably explained it's speed. When we replaced the custom feature map with our's, everything came into place.
+
 
 \subsection{Double MPS}
 You might be wondering why we have not mentionned the double-MPS yet. Well it is because it appears that the backpropagtion learning algorithm had numerical problems to train the baseline of the double MPS. Since we could not create a baseline, we were suggested to concentrate our ressources to the other experiments. Reasons for this issue will be mentionned in the \emph{Analysis} section. 
@@ -587,15 +589,17 @@ As you can see, the distilled MPS manages to perform better than the MPS on it's
 
 
 
-
-\section{Conclusion}
-
+\subsection{Double MPS Failure}
+Why did backpropagation fail so miserably to update the weights of our Double-MPS during training. Our leading hypothesis as to do with the vanishing gradient problem. 
 
 
 \subsection{Further Exploration}
+Tensor Networks are full of potential. What makes them overall less performant then traditionnal Neural Networks. The success of modern architectures like Transformers, CNN's and MLP's lie heavily on their layer-based approach. Different layers learn different levels of abstraction. Tensor Networks, as of yet, have not reached this step. Their composition is different. The separation at the first level. As structured data grows in complexity, we tend to flatten it and hope that the models learn the useful relashionships on their own. Tensor Networks could provide a way to let the data in it's arbitrary shape, therefore keeping crucial information underlying the connections between different feature proximities.
+
+
+
+
 TODO talk about the patch MPS
-TODO talk about capturing locality in the mappings
-TODO talk about capturing locality in general with tensors
 
 \printbibliography
 
@@ -642,7 +646,7 @@ Person 1: *waiving vigorously
 
 Person 2:
     For the last time, they can't see you... 
-    YOU'RE OUTSIDE THE DOCUMENT DELIMITERS!
+    YOU'\mathbb{R}E OUTSIDE THE DOCUMENT DELIMITE\mathbb{R}S!
 
 Person 1: 
     I feel so alone... 
