@@ -28,15 +28,15 @@
 \maketitle
 
 \section{Introduction}
-In the last few decades, the use of artificial neural networks has gained a lot of popularity in several application areas. Because of their usefulness and generalisability, we would like to use them to train other models with radically different architectures. This is where knowledge distillation comes in. Suppose we have an already trained neural network that performs well on a certain task T. Then we can say that this neural network has knowledge about this task T. We would like to be able to transfer this knowledge from an already trained neural network into another system. This procedure is called Knowledge Distillation. The particular system we distilled the knowledge into was a MPS Tensor Network. This report is, foremost, the explanation of two particular MPS architecture. It also includes the results of several experiments as well as their analysis.
+Since the AlexNet \cite{alexnet} paper in 2021, the use of artificial neural networks has gained a lot of popularity in several application areas. Because of their usefulness and generalisability, we would like to use them to train other models with radically different architectures. This is where knowledge distillation comes in. Suppose we have an already trained neural network that performs well on a certain task T. Then we can say that this neural network has knowledge about this task T. We would like to be able to transfer this knowledge from an already trained neural network into another system. This procedure is called \enquote{Knowledge Distillation}. This report is, foremost, an explanation of two particular MPS architectures. It also includes the results and analysis of several experiments were we distill knowledge of deep neural networks into MPS Tensor Networks.
 
 
 \section{Knowledge Distillation}
 Knowledge Distillation is a machine learning practice which involves
 taking a trained model and using its parameters to train another one.
-The already trained model is referred to as the "teacher", and 
+The already trained model is referred to as the \enquote{teacher}, and 
 the model in which his "knowledge" is to be distilled is referred to as
-the "student". While this is a relatively novel technique, there are 
+the \enquote{student}. While this is a relatively novel technique, there are 
 already several distinct approaches introduced by researchers.
 In this project, we used two of these approaches. Our inspiration for the distillation 
 methodology was found in a a 2021 survey which resumed the emerging 
@@ -57,17 +57,16 @@ The reason is quite simple. Since it's a classification task, it is expected tha
 
 Now, it would be logical to use a function aimed at measuring the difference between two probability distributions as our loss function. This is exactly what the Kullback-Leibler divergence is for.
 
-\subsection{Layer-based approach}
-The survey on Knowledge Distillation coined the term {\it Layer-based approach}.
+\subsection{Layer-Based Knowledge Distillation}
 Deep learning models work in layers of feature maps. It is hypothesized that
 these different layers represent different layers of abstraction in the internal
-representation of their input. If we use the Response-Based approach, it could prove difficult for gradient descent optimization to find these useful representation without a bit of help. This layer-based approach, as you might have guessed, aims to do precisely that. If our student model has some form of composition, we can train the parts separately. Thus, if an intermediate layer of the teacher $l$ were particularly useful, we could train a certain part of the student on the layer $l$ before proceding with the Response-Based approach.
+representation of their input. If we use the Response-Based approach, it could prove difficult for gradient descent optimization to find these useful representation without a bit of help. {\it Layer-Based Knowledge Distillation} aims, as you might have guessed, aims to do precisely that. If our student model has some form of composition, we can train the parts separately. Thus, if an intermediate layer of the teacher $l$ were particularly useful, we could train a certain part of the student on the layer $l$ before proceding with the Response-Based approach.
 
 
 
 \section{Tensor Networks}
 Tensor Networks are mathematical objects which were created by physicists in order to help with the modelisation of quantum phenomena.
-In 2017, researchers form the Flatiron institutes had the brilliant idea of using these networks as machine learning models \cite{stoudenmire2017supervised}. That is, to make them learn function in a supervised fashion. In order to make this report as self-contained as possible, we decided to provide a short explanation of what they are. Some confusion can be avoided by mentionning that the expression \emph{Tensor Networks} refers, in the scientific community, to both a series of methods and a notational system.
+In 2017, researchers form the Flatiron institutes had the brilliant idea of using these networks as machine learning models \cite{stoudenmire2017supervised}. That is, to make them learn function in a supervised fashion. In order to make this report as self-contained as possible, we decided to provide an explanation of what they are. Some confusion can be avoided by mentionning that the expression \emph{Tensor Networks} refers, in the scientific community, to both a \emph{series of methods} and a \emph{notational system}.
 
 \subsection{Tensors}
 Before explaining the methods and the notational system, we shall disambiguate the meaning of the word \enquote{tensor}. In physics, tensors are often paired with transformation properties. 
@@ -86,11 +85,11 @@ The main motivation behind the creation of Tensor Networks is to compute or appr
 This is all well and good until our conventional summation notation begins overclocking our poor brains. 
 So, in order to make the manipulation of these network of tensors, mathematicians created a notational system. 
 Tensors are represented as nodes where each vertex connected to the node represents one of the tensor's indices. 
-If a vertex connects two nodes, it means that the indices shall be contracted in order to produce the post-contraction tensor. 
+If a vertex connects two nodes, it means that the indices shall be contracted in order to produce what we call, for lack of a better word, the \emph{post-contraction tensor}. 
 It should be evident that by the definitions above, no node (tensor) is completely isolated in a tensor network, as it would be completely purposeless. 
-The shape of the post-contraction tensor can be easily visually identified, since it is found in the unconnected vertices.
+The shape of the post-contraction tensor can be easily visually identified. we simply have to look for the vertices that are connected \emph{to a single tensor} in the network.
 A simple tensor network can be found in figure \ref{fig:tensor_net}.
-Let's translate this Tensor Network with the summation notation. First, we see that the result of the contractions of the smaller tensors $A$, $B$ and $C$ over their connected indices shall result in a tensor $T_{i, j, k}$, because $i$, $j$, and $k$ and the only indices that are not contracted. Since the other that the indices $l$, $m$ and $n$ are contracted, we will need to sum of them. Thus the tensor represented by the graphic is
+Let's translate this Tensor Network with the summation notation. First, we see that the result of the contractions of the smaller tensors $A$, $B$ and $C$ over their connected indices shall result in a tensor $T_{i, j, k}$, because $i$, $j$, and $k$ and the only indices that are not contracted. Since the other indices $l$, $m$ and $n$ are contracted, we will need to sum over them. Thus, the tensor represented in Figure \ref{fig:tensor_net} is equivalent to
 \[ 
     T_{i, j, k} = \sum_{l, m, n} A_{j, l, m} B_{i, l, n} C_{m, n, k}
 \]
@@ -103,29 +102,24 @@ Let's translate this Tensor Network with the summation notation. First, we see t
 \end{figure}
 
 \subsection{Tensor Network Methods}
-The term {\it Tensor Network Methods} is used to refer to, you guessed it, the methods.
-There are several architectures of Tensor Networks that are frequently used, such as the {\it Matrix Product State (MPS)}, the \emph{Matrix Product Operator}, the \emph{MERA}, the \emph{Hierchical Tucker}, etc. As the title of this report indicates, 
-There are many ways of transforming a Tensor into a contraction of smallers tensors. 
-With time, some particular ways became popular for their properties. 
-Some are faster to compute, some are clearer, some are easier to train in a machine learning context. 
-One of these recurring architectures, the Matrix Product State, is at the core of this report.
-Not only is there multiple valid ways of setting up the network for contractions, there are also different ways of performing the contraction.
-In Tensor Networks, the order of contraction affects the computationnal complexity of the whole process!
-All of these kinds of concepts are referred to by the expression \emph{Tensor Network Methods}. 
+There are many ways of transforming a particular tensor into a tensor network. 
+With time, some particular architectures became popular for their properties. These include the \emph{\it Matrix Product State (MPS)}, the \emph{Matrix Product Operator}, the \emph{MERA}, the \emph{Hierchical Tucker}, and much more.
+Some are faster to compute, some are clearer, some are easier to train in a machine learning context, some are more visually appealing. One of these recurring architectures, the \emph{\it Matrix Product State (MPS)}, is at the core of this report.
+Not only is there multiple valid ways of setting up the network for contractions, but there are also different ways to determine the order of contraction, since it has been shown that the order of contraction affects the computationnal complexity. It has even been shown that finding the optimal order of contraction is $NP-Hard$. All of these kinds of concepts are referred to by the expression \emph{Tensor Network Methods}. 
 
-\section{Creating the function we will approximate}
+\section{Creating the Function we Shall Approximate}
 In this report, we used the MPS tensor network to approximate a particular parameterizable function.
 {\bf Troughout this report, the parameterizable function we are approximating with the MPS will be denoted by $\Upsilon_{T}$. }
 We found it clearer to explain the $\Upsilon_{T}$ function we are approximating before introducing the MPS tensor network, as we we shall be able to explain the MPS through its use.
 Now, enough talking (or rather, writing?), let's create the $\Upsilon_{T}$ function!
 
-\subsection{Generating a feature space by using the Kronecker Product}
-Consider an input vector $\mathbf{x} \in \mathbb{R}^d$. Let $\phi : \mathbb{R} \to \mathbb{R}^{d_{\phi}}$ be a function which creates a feature map vector $\phi(x)$ from its input $x$.  We shall form the vector $\Phi(\mathbf{x})$ by taking the Kronecker product of the feature map $\phi(x_i)$ of every element of the input vector $\mathbf{x}$.
+\subsection{Generating a Feature Space by Using the Kronecker Product}
+Consider an input vector $\mathbf{x} \in \mathbb{R}^d$. Let $\phi : \mathbb{R} \to \mathbb{R}^{d_{\phi}}$ be a function which creates a feature map vector $\phi(x)$ from its input $x$.  We shall form the vector $\Phi(\mathbf{x})$ by taking the Kronecker product of the feature map $\phi$ of every element of the input vector $\mathbf{x}$.
 \begin{equation}
     \Phi(\mathbf{x}) = \phi(x_1) \otimes  \phi(x_2) 
                 \otimes (\dots) \phi(x_d)
 \end{equation}
-Here, the symbol $\otimes$ represents the Kronecker Product. The Kronecker Product is an extremely generalisable operation that can be applied to a pair of tensors of arbitrary order. In this project, we use the Kronecker Product exclusively on vectors. Here is a simple example that illustrates what the kronecker product does for simple vectors of integers.
+Here, the symbol $\otimes$ represents the Kronecker Product. The Kronecker Product is an extremely generalisable operation that can be applied to a pair of tensors of arbitrary order. However, we will limit our use of the Kronecker Product on tensors of order $1$, also called vectors. Here is a simple example that illustrates what the Kronecker Product does for simple vectors of integers.
 \[
 \begin{bmatrix}
     9 \\ 4
@@ -151,7 +145,7 @@ Here, the symbol $\otimes$ represents the Kronecker Product. The Kronecker Produ
     378 \\ 162\\ 504 \\216\\ 168\\ 72\\ 224\\ 96
 \end{bmatrix}
 \]
-The element $i$ of the first operand vector becomes itself multiplied by the second operand vector. Here's a slightly more abstract example:
+As you can see, every element $i$ of the first operand vector becomes \emph{itself multiplied by the second operand vector}. Here's a slightly more abstract example which should clear things up:
 \[
     \begin{bmatrix}
         v_1 \\ v_2
@@ -165,7 +159,7 @@ The element $i$ of the first operand vector becomes itself multiplied by the sec
         u_1 v_1 \\ u_2 v_1 \\ u_1v_2 \\ u_2v_2
     \end{bmatrix}
 \]
-Thus, if we perform a Kronecker Product on $n$ vectors, it will produce a vector such that every of its element is a multiplication of $n$ elements, each one from a different vector. We can thus interpret $\Phi(\mathbf{x})$ as being a feature space vector which \emph{captures the multiplicative interaction of the elements of the $\phi(x_i)$ feature maps}. Here's a visual and intuitive way to think about the Kronecker Product applied to a set of vectors. Suppose we have the set of vectors and that we draw a square an element of each one
+Thus, if we perform a Kronecker Product on $n$ vectors, it will produce a vector such that every of its element is a multiplication of $n$ elements, each one from a different vector. We can thus interpret $\Phi(\mathbf{x})$ as being a feature space vector which \emph{captures the multiplicative interaction of the elements of the $\phi(x_i)$ feature vectors}. Here's a visual and intuitive way to think about the Kronecker Product applied to a set of vectors. Suppose we have the set of vectors and that we box an element of each one like so
 
 \[
     \begin{bmatrix}
@@ -178,7 +172,7 @@ Thus, if we perform a Kronecker Product on $n$ vectors, it will produce a vector
         \boxed{7} \\ 3
     \end{bmatrix}
 \]
-Then the product of these elements,  $9\times8\times7=504$, will find itself in the vector $v=
+Then the product of these elements,  $9\times8\times7=504$, will find itself in the vector $\bm{v}=
     \begin{bmatrix}
         9 \\ 4
     \end{bmatrix}
@@ -190,13 +184,13 @@ Then the product of these elements,  $9\times8\times7=504$, will find itself in 
     \begin{bmatrix}
         7 \\ 3
     \end{bmatrix}
-$. This statement would have been true had we chosen any other combination of the elements of each vector to surround with a square. This is was what was meant when we said that the resulting vector captures the \emph{multiplicative interaction of the elements}.
+$. This statement would have been true had we chosen any other combination of the elements of each vector to box\footnote{Surround with a square.}. This is was what was meant when we said that the resulting vector captures the \emph{multiplicative interaction of the elements}.
 
 
 
 \subsection{The multilinear feature map}
-Now, which feature map $\phi$ shall we pick in order to construct $\Phi$?
-Well, normally, this would be up to you, but in this project we deal with the particular feature map:
+Now, which feature map $\phi$ shall we pick in order to define our particular $\Phi$?
+For reasons which you will soon learn about, we picked the feature map
 \begin{equation}
     \phi_{ml}(x) = 
     \begin{bmatrix}
@@ -204,9 +198,8 @@ Well, normally, this would be up to you, but in this project we deal with the pa
         x
     \end{bmatrix}
 \end{equation}
-We call this particular feature map the \emph{multilinear feature map}.
-Why do we call it that? Because, amazingly, when we use this feature map, the elements of $\Phi(\mathbf{x})$ form a basis space of the multilinear functions on the elements of the vector $\mathbf{x}$.
-Understanding this statement without a bit of context and help is a tall order. Let's deconstruct it.
+We call this particular feature map the \emph{multilinear feature map}, because, amazingly, when we use it, \emph{the elements of $\Phi(\mathbf{x})$ form a basis space of the multilinear functions on the elements of the vector $\mathbf{x}$}.
+Understanding this statement without a bit of context and help is a tall order, so let's deconstruct it.
 First, what is a multilinear function? A multilinear function is a multivariate function that is linear for every variable if all the other variables are considered as constants. For example, $f(x_1, x_2) = x_1 x_2 + 3$ is a multilinear function because the maps $x_1 \mapsto f(x_1, c) = x_1c  + 3$ and $x_2 \mapsto f(x_2, c) = x_2c  + 3$ are linear for any $c \in \mathbb{\mathbb{R}}$. However, $f(x_1, x_2) = x_1 x_2^2$ is not a multilinear function, because the map $x_2 \mapsto f(c, x_2) = c x_2^2$ is not linear for any $c \in \mathbb{R}$. A full explanation of vector spaces is out of the scope of this report. You can think of the space of multilinear function as a vector space. Without much rigour, we can say that this is the case because it is possible to describe any particular multilinear function by choosing the coefficients $c_i$ in this expression :
 \begin{equation}\label{eq:basis}
     c_1 1 + c_2 x_1 + c_3 x_2 + c_4 x_3  + c_5 x_1 x_3 + c_6 x_1 x_2 + c_7 x_2 x_3 + c_8 x_1 x_2 x_3
@@ -257,13 +250,14 @@ $\Phi(\begin{bmatrix}x_1 \\ x_2 \\ x_3 \end{bmatrix})$, we can express any multi
 At this point, you might be asking yourself, why go through all this? It has to do with expressivity. If we take the linear combinations of $\mathbf{x}$ directly, we will be limited to linear functions. However, in practice, many functions are fundamentally non-linear. They can't even be approximated well by linear functions. Thus, we project the initial vector $\mathbf{x}$ in a new non-linear space before applying the linear map. This is why we chose the $\phi_{ml}$. Multilinear functions are extremely expressive. Their limitations (as well as a way to bypass them) shall be discussed later in this report. \\ When we introduced $\Upsilon_{T}$, we said it was a parameterizable function. Thus, it is time to introduce the parameters. The parameters will be the coefficients of a linear map applied to the vector $\Phi(\mathbf{x})$.\\ 
 
 
-If we apply a dot product, we obtain an extremely expressive function.
+As shown before before, if we apply a cross product to $\Phi(\mathbf{x})$, we obtain an extremely expressive function.
 \[
-    V 
-    \left(\phi_{ml}(x_1) \otimes \phi_{ml}(x_2)\otimes \dots \otimes \phi_{ml}(x_d) \right)
+    \langle
+    \bm{v},
+    \left(\phi_{ml}(x_1) \otimes \phi_{ml}(x_2)\otimes \dots \otimes \phi_{ml}(x_d) \right) \rangle
 \]
-where $V \in \mathbb{R}^{2_d}$.
-Now, here is the interesting part. Instead of doing this explicitely, we can reformulate the exact same model by using a contraction between a tensor $T$ and the feature map vectors : 
+where $\bm{v} \in \mathbb{R}^{2_d}$.
+Now, here is the interesting part. Instead of doing this explicitely, we can reformulate the replicate the model by using a contraction between a tensor $T$ and the feature map vectors : 
 \[
     \sum_{i_1, i_2, \dots, i_d} T_{i_1, i_2, \dots, i_d}
     \left(
@@ -282,7 +276,7 @@ Now, here is the interesting part. Instead of doing this explicitely, we can ref
     \end{bmatrix}_{i_e}
     \right)
 \]
-This creates a fonction $f: \mathbb{R}^d \to \mathbb{R}$. If instead we want a function that maps to $\mathbb{R}_h$, we can add an index $h$ on the tensor $T$ such that it becomes $T^{h}_{i_1, i_2, \dots, i_d}$. At long last, we have all the ingredients to finally define the $\Upsilon_t :  \mathbb{R}^d \to \mathbb{R}^h$ function~:
+This creates a fonction $f: \mathbb{R}^d \to \mathbb{R}$. If instead we want a function that maps to $\mathbb{R}^h$, we can add an index $h$ on the tensor $T$ such that it becomes $T^{h}_{i_1, i_2, \dots, i_d}$. At long last, we have all the ingredients to finally define the $\Upsilon_T :  \mathbb{R}^d \to \mathbb{R}^h$ function~:
 \[
     \Upsilon_T(\mathbf{x}) =     \sum_{i_1, i_2, \dots, i_d} T^{h}_{i_1, i_2, \dots, i_d}
     \cdot
@@ -300,10 +294,10 @@ This creates a fonction $f: \mathbb{R}^d \to \mathbb{R}$. If instead we want a f
         1 \\ x_d
     \end{bmatrix}_{i_d}
 \]
-You might be wondering why we didn't introduce the $Y_T$ function in this fashion right away. We simply thought that thinking about linear combinations of the elements given by the Kronecker Product gives a better intuition then the summation notation needed to describe the Tensor Network for the readers who are unacostumed to it. Now, we have function that is, theoretically, trainable by the use of supervised learning. We simply have to modify the tensor $T$, which represents the parameters of the model.
+You might be wondering why we didn't introduce the $Y_T$ function in this fashion right away. We simply thought that thinking about linear combinations of the elements given by the Kronecker Product gives a better intuition then the summation notation needed to describe the Tensor Network. Now, we have model that is, theoretically, trainable by the use of supervised learning. We simply have to modify the tensor $T$ according to our task, which represents the parameters of the model.
 
 \section{The \emph{Matrix Product State} (MPS) Tensor Network}
-The problem is that, as of now, the size of the tensor $T$ will grow exponentially with the number of dimensions of the input vector $\mathbf{x}$. Indeed, since our feature map $\phi_{ml}$ produces feature vectors of $2$ dimensions, the parameter tensor $T$ would have $h2^p$ parameters. For big inputs, it's more than we can handle. This is where the Tensor Network Methods come into play. We are going to approximate the tensor $T$ by using the \emph{Matrix Product State} Tensor Network in a creative way that was proposed in the paper \cite{stoudenmire2017supervised}.
+The problem is that, as of now, the size of the tensor $T$ will grow exponentially with the number of dimensions of the input vector $\mathbf{x}$. Indeed, since our feature map $\phi_{ml}$ produces feature vectors of $2$ dimensions, the parameter tensor $T$ would have $h2^p$ parameters. For big inputs, it's more than we can handle. This is where the Tensor Network Methods come into play. We are going to approximate the tensor $T$ by using the \emph{Matrix Product State} Tensor Network in a creative way that was proposed in a previous paper \cite{stoudenmire2017supervised}.
 \subsection{Building the model using a single MPS}
 The MPS tensor network was created to approximate big tensors. It performs this by contracting multiple smaller tensors together.
 \begin{equation} \label{eq:mps_approx}
@@ -316,7 +310,7 @@ In our case, the tensor we want to approximate has an extra index $h$. This inde
 \[
     \sum_{b_1,b_2,(\dots), b_d} t^{i_1}_{b_1} t^{i_2}_{b_1, b_2} t^{i_3, h}_{b_2 b_3} \dots  t^{i_d}_{ b_{d-1} } 
 \]
-As you can see, the original tensor $T$ is approximated by contracting the smaller tensors over the $b_i$ indices. The dimension of these indices is an hyperparameter of great importance. It is called the \emph{bond dimension} of the MPS. The higher the bond dimension, the closer we are to $T$. To put it all together, we can approximate $\Upsilon_T(\mathbf{x})$ as such :
+As you can see, the original tensor $T$ is approximated by contracting the smaller tensors over the $b_i$ indices. The dimension of these indices is an hyperparameter of great importance. It is called the \emph{bond dimension} of the MPS. The higher the bond dimension, the closer we are to $T$. See \footnote{In a context of machine learning, it is also important to mention that the bigger the bond dimension, the bigger the expressivity of our model.}. To put it all together, we can approximate $\Upsilon_T(\mathbf{x})$ as such :
 \[
     \Upsilon_T(\mathbf{x}) \approx
 \]
@@ -340,38 +334,42 @@ As you can see, the original tensor $T$ is approximated by contracting the small
         1 \\ x_d
     \end{bmatrix}_{i_d}
 \]
-In a context of machine learning, it is also important to mention that the bigger the bond dimension, the bigger the expressivity of our model. We can use the Tensor Network notation to make ourselves clearer. 
-The MPS makes us go from 
+We can use the Tensor Network Notation in order to visualise the process and to make things clearer. The $\Upsilon_T$ function can be visualised in Figure \ref{fig:full_tensor_model} and it's approximation $\Upsilon_{MPS}$ can be visualised in Figure \ref{fig:mps_tensor_model}.
 \begin{figure}[hbt!]
     \centering
-    \caption{The $Y_T$ function visualised.}
+    \caption{The $\Upsilon_T$ function visualised with the Tensor Network Notation.}
     \includegraphics[width=0.7\textwidth]{images/2023-04-20-11-02-45.png}
     \label{fig:full_tensor_model}
 \end{figure}
-to 
+
 \begin{figure}[hbt!]
     \centering
-    \caption{The $Y_{MPS}$ function visualised.}
+    \caption{The $\Upsilon_{MPS}$ function visualised with the Tensor Network Notation.}
     \includegraphics[width=0.7\textwidth]{images/2023-04-20-12-41-57.png}
     \label{fig:mps_tensor_model}
 \end{figure}
 
 \subsection{Composition of MPS}
-As mentionned before, taking a linear map of  tensor product of the local feature map 
+As mentionned before, taking a linear map of the Kronecker Product applied to a set of the local feature map 
 $ x \mapsto \begin{bmatrix} 1 \\ x \end{bmatrix} $ amounts to producing a multilinear function of $\mathbf{x}$.
 
 Since our MPS model can only approximate this function, it means that its expressivity
-will be somewhat limited. For example, it could never express the function $f(\mathbf{x}) = x_1x_2^2$, since it is not multilinear. It is however entirely possible that being able to express functions of this type are of great importance when it comes to modeling real world phenomena. There is a simple way to fix this problem which ties nicely with our of goals: distillating knowledge into a student MPS network. Once again, to make things clearer, we will talk about achieving this with the $\Upsilon_{T}$ function first, and talk about the MPS after. Ihe following subsection, we will prove that this composed function can express
-any multivariate polynomial function of degree $z$.
+will be somewhat limited. For example, it could never express the function $f(\mathbf{x}) = x_1x_2^2$, since it is not multilinear. It is, however, entirely possible that being able to express functions of this type are of great importance when it comes to modeling real world phenomena. There is a simple way to fix this problem which ties nicely with one of the  goals of our project: to use Layer-Based Knowledge Distillation in order to train a student which is contains a MPS network. The simple solution is to create a new function $\dot{\Upsilon}_{T_1, T_2}$ by composing two $\Upsilon_T$ fonctions with different tensor parameters $T$:
+\[
+    \dot{\Upsilon}_{T_1, T_2}(\bf{x})
+    =
+    \left(\Upsilon_{T_2} \circ \Upsilon_{T_1}\right) (\mathbf{x})
+\]
+Once again, we will use an MPS network to approximate the tensor parameters $T_1$ and $T_2$. However, before doing so, we shall prove an interesting property regarding the expressivity the $\dot{\Upsilon}_{T_1, T_2}$ function: we will prove that this composed function can express any multivariate polynomial function of arbitrary degree $z$ with appropriate $T_1$ and $T_2$ tensor parameters.
 
 \subsubsection{Proof of expressivity}
 \begin{definition}[Polynomial function of degree $z$]
 
-    Is a polynomial function $P: \mathbb{R}^d \to \mathbb{R}$ where every monomial is of the form:
+    A polynomial function of degree $z$ is a polynomial function $P: \mathbb{R}^d \to \mathbb{R}$ where every monomial is of the form:
     \[
         cx_1^{k_1} x_2^{k_2}(\dots)x_d^{k_d}
     \]
-    where $c$ and the $k$ variables are constants satisfying the condition:
+    where $c$ is an arbitrary constant and the $k_i$'s are constants satisfying the condition
     \[
         \sum_{i=1}^{d}k_i \leq z
     \]
@@ -380,7 +378,7 @@ any multivariate polynomial function of degree $z$.
 
 \begin{theorem}
     For every polynomial function $P$ of degree $z$, there exists tensors $T_1$ and $T_2$ such that
-    \[ \Gamma(\mathbf{x}) = \left(\Upsilon_{T_2} \circ \Upsilon_{T_1}\right) (\mathbf{x}), \forall \mathbf{x} \in \mathbb{R}^d\]
+    \[ P(\mathbf{x}) = \left(\Upsilon_{T_2} \circ \Upsilon_{T_1}\right) (\mathbf{x}), \forall \mathbf{x} \in \mathbb{R}^d\]
 \end{theorem}
 
 \begin{proof}
@@ -401,7 +399,7 @@ Let the tensor $T_1$ be defined such that
             x_d 
     \end{bmatrix}
 \end{equation}
-where each of the variables are repeated $z$ times in the vector.
+{\bf where each of the variables are repeated $\bm{z}$ times in the vector}.
 
 Now, we can perform the vector equivalent of a change of variable by rewriting the vector $\Upsilon_{T_1}(\mathbf{x})$ as a new vector $\bm{\lambda}$ :
 
@@ -436,12 +434,12 @@ Now, we can perform the vector equivalent of a change of variable by rewriting t
 
 Let $\mathbb{P}$ be the space of polynomial functions 
 of degree $\leq z$, where the variables are the elements of the vector $\mathbf{x}$. By definition, every monomial of any particular polynomial function $P \in \mathbb{P}$ is of the form
-\begin{equation}
+\begin{equation}\label{eq:monomial}
     x_{1}^{k_1}x_{2}^{k_2}(\dots)x_{d}^{k_d}
 \end{equation}
 where the condition $\sum k_i \leq z$ is met. \\
 For every set $\{k_1, k_2, (\dots), k_d\}$ meeting this condition,
-we can rewrite the monomial as
+we can rewrite the monomial in \ref{eq:monomial} as
 \begin{equation}
     \left( \prod_{i_1=1}^{k_1}\lambda_{1, i_1} \right)
     \left( \prod_{i_2=1}^{k_2}\lambda_{2, i_2} \right)
@@ -451,29 +449,22 @@ we can rewrite the monomial as
 by using the elements of the vector $\lambda$ from equation \eqref{lambda}.
 
 However, we can clearly see that this term is a multilinear 
-monomial of the variables in $\lambda$. This implies that
-$Y_{T_2}(\bm{\lambda})$ can express any polynomial function of degree $z$ by setting $T_2$ properly.
-
-
-
-
-
+monomial of the variables in $\lambda$. Since $\Upsilon_{T_2}(\bm{\lambda})$ can express any 
+multilinear function of the vector $\bm{\lambda}$, this implies that $\Upsilon_{T_2}(\Upsilon_{T_1}(\bm{x})) = \left(\Upsilon_{T_2} \circ \Upsilon_{T_1}\right) (\mathbf{x})$ can express any polynomial function of degree $z$ by setting $T_1$ and $T_2$ properly.
 \end{proof}
-It seems we have just solved our problem. Since
+
+
+This is wonderful! Polynomial functions of higher degrees are some of the most expressive functions you can find! I would even venture to say that you could use this fact as a steppingstone to prove other interesting properties about the model $\left(\Upsilon_{T_2} \circ \Upsilon_{T_1}\right) (\mathbf{x})$. \\
+Now, let's get back to our approximation. Since we have, for a finite Bond dimension $B$\footnote{The value of n can be computed. It is out of the scope of this report to show you how to compute $n$},
 \[
-    \lim_{B\to\infty}
     \left(\Upsilon_{MPS_2} \circ \Upsilon_{MPS_1}\right) (\mathbf{x})
     =
     \left(\Upsilon_{T_2} \circ \Upsilon_{T_1}\right) (\mathbf{x})
 \]
-where $B$ is the bond dimension of the two $MPS$.
-We only proved that this is only true if the output dimension of $MPS_1$ is of dimension $\geq dz$, where $d$ is the dimension of the input vector $\mathbf{x}$ and $z$ is the degree of the Polynomial. This is fine, because this is not exponential in $d$. However, the model might not require this amount of expressivity. If the output dimension is less then $zd$, it can learn to \emph{choose} which variables of the input vectors deserve more complexity. This is interesting.
+we can intuit that with a sufficiently large bond dimension $b < B$, our approximated model will be extremely expressive (and actually trainable in practice).
+We should still mention that we only proved this to be true if the output dimension of $MPS_1$ is of dimension $\geq dz$, where $d$ is the dimension of the input vector $\mathbf{x}$ and $z$ is the degree of the polynomial. This is fine, because $dz$ is not exponential in $d$. Interestingly, however, the model might not require this amount of expressivity. Indeed, even if the output dimension is less then $zd$, it can learn to \emph{choose} which variables of the input vectors deserves more complexity. \\
 
-
-TODO mention the 2-MPS name.
-2 par 2 par 2 pr 2
-bon dimension parfaite a 
-
+It should be noted that, from now on, we shall refore to the $\left(\Upsilon_{MPS_2} \circ \Upsilon_{MPS_1}\right)(\mathbf{x})$ model as \enquote{DoubleMPS}.
 
 \section{Methodology}
 The experiments done for the projet were programmed using Python and the wonderful deep learning library Pytorch, created by Meta.
@@ -492,7 +483,8 @@ The bad teacher is a simple Multi Layer Perceptron of $4$ hidden layers of $70$ 
 For the distillation, we only used the outputs of the teacher to train the student. In other words, the student never had direct access to the labels during the training. The Distillation occured in two steps. \\ On the first step, the student was trained on the outputs of the teacher with inputs being examples from the training set with adde Gaussian noise for $25$ epochs. The added Gaussian noise had a mean $\mu=0$ and a variance $\sigma^2=0.2$. \\ On the second step, the student was trained on the outputs of the teacher with inputs being direct examples from the training for $25$ epochs.
 TODO: mention this is not true for the bad teacher
 
-\subsection{Hyperparameters of the MPS}
+\subsection{The Student}
+The student is 
 \begin{enumerate}
     \item Learning Rate $= 1e-4$
     \item Regularisation $= 0$
@@ -585,7 +577,7 @@ The Double MPS was able to get an accuracy of $0.524$ with the bad teacher.
 The first interesting result is that the MPS trained by the bad teacher generalises better than it to unseen data. One explanation for this is that their is less of a bias of the MPS towards the function we were trying to learn than for the MLP. This is suprising, considering that MLP's are known to have a really low bias. The Figure \ref{function_space} might help us visualise this. Here, the distance from the goal function $f$ is caused by the variance and the bias. In our experiments, there was no variance in the examples. The only variance was in the initialisation of the models. This leads us to believe that the real cause of the disparity has more to do with the bias. To confirm this, it would be a good idea to repeat the experiment multiple times and retrain the bad model each time to see if the MPS keeps getting better scores after distillation.
 
 \subsection{Good Teacher : CNN to MPS}
-As you can see, the distilled MPS manages to perform better than the MPS on it's own. Amazingly, this is true for every bond dimension in our experiments (10, 20, 40 and 80). This means that on the same limited subset, we can make a MPS generalise better on a goal function with the help of a CNN model. This finding is, as of now, purely of theoretical use. This is due to the fact that the simple CNN we trained, which performs better than the MPS at every bond dimension, as way less parameters and takes less times to compute. As mentionned in the methodology, we used Gaussian noise on the first 25 epochs of the training. In Figure \ref{fig:CNN_to_MPS}, you can see the spike of accuracy when we stop adding Gaussian noise from epoch 26 onward. This might make you wonder if it would be better to not have Gaussian noise at all. Without showing you additionnal data, we can tell you that it is not the case. The Gaussian noise does help. Additionnaly, the order was really important. When applying the Gaussian noise after the initial training, the score tended to drop instead of getting back up.
+As you can see, the distilled MPS manages to perform better than the MPS on its own. Amazingly, this is true for every bond dimension in our experiments (10, 20, 40 and 80). This means that on the same limited subset, we can make a MPS generalise better on a goal function with the help of a CNN model. This finding is, as of now, purely of theoretical use. This is due to the fact that the simple CNN we trained, which performs better than the MPS at every bond dimension, as way less parameters and takes less times to compute. As mentionned in the methodology, we used Gaussian noise on the first 25 epochs of the training. In Figure \ref{fig:CNN_to_MPS}, you can see the spike of accuracy when we stop adding Gaussian noise from epoch 26 onward. This might make you wonder if it would be better to not have Gaussian noise at all. Without showing you additionnal data, we can tell you that it is not the case. The Gaussian noise does help. Additionnaly, the order was really important. When applying the Gaussian noise after the initial training, the score tended to drop instead of getting back up.
 
 
 
