@@ -474,25 +474,26 @@ Unfortunately, Pytorch does not provide any tools to train and build Tensor Netw
 Luckily for us, while doing his PhD, Jacob Miller created a library \cite{torchmps} built on top of Pytorch that provides the tools to build and train MPS Tensor Networks. The library is extremely easy to use while providing lots of options. Great work Dr. Miller!
 
 \subsection{The Task}
-All of our models were trained to perform a classification task on the famous\footnote{For nerds like us.} MNIST dataset. This dataset contains several images of handwritten with the appropriate labels. In order to be able to make more experiments, we only took a subset of $2000$ training examples and $500$ test examples to train the models. These subsets remained \emph{invariant} throughout each of our experiments. In other words, we kept the same train and test subsets during the training and accuracy evalutation of each of the different models in our experiments.
+All of our models were trained to perform a classification task on the famous\footnote{For nerds like us.} MNIST dataset. This dataset contains several images of handwritten digits with the appropriate labels. In order to be able to make more experiments, we only took a subset of $2000$ training examples and $500$ test examples to train the models. These subsets remained \emph{invariant} throughout each of our experiments. In other words, we kept the same train and test subsets during the training and accuracy evalutation of each of the different models in our experiments.
 
 \subsection{Bad Teacher, Good Teacher}
-In our experiments, we use two teachers to train the student (MPS): one who performed poorly and one who performed goodly.
+In our experiments, we used two teachers to train the student (MPS): one who performed poorly and one who performed goodly.
 The bad teacher is a simple Multi Layer Perceptron of $4$ hidden layers of $70$ hidden neurons each with the $ReLU$ activation function.  The good teacher was a very simple ConvNet (CNN). We will not detail out the architectures of the teachers since what truly matters is their generalisation capabilities.
 
 
 \subsection{Distillation Procedure}
 In all of our distillation procedures, we only used the outputs of the teacher to train the student. In other words, the student never had direct access to the labels during the training. \\
-%Bad Teacher%
-For the Bad Teacher, we used the very simple \emph{Response-Based Knowledge Distillation} explained at the start of this report with the \emph{Kullback-Leibler Divergence loss}. This was performed for $25$ epochs. At each epoch, we measure the accuracy of the student on the test set. \\
-%Good teacher%
-The distillation procedure for the Good Teacher (the CNN) was somewhat different. Since the student has a good teacher, we tried to make it as close as possible as the CNN. In order to do this, we don't have to limit ourselves to images from the training set as inputs. The teacher already generalises well, and to prevent overfitting on the training set, we can add noise on the inputs and train the student.
 
-For the distillatioThe Distillation occured in two steps. \\ On the first step, the student was trained on the outputs of the teacher with inputs being examples from the training set with adde Gaussian noise for $25$ epochs. The added Gaussian noise had a mean $\mu=0$ and a variance $\sigma^2=0.2$. \\ On the second step, the student was trained on the outputs of the teacher with inputs being direct examples from the training for $25$ epochs.
-TODO: mention this is not true for the bad teacher
+%Bad Teacher%
+For the Bad Teacher, we used the very simple \emph{Response-Based Knowledge Distillation} explained at the start of this report with the \emph{Kullback-Leibler Divergence loss}. This was performed for $25$ epochs. At each epoch, we measured the accuracy of the student on the test set. \\
+
+%Good teacher%
+The distillation procedure for the Good Teacher (ConvNet) was somewhat different. Indeed, since this teacher generalises well, we were less shy in the distillation procedure. We tried to make the student as close as possible to the teacher. In order to do this, we did not limit ourselves to the raw inputs from the training set. We started training the student on the inputs while adding Gaussian noise on the images of the training set for 25 epochs. Only then did we train the student for another 25 epochs with the raw images. The Gaussian noise had a mean $\mu=0$ and a variance $\sigma^2=0.2$.
+
 
 \subsection{The Student MPS}
-The student is 
+The student is the $\Upsilon_{MPS}$ model introduced earlier. We shall refer to it simply as \enquote{MPS} in the figures.
+It's hyperparameters were
 \begin{enumerate}
     \item Learning Rate $= 1e-4$
     \item Regularisation $= 0$
@@ -501,35 +502,29 @@ The student is
 \end{enumerate}
 
 \subsection{The Experiments}
-Our first experiment was to train the MPS with different bond dimensions (10, 20, 40 and 80). The accuracy of these models on the test dataset is our baseline. This experiment was repeated $20$ times for each bond dimension. Our goal was to get a better idea with mean and variance.
+%Baseline%
+Our first experiment was to train the MPS model with different bond dimensions. The bond dimensions used were, 10, 20, 40 and 80. In order to get a better understanding, we repeated the training on the static training dataset $20$ times for each bond dimension chosen. The accuracy of the MPS on it's own was to be a baseline for the knowledge distillation of the good teacher.
 
-The next series was similar to the last one, but instead of training the MPS on the $labels$, we trained it on distribution given by the bad teacher using the Kullback-Leibner divergence loss.
-
-The last series of experiment is the same as the last one, but with the good teacher.
+%Good teacher
+We repeated to same format of experiment for the distillation of the good and the bad teacher. The only exception was we did not use knowledge distillation on the bad teacher for $80$ bond dimensions.
 
 \subsection{A Useful Little Trick}
-When using the \enquote{TorchMPS} library \cite{torchmps}, we encountered a problem. Training the MPS was extremely slow. In consequence, our experiments were slow and errors costly. At the time, we were using a built in function to implement our custom feature map. We lost a ton of time trying to use other libraries in order to speed up our experiments, to no avail. At a later point, we tried to run code examples from the files of the library and the training speed was much better than for our custom feature map. We thus decided to change the default feature map directly in the source code. We noticed that it used Pytorch built in functions, which probably explained it's speed. When we replaced the custom feature map with our's, everything came into place.
+When using the \enquote{TorchMPS} library \cite{torchmps}, we encountered a problem. Training the MPS was extremely slow. In consequence, the scope of our experiments was limited and little faults in the scripts were very time consuming. At this point in time, we were using a built in function of the TorchMPS library to add our custom feature map, $\phi_{ml}$. We spent countless hours trying to use other libraries in order to speed up our experiments, to no avail. At a later point, we ran a direct code example from a training script provided in the source files of the TorchMPS library \cite{torchmps}. We realised that the training speed was much better for the default feature map than for our custom one. We thus decided to change the default feature map directly in the source code. While doing this, we noticed that the default implementation of the feature map used Pytorch built in functions, which probably explained its speed. When we replaced the custom feature map with ours, everything ran smoothly.
 
 
-\subsection{Double MPS}
-You might be wondering why we have not mentionned the double-MPS yet. Well it is because it appears that the backpropagtion learning algorithm had numerical problems to train the baseline of the double MPS. Since we could not create a baseline, we were suggested to concentrate our ressources to the other experiments. Reasons for this issue will be mentionned in the \emph{Analysis} section. 
-
-
-
-
-
-TODO: mention custom feature map in forked code
+\subsection{DoubleMPS}
+You might be wondering why we have not yet mentionned the DoubleMPS in this section. After all, we spent a lot of words to explain it previously in this report. Well, its because we ran into problems with the backpropagation algorithm when training the baseline DoubleMPS model\footnote{The model trained without distillation.}. Since we could not create a baseline, we were suggested to concentrate our ressources on the other experiments. A theory for the causes of the issue will be briefly mentionned in the \emph{Analysis} section. 
 
 
 \section{Results}
 \paragraph{Accuracy of the bad teacher}
-The good teacher, which is a ConvNet, had a classification accuracy of $0.54$ on the $500$ examples of the test set.
+The good teacher, which is a simple Multi Layer Perceptron, had a classification accuracy of $0.541$ on the $500$ examples of the test set.
 
 \paragraph{Accuracy of the good teacher}
-The good teacher, which is a ConvNet, had a classification accuracy of $0.97$ on the $500$ examples of the test set. \\
+The good teacher, which is a ConvNet, had a classification accuracy of $0.974$ on the $500$ examples of the test set.
 
 \subsection{Final Accuracys}
-In the table below, you will find the final classification accuracy of every model on the test dataset. As mentionned in the methodology, each of these experiments was repeated 20 times in order to get the standard deviation of the accuracy of each model for . \\
+In the table below, you will find the mean and standard deviation of the classification accuracy\footnote{On the test dataset.} of every set of models in our experiments. As mentionned in the methodology, each of these set contains 20 models. \\
 
 \begin{center}
 \begin{tabular}{ | c | c | c | c | }
@@ -545,7 +540,7 @@ Bond Dimensions & MPS & FC to MPS & CNN to MPS \\
 \end{center}
 
 \subsection{Accuracy during training}
-We \emph{figured} it would be of use to include \emph{figures} which show the accuracy and the standard devitations at each epoch during the training.
+We {\bf figured} it would be of use to include {\bf figures} which show the accuracy and the standard devitations at each epoch during the training.
 \begin{figure}[H]
     \centering
     \caption{}
@@ -567,11 +562,6 @@ We \emph{figured} it would be of use to include \emph{figures} which show the ac
     \label{fig:CNN_to_MPS}
 \end{figure}
 
-
-
-\subsection{Double MPS}
-The Double MPS was able to get an accuracy of $0.524$ with the bad teacher.
-
 \section{Analysis}
 
 \subsection{Bad Teacher : MLP to MPS}
@@ -589,7 +579,9 @@ As you can see, the distilled MPS manages to perform better than the MPS on its 
 
 
 
-\subsection{Double MPS Failure}
+\subsection{Why did the Backpropagation Fail to train the DoubleMPS?}
+\subsection{Double MPS}
+The Double MPS was able to get an accuracy of $0.524$ with the bad teacher.
 Why did backpropagation fail so miserably to update the weights of our Double-MPS during training. Our leading hypothesis has to do with the vanishing gradient problem. 
 
 
