@@ -524,9 +524,10 @@ The good teacher, which is a simple Multi Layer Perceptron, had a classification
 The good teacher, which is a ConvNet, had a classification accuracy of $0.974$ on the $500$ examples of the test set.
 
 \subsection{Final Accuracys}
-In the table below, you will find the mean and standard deviation of the classification accuracy\footnote{On the test dataset.} of every set of models in our experiments. As mentionned in the methodology, each of these set contains 20 models. \\
+In the table below \ref{tab:main}, you will find the mean and standard deviation of the classification accuracy\footnote{On the test dataset.} of every set of models in our experiments. As mentionned in the methodology, each of these sets contains 20 models (we repeated each experiment 20 times). \\
 
-\begin{center}
+\begin{table}[H]
+\caption{ }
 \begin{tabular}{ | c | c | c | c | }
 \hline 
 Bond Dimensions & MPS & FC to MPS & CNN to MPS \\ 
@@ -537,7 +538,8 @@ Bond Dimensions & MPS & FC to MPS & CNN to MPS \\
 80 & $0.916 \pm 1.77 \times 10^{-2}$ & $$ & $0.944 \pm 8.58 \times 10^{-3}$ \\
 \hline
 \end{tabular}
-\end{center}
+\label{tab:main}
+\end{table}
 
 \subsection{Accuracy during training}
 We {\bf figured} it would be of use to include {\bf figures} which show the accuracy and the standard devitations at each epoch during the training.
@@ -565,21 +567,25 @@ We {\bf figured} it would be of use to include {\bf figures} which show the accu
 \section{Analysis}
 
 \subsection{Bad Teacher : MLP to MPS}
-\begin{figure}[hbt!]  \label{fig:function_space}
+\begin{figure}[hbt!]
     \centering
     \caption{Illustration of bias and variance in divergence from the goal function.}
     \includegraphics[width=0.8\textwidth]{images/2023-04-21-16-47-59.png}
     \floatfoot{Here, $f$ represents the goal function (the function we want to learn), $\hat{f}$ is the closest function to $f$ that our model can express and $\tilde{f}$ represents the function we can expect to obtain during training.}
+    \label{fig:function_space}
 \end{figure}
 
-The first interesting result is that the MPS trained by the bad teacher generalises better than it to unseen data. One explanation for this is that their is less of a bias of the MPS towards the function we were trying to learn than for the MLP. This is suprising, considering that MLP's are known to have a really low bias. The Figure \ref{function_space} might help us visualise this. Here, the distance from the goal function $f$ is caused by the variance and the bias. In our experiments, there was no variance in the examples. The only variance was in the initialisation of the models. This leads us to believe that the real cause of the disparity has more to do with the bias. To confirm this, it would be a good idea to repeat the experiment multiple times and retrain the bad model each time to see if the MPS keeps getting better scores after distillation.
+As you can see in Table \ref{tab:main}, the MPS, for bond dimensions 20 and 40,  generalises better on unseen data than on its own teacher. This is strange, because it has only seen the labels given by the bad teacher during training. One explanation for this is that student model is more biased towards the goal function $f$\footnote{The goal function is the function that our model is trying to learn.} than the MLP. Figure \ref{fig:function_space} might help us visualise this. In this figure, we can see that the distance from the learned function $\tilde{f}$ and the goal function $f$ is caused by a combination of variance and bias. Usually, the variance is caused by the stochasticity of the examples present in the training set {\bf and} the hyperparameters of the model. However, in our experiments, there was no variation in the training examples. All the models were trained on the same $2000$ handwritten digits. Thus, there was no disavantage to the teacher with regards to the examples contained in the training set. This means that the only source of variance was in the hyperparameters of the models. An example is the initial weights of the MPS network. We'd like to be able to conclude that the real cause of the better slightly better accuracy from the student has more to do with the bias of the models. However, to confirm that there is less of a bias in the our MPS architecture than in the MLP, an additionnal experiment would required. In this experiment, we would train $30$ bad teachers with our MLP architecture. Then, we would distill the knowledge of each of these bad teachers in the 20 MPS students, for a total of $600$ students trained. Then, if the the student perform better, we could conclude that real cause of better accuracy from the student is because the MPS architecture is more biased towards the MNIST distribution than the MLP architecture we used.
+
 
 \subsection{Good Teacher : CNN to MPS}
-As you can see, the distilled MPS manages to perform better than the MPS on its own. Amazingly, this is true for every bond dimension in our experiments (10, 20, 40 and 80). This means that on the same limited subset, we can make a MPS generalise better on a goal function with the help of a CNN model. This finding is, as of now, purely of theoretical use. This is due to the fact that the simple CNN we trained, which performs better than the MPS at every bond dimension, as way less parameters and takes less times to compute. As mentionned in the methodology, we used Gaussian noise on the first 25 epochs of the training. In Figure \ref{fig:CNN_to_MPS}, you can see the spike of accuracy when we stop adding Gaussian noise from epoch 26 onward. This might make you wonder if it would be better to not have Gaussian noise at all. Without showing you additionnal data, we can tell you that it is not the case. The Gaussian noise does help. Additionnaly, the order was really important. When applying the Gaussian noise after the initial training, the score tended to drop instead of getting back up.
+As you can see, from Table \ref{tab:main}, with the help of the good teacher, the MPS manages to perform better on average then when it learns on its own. Amazingly, this is true for every bond dimension in our experiments (10, 20, 40 and 80). However, this finding is, as of now, purely of theoretical use. This is due to the fact that the simple CNN we trained, which performs better than the MPS at every bond dimension, has way less parameters then the MPS. The CNN model has 93130 parameters, while the MPS with the lowest bound dimension we trained has 158000 parameters.\\
+
+As mentionned in the methodology, we used Gaussian noise on the first 25 epochs of the training. In Figure \ref{fig:CNN_to_MPS}, you can see the spike of accuracy when we stop adding Gaussian noise from epoch 26 onward. This might make you wonder if it would be better to not have Gaussian noise at all. Without showing you additionnal data, we can tell you that it is not the case. The Gaussian noise does help. Additionnaly, the order was really important. When applying the Gaussian noise after the initial training, the score tended to drop instead of getting up. 
 
 
 
-\subsection{Why did the Backpropagation Fail to train the DoubleMPS?}
+\subsection{Why did Backpropagation Fail to Train the DoubleMPS?}
 \subsection{Double MPS}
 The Double MPS was able to get an accuracy of $0.524$ with the bad teacher.
 Why did backpropagation fail so miserably to update the weights of our Double-MPS during training. Our leading hypothesis has to do with the vanishing gradient problem. 
