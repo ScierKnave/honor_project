@@ -28,7 +28,7 @@
 \maketitle
 
 \section{Introduction}
-Since the AlexNet \cite{alexnet} paper in 2021, the use of artificial neural networks has gained a lot of popularity in several application areas. Because of their usefulness and generalisability, we would like to use them to train other models with radically different architectures. This is where knowledge distillation comes in. Suppose we have an already trained neural network that performs well on a certain task T. Then we can say that this neural network has knowledge about this task T. We would like to be able to transfer this knowledge from an already trained neural network into another system. This procedure is called \enquote{Knowledge Distillation}. This report is, foremost, an explanation of two particular MPS architectures. It also includes the results and analysis of several experiments were we distill knowledge of deep neural networks into MPS Tensor Networks.
+Since the AlexNet\cite{alexnet} paper published in 2012, the use of artificial neural networks has gained a lot of popularity in several application areas. Because of their usefulness and generalisability, we would like to use them to train other models with radically different architectures. This is where knowledge distillation comes in. Suppose we have an already trained neural network that performs well on a certain task T. Then we can say that this neural network has knowledge about this task T. We would like to be able to transfer this knowledge from an already trained neural network into another system. This procedure is called \enquote{Knowledge Distillation}. This report is, foremost, an explanation of two particular MPS architectures, which we shall use as students. It also includes the results and analysis of several experiments were we distill knowledge of deep neural networks into MPS Tensor Networks.
 
 
 \section{Knowledge Distillation}
@@ -569,44 +569,37 @@ We {\bf figured} it would be of use to include {\bf figures} which show the accu
 \subsection{Bad Teacher : MLP to MPS}
 \begin{figure}[hbt!]
     \centering
-    \caption{Illustration of bias and variance in divergence from the goal function.}
+    \caption{Illustration of the role of bias and variance in the divergence between the model and the goal function.}
     \includegraphics[width=0.8\textwidth]{images/2023-04-21-16-47-59.png}
     \floatfoot{Here, $f$ represents the goal function (the function we want to learn), $\hat{f}$ is the closest function to $f$ that our model can express and $\tilde{f}$ represents the function we can expect to obtain during training.}
     \label{fig:function_space}
 \end{figure}
 
-As you can see in Table \ref{tab:main}, the MPS, for bond dimensions 20 and 40,  generalises better on unseen data than on its own teacher. This is strange, because it has only seen the labels given by the bad teacher during training. One explanation for this is that student model is more biased towards the goal function $f$\footnote{The goal function is the function that our model is trying to learn.} than the MLP. Figure \ref{fig:function_space} might help us visualise this. In this figure, we can see that the distance from the learned function $\tilde{f}$ and the goal function $f$ is caused by a combination of variance and bias. Usually, the variance is caused by the stochasticity of the examples present in the training set {\bf and} the hyperparameters of the model. However, in our experiments, there was no variation in the training examples. All the models were trained on the same $2000$ handwritten digits. Thus, there was no disavantage to the teacher with regards to the examples contained in the training set. This means that the only source of variance was in the hyperparameters of the models. An example is the initial weights of the MPS network. We'd like to be able to conclude that the real cause of the better slightly better accuracy from the student has more to do with the bias of the models. However, to confirm that there is less of a bias in the our MPS architecture than in the MLP, an additionnal experiment would required. In this experiment, we would train $30$ bad teachers with our MLP architecture. Then, we would distill the knowledge of each of these bad teachers in the 20 MPS students, for a total of $600$ students trained. Then, if the the student perform better, we could conclude that real cause of better accuracy from the student is because the MPS architecture is more biased towards the MNIST distribution than the MLP architecture we used. \\ Another interesting aspect is the reduction of variance as we get past the $15$'th epoch. If you look at Figure \ref{fig:MPS}, you can see that when the MPS is on its own, the reduction in the standard deviation of its accuracy happens later, at epoch 22.
+As you can see in Table \ref{tab:main}, the MPS, for bond dimensions 20 and 40,  generalises better on unseen test data than its own teacher. This is strange, because it has only seen the labels given by the bad teacher during training. One explanation for this is that student model is more biased towards the goal function $f$\footnote{The goal function is the function that our model is trying to learn.} than the MLP. Figure \ref{fig:function_space} might help us visualise this. In this figure, we can see that the distance from the learned function $\tilde{f}$ and the goal function $f$ is caused by a combination of variance and bias. Usually, the variance is caused by the stochasticity of the examples present in the training set {\bf and} the hyperparameters of the model. However, in our experiments, there was no variation in the training examples. All the models were trained on the same $2000$ handwritten digits. Thus, there was no disavantage to the teacher with regards to the examples contained in the training set. This means that the only source of variance was in the hyperparameters of the models. An example is the initial weights of the MPS network. We'd like to be able to conclude that the real cause of the slightly better accuracy from the student has more to do with the bias of the models. However, to confirm that there is less of a bias in the our MPS architecture than in the MLP, an additionnal experiment would be required. In this experiment, we would train $30$ bad teachers with our MLP architecture. Then, we would distill the knowledge of each of these bad teachers in the 20 MPS students, for a total of $600$ students trained. Then, if the the student performed better on average then their teachers, we could conclude that real cause of better accuracy from the student is because the MPS architecture is more biased towards the MNIST distribution than the MLP architecture we used for te teacher. \\ Another interesting aspect is the reduction of variance as we get past the $15$th epoch. If you look at Figure \ref{fig:MPS}, you can see that when the MPS is on its own, the reduction in the standard deviation of its accuracy happens later, at epoch 22.
 
 
 \subsection{Good Teacher : CNN to MPS}
-As you can see, from Table \ref{tab:main}, with the help of the good teacher, the MPS manages to perform better on average then when it learns on its own. Amazingly, this is true for every bond dimension in our experiments (10, 20, 40 and 80). However, this finding is, as of now, purely of theoretical use. This is due to the fact that the simple CNN we trained, which performs better than the MPS at every bond dimension, has way less parameters then the MPS. The CNN model has 93130 parameters, while the MPS with the lowest bound dimension we trained has 158000 parameters.\\
+As you can see, from Table \ref{tab:main}, with the help of the good teacher, the MPS manages to perform better on average then when it learns on its own. Amazingly, this is true for every bond dimension in our experiments (10, 20, 40 and 80). However, this finding is, as of now, purely of theoretical use. This is due to the fact that the simple CNN we trained, which performs better than the MPS at every bond dimension, has way less parameters then the MPS. The CNN model has 93130 parameters, while the MPS with the lowest bond dimension we trained (10) had 158000 parameters.\\
 
 As mentionned in the methodology, we used Gaussian noise on the first 25 epochs of the training. In Figure \ref{fig:CNN_to_MPS}, you can see the spike of accuracy when we stop adding Gaussian noise from epoch 26 onward. This might make you wonder if it would be better to not have Gaussian noise at all. Without showing you additionnal data, we can tell you that it is not the case. The Gaussian noise does help. Additionnaly, the order was really important. When applying the Gaussian noise after the initial training, the accuracy tended to drop instead of going up. You can also see that the standard deviation is much higher in the Gaussian epochs.
 
 
 
 \subsection{Why did Backpropagation Fail to Train the DoubleMPS?}
+Why did backpropagation fail so miserably to update the weights of our Double-MPS during training? Our leading hypothesis has to do with the exploding and vanishing gradient problems\cite{pascanu2013difficulty}. It could be due to the fact that with the the derivatives of the monomials produced by the DoubleMPS are still exponentials. If the values of the terms are $<1$, then their gradient could also get close to zero. If the values of the terms are too big, the gradient might explode. We would like to reiterate that these are merely hypotheses. \\
 
-
-This is a numerical problem that Since the DoubleMPS creates multiple terms with high exponents, certain numerical errors can occur because some scalar values which are already $<1$ get exponetiated. 
-
-
-The Double MPS was always able to get close to the accuracy of the bad teacher. However, it never surpassed it like the MPS on its own. with the bad teacher.
-Why did backpropagation fail so miserably to update the weights of our Double-MPS during training. Our leading hypothesis has to do with the exploding and vanishing gradient problem\cite{pascanu2013difficulty}. It could be due to the fact that with the the derivatives of the monomials produced by the DoubleMPS are still exponentials. If the values of the terms are $<1$, then they're gradient could also get close to zero. If the values of the terms are too big, the gradient might explode. We want to reiterate that these are mearly hypotheses. \\
-
-We would also like to mention that while we will not show results explicitely here, we use Layer-Based Knowledge distillation on the DoubleMPS. The sudents trained always got close to the accuracy of their teacher, but never surpassed it.
+We would also like to mention that while we will not show results explicitely here, we use Layer-Based Knowledge distillation in order to train the DoubleMPS. The sudents trained always got close to the accuracy of their teacher, but never surpassed it.
 
 
 \subsection{Further Exploration}
-We think that using Tensor Networks for machine learning is a very interesting endavour. However, we believe that some attachments to current practices are holding back interesting explorations. An example is in the way that the inputs are placed in the network. In our implementation, the inputs were separated from the core MPS structure of the network. They were in their own little private external tensors and connected to MPS structure via indices. We think one way forward is to get rid of this hard separation, and introduce techniques to make the inputs part of the inner tensors of the network. Another would be to apply simple scalar non-linear transformations at every contraction, like a filter on the edges. \\
+We think that using Tensor Networks for machine learning is a very interesting endeavour. However, we believe that some attachments to current practices are holding back interesting explorations. An example would be in the way that the inputs are placed in the network. In our implementation, the inputs were separated from the core MPS structure of the network. They were in their own little private external tensors and connected to MPS structure via indices. We think one way forward is to get rid of this hard separation, and introduce techniques to make the inputs part of the inner tensors of the network. Another would be to apply simple scalar non-linear transformations at every contraction, like a filter on the edges. \\
 
 
-As structured data grows in complexity, we tend to flatten it and hope that the models learn the useful spacial relashionships between features on their own. Tensor Networks could provide a way to let the data in its arbitrary shape, therefore keeping crucial information underlying the connections between different feature proximities.
+As structured data grows in complexity, we tend to flatten it and hope that the models learn the useful spacial relashionships between features on their own. Tensor Networks could provide a way to let the data in its arbitrary shape, therefore keeping crucial information underlying the connections between different feature proximities. This would hopefully lead to models more biased towards real world distributions.
 
 
 
 \printbibliography
-
 \end{document}
 
 
@@ -656,4 +649,4 @@ Person 1:
     I feel so alone... 
 
 Person 2: 
-    Bro I'm here...
+    Bro I'm here... not need to worry $:)$
