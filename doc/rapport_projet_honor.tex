@@ -28,7 +28,7 @@
 \maketitle
 
 \section{Introduction}
-Since the AlexNet\cite{alexnet} paper published in 2012, the use of artificial neural networks has gained a lot of popularity in several application areas. Because of their usefulness and generalisability, we would like to use them to train other models with radically different architectures. This is where knowledge distillation comes in. Suppose we have an already trained neural network that performs well on a certain task T. Then we can say that this neural network has knowledge about this task T. We would like to be able to transfer this knowledge from an already trained neural network into another system. This procedure is called \enquote{Knowledge Distillation}. This report is, foremost, an explanation of two particular MPS architectures, which we shall use as students. It also includes the results and analysis of several experiments were we distill knowledge of deep neural networks into MPS Tensor Networks.
+Since the AlexNet\cite{alexnet} paper was published in 2012, the use of artificial neural networks has gained a lot of popularity in several application areas. Because of their usefulness and generalisability, we would like to use them to train other models with radically different architectures. This is where knowledge distillation comes in. Suppose we have an already trained neural network that performs well on a certain task $T$. Then we can say that this neural network has knowledge about this task $T$. We would like to be able to transfer this knowledge from an already trained neural network into another system. This procedure is called \enquote{Knowledge Distillation}. This report is, foremost, an explanation of two particular MPS architectures, which we shall use as students. It also includes the results and analysis of several experiments were we distill knowledge of deep neural networks into MPS Tensor Networks.
 
 
 \section{Knowledge Distillation}
@@ -39,17 +39,17 @@ the model in which his "knowledge" is to be distilled is referred to as
 the \enquote{student}. While this is a relatively novel technique, there are 
 already several distinct approaches introduced by researchers.
 In this project, we used two of these approaches. Our inspiration for the distillation 
-methodology was found in a a 2021 survey which resumed the emerging 
+methodology was found in a 2021 survey which resumed the emerging 
 practice \cite{Gou_2021}.
 
 \subsection{Response-Based Knowledge Distillation}
-The first approach we used was \emph{Response-Based Knowledge Distillation}. The idea of this approach is to stimulate the teacher and the student with some input and to try to minimise a certain loss function with respect to the teacher and student outputs. For classification tasks, it is recommended to use the Kullback-Leibler divergence as our loss function. 
+The first approach we used was \emph{Response-Based Knowledge Distillation}. The idea of this approach is to stimulate the teacher and the student with some input and try to minimise a certain loss function with respect to the teacher and student outputs. For classification tasks, it is recommended to use the Kullback-Leibler divergence as our loss function. 
 \begin{equation}
     KL(P, Q) = \frac{1}{n} \sum_i^n Q \frac{log_e(Q)}{log_e(P)}
 \end{equation}
 Here, $Q$ is the distribution we are aiming for and $P$ is the one we have.
 
-The reason is quite simple. Since it's a classification task, it is expected that the teacher and student will, given an input, return a probability distribution for each class. As is currently common, we used the softmax function on the logits of the student and the teacher in order to obtain probability distributions corresponding to the classes. 
+The reason for this choice of loss function is quite simple. Since it's a classification task, it is expected that the teacher and student will, given an input, return a probability distribution for each class. As is currently common, we used the softmax function on the logits of the student and the teacher in order to obtain probability distributions corresponding to the classes. 
 
 \begin{equation}
     softmax(v_i) = \frac{e^{v_i}}{\sum_{j}{e^{v_j}}}
@@ -74,8 +74,8 @@ However, in this report (and very often in the context of machine learning), we 
 
 \subsection{Contraction}
 At the heart of tensor networks is the {\it contraction} operation.
-Tensor Networks are used to compute a larger network by "contracting" several
-smaller tensors over chosen indices. A "contraction" is simply an operation 
+Tensor Networks are used to compute a larger network by contracting several
+smaller tensors over chosen indices. A contraction is simply an operation 
 where we sum over indices. For example, the contraction of $A_{ijk}$ and 
 $B_{ijk}$ on index $j$ will produce the tensor $C_{ik} = \sum_{j} A_{ijk} B_{ijk}$.
 Evidently, the two indices present in a contraction must be of the same size.
@@ -104,7 +104,7 @@ Let's translate this Tensor Network with the summation notation. First, we see t
 \subsection{Tensor Network Methods}
 There are many ways of transforming a particular tensor into a tensor network. 
 With time, some particular architectures became popular for their properties. These include the \emph{\it Matrix Product State (MPS)}, the \emph{Matrix Product Operator}, the \emph{MERA}, the \emph{Hierchical Tucker}, and much more.
-Some are faster to compute, some are clearer, some are easier to train in a machine learning context, some are more visually appealing. One of these recurring architectures, the \emph{\it Matrix Product State (MPS)}, is at the core of this report.
+Some are faster to compute, some are clearer, some are easier to train in a machine learning context, some are more visually appealing, etc. One of these recurring architectures, the \emph{\it Matrix Product State (MPS)}, is at the core of this report.
 Not only is there multiple valid ways of setting up the network for contractions, but there are also different ways to determine the order of contraction, since it has been shown that the order of contraction affects the computationnal complexity. It has even been shown that finding the optimal order of contraction is $NP-Hard$. All of these kinds of concepts are referred to by the expression \emph{Tensor Network Methods}. 
 
 \section{Creating the Function we Shall Approximate}
@@ -184,7 +184,7 @@ Then the product of these elements,  $9\times8\times7=504$, will find itself in 
     \begin{bmatrix}
         7 \\ 3
     \end{bmatrix}
-$. This statement would have been true had we chosen any other combination of the elements of each vector to box\footnote{Surround with a square.}. This is was what was meant when we said that the resulting vector captures the \emph{multiplicative interaction of the elements}.
+$. This statement would have been true had we chosen any other combination of the elements of each vector to box\footnote{To surround with a square.}. This is was what was meant when we said that the resulting vector captures the \emph{multiplicative interaction of the elements}.
 
 
 
@@ -247,7 +247,7 @@ which is equivalent to taking a linear combination of the elements of the vector
 $\Phi(\begin{bmatrix}x_1 \\ x_2 \\ x_3 \end{bmatrix})$, we can express any multilinear function of the variables $x_1$, $x_2$ and $x_3$ by choosing the appropriate vector $V$.
 \subsection{Linear Combinations}
 
-At this point, you might be asking yourself, why go through all this? It has to do with expressivity. If we take the linear combinations of $\mathbf{x}$ directly, we will be limited to linear functions. However, in practice, many functions are fundamentally non-linear. They can't even be approximated well by linear functions. Thus, we project the initial vector $\mathbf{x}$ in a new non-linear space before applying the linear map. This is why we chose the $\phi_{ml}$. Multilinear functions are extremely expressive. Their limitations (as well as a way to bypass them) shall be discussed later in this report. \\ When we introduced $\Upsilon_{T}$, we said it was a parameterizable function. Thus, it is time to introduce the parameters. The parameters will be the coefficients of a linear map applied to the vector $\Phi(\mathbf{x})$.\\ 
+At this point, you might be wondering, why go through all this? Why do we need to project $\mathbf{x}$ in this new space. It has to do with expressivity. If we take the linear combinations of $\mathbf{x}$ directly, we will be limited to linear functions. However, in practice, many functions are fundamentally non-linear. They can't even be approximated well by linear functions. Thus, we project the initial vector $\mathbf{x}$ in a new non-linear space before applying the linear map. This is why we chose the $\phi_{ml}$. Multilinear functions are extremely expressive. Their limitations (as well as a way to bypass them) shall be discussed later in this report. \\ When we introduced $\Upsilon_{T}$, we said it was a parameterizable function. Thus, it is time to introduce the parameters. The parameters will be the coefficients of a linear map applied to the vector $\Phi(\mathbf{x})$.\\ 
 
 
 As shown before before, if we apply a cross product to $\Phi(\mathbf{x})$, we obtain an extremely expressive function.
@@ -297,7 +297,7 @@ This creates a fonction $f: \mathbb{R}^d \to \mathbb{R}$. If instead we want a f
 You might be wondering why we didn't introduce the $Y_T$ function in this fashion right away. We simply thought that thinking about linear combinations of the elements given by the Kronecker Product gives a better intuition then the summation notation needed to describe the Tensor Network. Now, we have model that is, theoretically, trainable by the use of supervised learning. We simply have to modify the tensor $T$ according to our task, which represents the parameters of the model.
 
 \section{The \emph{Matrix Product State} (MPS) Tensor Network}
-The problem is that, as of now, the size of the tensor $T$ will grow exponentially with the number of dimensions of the input vector $\mathbf{x}$. Indeed, since our feature map $\phi_{ml}$ produces feature vectors of $2$ dimensions, the parameter tensor $T$ would have $h2^p$ parameters. For big inputs, it's more than we can handle. This is where the Tensor Network Methods come into play. We are going to approximate the tensor $T$ by using the \emph{Matrix Product State} Tensor Network in a creative way that was proposed in a previous paper \cite{stoudenmire2017supervised}.
+The problem is that, as of now, the size of the tensor $T$ will grow exponentially with the number of dimensions of the input vector $\mathbf{x}$. Indeed, since our feature map $\phi_{ml}$ produces feature vectors of $2$ dimensions, the parameter tensor $T$ would have $h2^p$ parameters. For big inputs, exponential growth is more than we can handle. This is where the Tensor Network Methods come into play. We are going to approximate the tensor $T$ by using the \emph{Matrix Product State} Tensor Network in a creative way that was proposed in a previous paper \cite{stoudenmire2017supervised}.
 \subsection{Building the model using a single MPS}
 The MPS tensor network was created to approximate big tensors. It performs this by contracting multiple smaller tensors together.
 \begin{equation} \label{eq:mps_approx}
@@ -493,7 +493,7 @@ The distillation procedure for the Good Teacher (ConvNet) was somewhat different
 
 \subsection{The Student MPS}
 The student is the $\Upsilon_{MPS}$ model introduced earlier. We shall refer to it simply as \enquote{MPS} in the figures.
-It's hyperparameters were
+Its hyperparameters were
 \begin{enumerate}
     \item Learning Rate $= 1e-4$
     \item Regularisation $= 0$
@@ -503,7 +503,7 @@ It's hyperparameters were
 
 \subsection{The Experiments}
 %Baseline%
-Our first experiment was to train the MPS model with different bond dimensions. The bond dimensions used were, 10, 20, 40 and 80. In order to get a better understanding, we repeated the training on the static training dataset $20$ times for each bond dimension chosen. The accuracy of the MPS on it's own was to be a baseline for the knowledge distillation of the good teacher.
+Our first experiment was to train the MPS model with different bond dimensions. The bond dimensions used were, 10, 20, 40 and 80. In order to get a better understanding, we repeated the training on the static training dataset $20$ times for each bond dimension chosen. The accuracy of the MPS on its own was to be a baseline for the knowledge distillation of the good teacher.
 
 %Good teacher
 We repeated to same format of experiment for the distillation of the good and the bad teacher. The only exception was we did not use knowledge distillation on the bad teacher for $80$ bond dimensions.
@@ -513,7 +513,7 @@ When using the \enquote{TorchMPS} library \cite{torchmps}, we encountered a prob
 
 
 \subsection{DoubleMPS}
-You might be wondering why we have not yet mentionned the DoubleMPS in this section. After all, we spent a lot of words to explain it previously in this report. Well, its because we ran into problems with the backpropagation algorithm when training the baseline DoubleMPS model\footnote{The model trained without distillation.}. Since we could not create a baseline, we were suggested to concentrate our ressources on the other experiments. A theory for the causes of the issue will be briefly mentionned in the \emph{Analysis} section. 
+You might be wondering why we have not yet mentionned the DoubleMPS in this section. After all, we spent a lot of words explaining it previously in this report. Well, its because we ran into problems with the backpropagation algorithm when training the baseline DoubleMPS model\footnote{The model trained without distillation.}. Since we could not create a baseline, we were suggested to concentrate our ressources on the other experiments. A theory for the causes of the issue will be briefly mentionned in the \emph{Analysis} section. 
 
 
 \section{Results}
@@ -579,7 +579,7 @@ As you can see in Table \ref{tab:main}, the MPS, for bond dimensions 20 and 40, 
 
 
 \subsection{Good Teacher : CNN to MPS}
-As you can see, from Table \ref{tab:main}, with the help of the good teacher, the MPS manages to perform better on average then when it learns on its own. Amazingly, this is true for every bond dimension in our experiments (10, 20, 40 and 80). However, this finding is, as of now, purely of theoretical use. This is due to the fact that the simple CNN we trained, which performs better than the MPS at every bond dimension, has way less parameters then the MPS. The CNN model has 93130 parameters, while the MPS with the lowest bond dimension we trained (10) had 158000 parameters.\\
+As you can see from Table \ref{tab:main}, with the help of the good teacher, the MPS manages to perform better on average then when it learns on its own. Amazingly, this is true for every bond dimension in our experiments (10, 20, 40 and 80). However, this finding is mostly, as of now, of theoretical use. This is due to the fact that the simple CNN we trained, which performs better than the MPS at every bond dimension, has way less parameters then the MPS. In fact, the CNN model has 93130 parameters, while the MPS with the lowest bond dimension we trained (10) had 158000 parameters. However, one of the properties of $MPS$ Tensor Networks is that they are easier to interpret with mathematical tools than CNNs, which are pretty almost considered black boxes. Since we have showed that the MPS has better scores with the distillation, this indicates that some deeper knowledge has been passed on from the teacher. This deeper understanding is easier to analyse in Tensor Networks than CNNs. \\
 
 As mentionned in the methodology, we used Gaussian noise on the first 25 epochs of the training. In Figure \ref{fig:CNN_to_MPS}, you can see the spike of accuracy when we stop adding Gaussian noise from epoch 26 onward. This might make you wonder if it would be better to not have Gaussian noise at all. Without showing you additionnal data, we can tell you that it is not the case. The Gaussian noise does help. Additionnaly, the order was really important. When applying the Gaussian noise after the initial training, the accuracy tended to drop instead of going up. You can also see that the standard deviation is much higher in the Gaussian epochs.
 
